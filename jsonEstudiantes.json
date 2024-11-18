@@ -1,0 +1,316 @@
+{
+    "I1A": [
+        {
+            "nombre": "Max",
+            "apellido": "Arnal de Pablo"
+        },
+        {
+            "nombre": "Yireh",
+            "apellido": "Clavería Giménez"
+        },
+        {
+            "nombre": "Adrián",
+            "apellido": "Español Laporta"
+        },
+        {
+            "nombre": "Darío",
+            "apellido": "Garuz Castán"
+        },
+        {
+            "nombre": "Daniela Mª",
+            "apellido": "Jiménez Bermúdez"
+        },
+        {
+            "nombre": "Bosco José",
+            "apellido": "Ortíz Juste"
+        },
+        {
+            "nombre": "Lara",
+            "apellido": "Pérez Campaña"
+        },
+        {
+            "nombre": "Daniel",
+            "apellido": "Salamero Arkhipenko"
+        },
+        {
+            "nombre": "Candela",
+            "apellido": "Semitiel Román"
+        },
+        {
+            "nombre": "Lucía Pineta",
+            "apellido": "Solana Ponte"
+        },
+        {
+            "nombre": "Vega",
+            "apellido": "Subías Martín"
+        }
+    ],
+    "I1B": [
+        {
+            "nombre": "Lucas",
+            "apellido": "Baelo Ordás"
+        },
+        {
+            "nombre": "Marta",
+            "apellido": "Baelo Ordás"
+        },
+        {
+            "nombre": "Oona",
+            "apellido": "Deltell Tierz"
+        },
+        {
+            "nombre": "Lena",
+            "apellido": "Lanau Carpi"
+        },
+        {
+            "nombre": "Marcos",
+            "apellido": "Lorente Sampietro"
+        },
+        {
+            "nombre": "Elia",
+            "apellido": "Román Paúl"
+        },
+        {
+            "nombre": "Miguel",
+            "apellido": "Simón Jiménez"
+        },
+        {
+            "nombre": "Anne Celia",
+            "apellido": "Yamapi Nguemetcha"
+        }
+    ],
+    "I2A": [
+        {
+            "nombre": "Otto",
+            "apellido": "Amat Casellas"
+        },
+        {
+            "nombre": "Iván",
+            "apellido": "Ballabriga Ramírez"
+        },
+        {
+            "nombre": "Elsa",
+            "apellido": "Barcos Lasaosa"
+        },
+        {
+            "nombre": "Marta",
+            "apellido": "Carruesco Noguero"
+        },
+        {
+            "nombre": "Laura",
+            "apellido": "Clemente Castán"
+        },
+        {
+            "nombre": "Mario",
+            "apellido": "López Llera"
+        },
+        {
+            "nombre": "Nerea",
+            "apellido": "Migales Herrero"
+        },
+        {
+            "nombre": "Memphis Lorient",
+            "apellido": "Salinas Beruete"
+        }
+    ],
+    "I2B": [
+        {
+            "nombre": "Jimena",
+            "apellido": "Albar Duran"
+        },
+        {
+            "nombre": "Arantza Victoria",
+            "apellido": "Cabrales Cañas"
+        },
+        {
+            "nombre": "Isaac",
+            "apellido": "Díaz Sanchez"
+        },
+        {
+            "nombre": "Eneko",
+            "apellido": "Garcés Gutiérrez"
+        },
+        {
+            "nombre": "Lucas",
+            "apellido": "López Mayoral"
+        },
+        {
+            "nombre": "Catalina",
+            "apellido": "Marco Durán"
+        },
+        {
+            "nombre": "Ibón",
+            "apellido": "Naval Morillo"
+        },
+        {
+            "nombre": "Aitor Mattin",
+            "apellido": "Trtan Beruete"
+        },
+        {
+            "nombre": "Mateo",
+            "apellido": "Velecela Meneses"
+        }
+    ],
+    "I3A": [
+        {
+            "nombre": "Edric Alexandre",
+            "apellido": "Cáceres Baldés"
+        },
+        {
+            "nombre": "Cristina",
+            "apellido": "Cavero Torres"
+        },
+        {
+            "nombre": "Pablo",
+            "apellido": "Cons Giménez"
+        },
+        {
+            "nombre": "Greta",
+            "apellido": "Fernández Millaruelo"
+        },
+        {
+            "nombre": "Marcos",
+            "apellido": "Galicia Tornil"
+        },
+        {
+            "nombre": "Elian José",
+            "apellido": "García Crucey"
+        },
+        {
+            "nombre": "Carla",
+            "apellido": "Gea Cano"
+        },
+        {
+            "nombre": "María",
+            "apellido": "Gherghilescu Negru"
+        },
+        {
+            "nombre": "Ian",
+            "apellido": "Natera Rojas"
+        },
+        {
+            "nombre": "Sara Nicole",
+            "apellido": "Neagoe"
+        },
+        {
+            "nombre": "Marco",
+            "apellido": "Olivera Coscujela"
+        },
+        {
+            "nombre": "Ignacio",
+            "apellido": "Palacín Lalueza"
+        },
+        {
+            "nombre": "Carmen",
+            "apellido": "Raso Burrel"
+        },
+        {
+            "nombre": "Ibeck",
+            "apellido": "Reina Nuñez"
+        },
+        {
+            "nombre": "Asier",
+            "apellido": "Sancho Royo"
+        },
+        {
+            "nombre": "Cosme",
+            "apellido": "Semitiel Román"
+        },
+        {
+            "nombre": "Sofía",
+            "apellido": "Simón Jiménez"
+        }
+    ],
+    "I3B": [
+        {
+            "nombre": "Iker",
+            "apellido": "Asen Hadzhiev"
+        },
+        {
+            "nombre": "Carolina",
+            "apellido": "Cambra Boned"
+        },
+        {
+            "nombre": "Isaac",
+            "apellido": "Castrillon Osorio"
+        },
+        {
+            "nombre": "Daniela Meredith",
+            "apellido": "Domínguez Díaz"
+        },
+        {
+            "nombre": "Ares",
+            "apellido": "Labazuy Corral"
+        },
+        {
+            "nombre": "Héctor",
+            "apellido": "Latre Martí"
+        },
+        {
+            "nombre": "Lena",
+            "apellido": "Lopez lalueza"
+        },
+        {
+            "nombre": "Diana",
+            "apellido": "Martynova"
+        },
+        {
+            "nombre": "Hugo",
+            "apellido": "Mata Sánchez"
+        },
+        {
+            "nombre": "Alicia",
+            "apellido": "Moya Barbero"
+        },
+        {
+            "nombre": "Liam Esaut",
+            "apellido": "Ricalday Barón"
+        },
+        {
+            "nombre": "Martina",
+            "apellido": "Sin Gustrán"
+        },
+        {
+            "nombre": "Álvaro",
+            "apellido": "Ximenis Puyal"
+        }
+    ],
+    "P1A": [
+        {
+            "nombre": "Paula",
+            "apellido": "Ballabriga Ramírez"
+        },
+        {
+            "nombre": "Mateo Sebastián",
+            "apellido": "Catota Aimacaña"
+        },
+        {
+            "nombre": "Danna Valentina",
+            "apellido": "Cruz Cañón"
+        },
+        {
+            "nombre": "Adara",
+            "apellido": "Egea Coro"
+        },
+        {
+            "nombre": "Pedro",
+            "apellido": "Giménez Giménez"
+        },
+        {
+            "nombre": "Noa",
+            "apellido": "Lajara Pardo"
+        },
+        {
+            "nombre": "Jorge",
+            "apellido": "Lopez lalueza"
+        },
+        {
+            "nombre": "Adriana",
+            "apellido": "Lucía Juan"
+        },
+        {
+            "nombre": "Alba",
+            "apellido": "Vélez Carrera"
+        }
+    ]
+}

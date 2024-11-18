@@ -1,9 +1,22 @@
-/* app.css */
+/* index.css o app.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Definir estilos globales */
+html {
+    @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-400;
+}
 
-[x-cloak] {
-    display: none;
+body {
+    @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-400;
+}
+
+/* Clases reutilizables en index.css */
+.card {
+    @apply bg-white text-gray-900 shadow-lg dark:bg-gray-800 dark:text-gray-100;
+}
+
+.button {
+    @apply bg-blue-500 text-white dark:bg-blue-700 dark:text-gray-200;
 }

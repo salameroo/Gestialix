@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
 import { Inertia } from '@inertiajs/inertia'; // Importar Inertia
-import Footer from '@/Components/footer';
+import Footer from '@/Components/ui/footer';
 import Logo from '@/Components/ui/Logo';
 import ButtonForms from '@/Components/ui/ButtonForms';
 

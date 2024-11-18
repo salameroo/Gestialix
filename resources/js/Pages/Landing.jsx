@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Check, Utensils, Users, Carrot, DollarSign } from 'lucide-react'
+import Logo from '@/Components/ui/Logo'
 
 import { Button } from "@/Components/ui/Button"
 
@@ -11,10 +12,7 @@ export default function LandingPage() {
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-6 md:justify-start md:space-x-10">
                         <div className="flex justify-start lg:w-0 lg:flex-1">
-                            <a href="#" className="flex items-center">
-                                <Utensils className="h-8 w-auto sm:h-10 text-green-600" />
-                                <span className="ml-3 text-xl font-bold text-gray-900">ComeDirect</span>
-                            </a>
+                            <Logo showText={false} sizeW={32} sizeH={32}></Logo>
                         </div>
                         <div className="md:flex items-center justify-end md:flex-1 lg:w-0">
                             <a href="#" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">

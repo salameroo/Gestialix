@@ -1,167 +1,82 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { User, Lock, Bell, Settings } from 'lucide-react';
-import PreferencesTab from '@/Components/ui/Preferences';
-import { Link } from '@inertiajs/inertia-react';
+// Dashboard.js
+import React from 'react';
+import { Users, Utensils, Calendar, TrendingUp, Bell, Search, ChevronDown } from 'lucide-react';
+import AppLayout from '@/Layouts/AppLayout';
 
-// Botón estilizado
-const TabButton = ({ icon: Icon, label, isActive, onClick }) => (
-    <button
-        onClick={onClick}
-        className={`flex items-center px-4 py-2 text-md font-medium rounded-lg transition-colors ${isActive ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
-    >
-        <Icon className="w-5 h-5 mr-2" />
-        {label}
-    </button>
+const DashboardCard = ({ title, value, icon: Icon, color }) => (
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex items-center">
+        <div className={`rounded-full p-3 mr-4 ${color}`}>
+            <Icon className="w-6 h-6 text-white" />
+        </div>
+        <div>
+            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">{title}</h3>
+            <p className="text-2xl font-bold">{value}</p>
+        </div>
+    </div>
 );
 
-// Vista de opciones de usuario
-export default function UserProfileSettingsView() {
-    const [activeTab, setActiveTab] = useState('profile');
+const MenuItem = ({ name, icon: Icon }) => (
+    <div className="flex items-center space-x-2 p-2 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded cursor-pointer">
+        <Icon className="w-5 h-5" />
+        <span>{name}</span>
+    </div>
+);
 
-    const handleTabChange = (tab) => {
-        setActiveTab(tab);
-    };
-
+export default function Dashboard() {
     return (
-        <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-xl mt-10">
-            <h1 className="text-3xl font-bold text-center mb-8">Configuración de Usuario</h1>
-            <div className="flex flex-col md:flex-row gap-6">
-                <Link href='/dashboard'>dashboard</Link>
-                <PreferencesTab />
-                {/* Barra de navegación de pestañas */}
-                <nav className="md:w-1/4 flex md:flex-col gap-4">
-                    <TabButton
-                        icon={User}
-                        label="Perfil"
-                        isActive={activeTab === 'profile'}
-                        onClick={() => handleTabChange('profile')}
-                    />
-                    <TabButton
-                        icon={Lock}
-                        label="Seguridad"
-                        isActive={activeTab === 'security'}
-                        onClick={() => handleTabChange('security')}
-                    />
-                    <TabButton
-                        icon={Bell}
-                        label="Notificaciones"
-                        isActive={activeTab === 'notifications'}
-                        onClick={() => handleTabChange('notifications')}
-                    />
-                    <TabButton
-                        icon={Settings}
-                        label="Preferencias"
-                        isActive={activeTab === 'settings'}
-                        onClick={() => handleTabChange('settings')}
-                    />
-                </nav>
+        <AppLayout>
+            <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
 
-                {/* Contenido de las pestañas */}
-                <div className="md:w-3/4 p-6 bg-gray-50 rounded-lg">
-                    {activeTab === 'profile' && <ProfileTab />}
-                    {activeTab === 'security' && <SecurityTab />}
-                    {activeTab === 'notifications' && <NotificationsTab />}
-                    {activeTab === 'settings' && <PreferencesTabDos />}
+
+                {/* Contenido principal */}
+                <div className="flex flex-col flex-1">
+                    {/* Barra superior */}
+                    <header className="bg-white dark:bg-gray-800 shadow-sm z-10">
+                        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                            <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Dashboard</h1>
+                            <div className="flex items-center space-x-4">
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        placeholder="Buscar..."
+                                        className="bg-gray-100 dark:bg-gray-700 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    />
+                                    <Search className="w-5 h-5 text-gray-500 dark:text-gray-300 absolute left-3 top-2.5" />
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Contenido del dashboard */}
+                    <main className="flex-1 overflow-y-auto bg-gray-100 dark:bg-gray-900 p-6">
+                        <div className="max-w-7xl mx-auto">
+                            {/* Tarjetas de resumen */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                                <DashboardCard title="Clientes Activos" value="1,234" icon={Users} color="bg-blue-500" />
+                                <DashboardCard title="Calendario de Eventos" value="8" icon={Calendar} color="bg-purple-500" />
+                            </div>
+
+                            {/* Sección de actividad reciente */}
+                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                                <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Actividad Reciente</h2>
+                                <ul className="space-y-4">
+                                    {[{ action: "Nuevo cliente registrado", client: "Cliente ABC", time: "Hace 1 día" }].map((item, index) => (
+                                        <li key={index} className="flex items-center space-x-3 text-sm">
+                                            <div className="flex-shrink-0">
+                                                <span className="inline-block h-2 w-2 rounded-full bg-indigo-500"></span>
+                                            </div>
+                                            <p className="flex-1 text-gray-800 dark:text-gray-300">
+                                                <span className="font-medium">{item.action}</span> - {item.client}
+                                            </p>
+                                            <span className="text-gray-500 dark:text-gray-400">{item.time}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </main>
                 </div>
             </div>
-        </div>
+        </AppLayout>
     );
 }
-
-// Contenido de la pestaña de Perfil
-const ProfileTab = () => (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-        <h2 className="text-2xl font-semibold mb-4">Información de Perfil</h2>
-        <div className="space-y-4">
-            <InputField label="Nombre Completo" placeholder="Tu nombre" />
-            <InputField label="Correo Electrónico" placeholder="tu@ejemplo.com" type="email" />
-            <InputField label="Teléfono" placeholder="+34 600 000 000" type="tel" />
-            <Button label="Guardar Cambios" />
-        </div>
-    </motion.div>
-);
-
-// Contenido de la pestaña de Seguridad
-const SecurityTab = () => (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-        <h2 className="text-2xl font-semibold mb-4">Seguridad</h2>
-        <div className="space-y-4">
-            <InputField label="Contraseña Actual" type="password" />
-            <InputField label="Nueva Contraseña" type="password" />
-            <InputField label="Confirmar Nueva Contraseña" type="password" />
-            <Button label="Actualizar Contraseña" variant="danger" />
-        </div>
-    </motion.div>
-);
-
-// Contenido de la pestaña de Notificaciones
-const NotificationsTab = () => (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-        <h2 className="text-2xl font-semibold mb-4">Notificaciones</h2>
-        <div className="space-y-4">
-            <ToggleSwitch label="Notificaciones por Correo" />
-            <ToggleSwitch label="Notificaciones Push" />
-            <ToggleSwitch label="Notificaciones SMS" />
-        </div>
-    </motion.div>
-);
-
-// Contenido de la pestaña de Preferencias
-const PreferencesTabDos = () => (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-        <h2 className="text-2xl font-semibold mb-4">Preferencias</h2>
-        <div className="space-y-4">
-            <SelectField label="Idioma" options={['Español', 'Inglés']} />
-            <SelectField label="Tema" options={['Claro', 'Oscuro']} />
-            <Button label="Guardar Preferencias" />
-        </div>
-    </motion.div>
-);
-
-// Componentes auxiliares
-
-// Campo de entrada (InputField)
-const InputField = ({ label, placeholder, type = 'text' }) => (
-    <div>
-        <label className="block text-sm font-medium text-gray-700">{label}</label>
-        <input
-            type={type}
-            placeholder={placeholder}
-            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-        />
-    </div>
-);
-
-// Botón estilizado (Button)
-const Button = ({ label, variant }) => (
-    <button
-        className={`px-6 py-2 mt-4 font-semibold rounded-lg shadow ${variant === 'danger' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'
-            }`}
-    >
-        {label}
-    </button>
-);
-
-// Interruptor (ToggleSwitch)
-const ToggleSwitch = ({ label }) => (
-    <div className="flex items-center justify-between">
-        <span>{label}</span>
-        <input type="checkbox" className="toggle-checkbox h-5 w-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-400" />
-    </div>
-);
-
-// Campo de selección (SelectField)
-const SelectField = ({ label, options }) => (
-    <div>
-        <label className="block text-sm font-medium text-gray-700">{label}</label>
-        <select className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent">
-            {options.map((option, idx) => (
-                <option key={idx} value={option}>
-                    {option}
-                </option>
-            ))}
-        </select>
-    </div>
-);

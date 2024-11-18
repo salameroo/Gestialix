@@ -7,7 +7,6 @@ const PreferencesTab = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">Preferencias</h2>
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
                     <span className="text-lg">Tema {theme === 'dark' ? 'Oscuro' : 'Claro'}</span>

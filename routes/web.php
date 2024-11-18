@@ -1,11 +1,19 @@
 <?php
 
+use App\Http\Controllers\ClaseController;
+use App\Http\Controllers\EstudianteController;
+use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\MenuController;
-use App\Http\Controllers\PostController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+
+
+
+
+
 
 
 
@@ -27,15 +35,26 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
     Route::get('/inicio', function () {
         return Inertia::render('Inicio');
     })->name('inicio');
+
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::get('/clases', function () {
+        return Inertia::render('ClasesManagement/Clases');
+    })->name('clases');
+
+    Route::get('/index', function () {
+        return Inertia::render('Index');
+    })->name('index');
+
     Route::get('/user-profile', function (Request $request) {
         return $request->user();
     })->name('user-profile');
+
     Route::put('/user-profile', function (Request $request) {
         return $request->user();
     })->name('user-profile');
@@ -55,5 +74,5 @@ Route::resource('menus', MenuController::class)->middleware('auth');
 
 Route::get('/terms', function () {
     return Inertia::render('Terminos/Terms'); // Asegurate de que el componente esté en el lugar correcto
-});
+})->name('terms');
 // Route::post('/login', [PostController::class, 'login']);

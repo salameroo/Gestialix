@@ -2,7 +2,8 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Check, Utensils, Users, Carrot, DollarSign, Facebook, Twitter, Instagram } from 'lucide-react'
 import Button from '@/Components/ui/Button'
-import FooterLanding from '@/Components/FooterLanding'
+import FooterLanding from '@/Components/ui/FooterLanding'
+import Logo from '@/Components/ui/Logo'
 
 export default function LandingPage() {
     return (
@@ -11,10 +12,7 @@ export default function LandingPage() {
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col sm:flex-row justify-between items-center py-4 sm:py-6 space-y-4 sm:space-y-0">
                         <div className="flex justify-center sm:justify-start w-full sm:w-auto">
-                            <a href="#" className="flex items-center">
-                                <Utensils className="h-8 w-auto sm:h-10 text-green-600" />
-                                <span className="ml-3 text-xl font-bold text-gray-900">ComeDirect</span>
-                            </a>
+                            <Logo showText={false} sizeW={20} sizeH={20}></Logo>
                         </div>
                         <div className="flex items-center justify-center sm:justify-end w-full sm:w-auto space-x-4">
                             <a href="/login" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
@@ -34,11 +32,7 @@ export default function LandingPage() {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden">
                             <div className="absolute inset-0">
-                                <img
-                                    className="h-full w-full object-cover"
-                                    src="/placeholder.svg?height=600&width=1200"
-                                    alt="Niños comiendo en el comedor escolar"
-                                />
+                                
                                 <div className="absolute inset-0 bg-gradient-to-r from-green-800 to-blue-700 mix-blend-multiply"></div>
                             </div>
                             <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
