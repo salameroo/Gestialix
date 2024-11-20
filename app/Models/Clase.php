@@ -14,6 +14,6 @@ class Clase extends Model
 
     public function estudiantes()
     {
-        return $this->hasMany(Estudiante::class);
+        return $this->hasMany(Estudiante::class, 'clase_id');
     }
 }

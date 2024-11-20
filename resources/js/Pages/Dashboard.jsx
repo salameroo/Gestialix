@@ -52,15 +52,15 @@ export default function Dashboard() {
     return (
         <AppLayout>
             <div className="min-h-screen bg-gray-100 dark:bg-gray-800 dark:text-gray-200">
-                
+
 
                 <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                    {/* Tarjetas Resumen */}
-                    <h2>Menu Principal</h2>
-                    <div className='flex'>
+                    <div className="px-4 py-6 sm:px-0 text-center">
+                        <h2>Menu Principal</h2><br />
                         <Button link={route("inicio")} text={"Inicio"} className="w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
                         </Button>
                     </div>
+
                     <div className="px-4 py-6 sm:px-0">
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                             <Card title="Estudiantes Hoy" value="180" icon={Users} />

@@ -2,6 +2,7 @@
 // app/Http/Controllers/EstudianteController.php
 namespace App\Http\Controllers;
 
+use App\Models\Asistencia;
 use App\Models\Estudiante;
 use App\Models\Clase;
 use Inertia\Inertia;
@@ -67,27 +68,69 @@ class EstudianteController extends Controller
     // Actualizar un estudiante específico
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
-            'clase_id' => 'required|exists:clases,id',
-            'pago' => 'boolean',
-            'intolerancia_religion' => 'nullable|string|max:255',
-            'beca' => 'boolean'
-        ]);
+        try {
+            $request->validate([
+                // 'id' => 'required|string|max:255',
+                'nombre' => 'required|string|max:255',
+                'apellidos' => 'required|string|max:255',
+                'pago' => 'boolean',
+                'intolerancia_religion' => 'nullable|string|max:255',
+                'beca' => 'boolean'
+            ]);
 
-        $estudiante = Estudiante::findOrFail($id);
-        $estudiante->update($request->all());
+            $estudiante = Estudiante::findOrFail($id);
+            $estudiante->update($request->all());
+            return response()->json($estudiante, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
 
-        return redirect()->route('estudiantes.index')->with('success', 'Estudiante actualizado.');
+    public function actualizaClase(Request $request, $id)
+    {
+        try {
+            $clase = Clase::findOrFail($id);
+            $clase->update($request->all());
+            return response()->json(['message' => 'Clase actualizada correctamente']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 
     // Eliminar un estudiante específico
-    public function destroy($id)
+    public function destroy($classId, $studentId)
     {
-        $estudiante = Estudiante::findOrFail($id);
+        $estudiante = Estudiante::where('id', $studentId)
+            ->where('clase_id', $classId)
+            ->firstOrFail();
+
         $estudiante->delete();
 
-        return response()->json($estudiante, 201);
+        return response()->json(['message' => 'Estudiante eliminado correctamente']);
+    }
+
+
+    public function toggleAssignment(Estudiante $student)
+    {
+        $student->asignado_comedor = !$student->asignado_comedor; // Cambia el valor booleano
+        $student->save();
+
+        return response()->json($student); // Devuelve el estudiante actualizado
+    }
+
+    public function updateStudent(Request $request, $id)
+    {
+        $estudiante = Estudiante::findOrFail($id);
+
+        // Actualiza los datos del estudiante
+        $estudiante->asignado_comedor = $request->input('asignado_comedor');
+        $estudiante->save();
+
+        // Si ya no está asignado al comedor, elimina sus asistencias
+        if (!$estudiante->asignado_comedor) {
+            Asistencia::where('estudiante_id', $id)->delete();
+        }
+
+        return response()->json(['message' => 'Estudiante actualizado']);
     }
 }

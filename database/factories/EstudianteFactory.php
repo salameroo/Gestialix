@@ -9,6 +9,7 @@ class EstudianteFactory extends Factory
 {
     protected $model = Estudiante::class;
 
+
     public function definition()
     {
         return [

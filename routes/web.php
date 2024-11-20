@@ -47,6 +47,10 @@ Route::middleware([
         return Inertia::render('ClasesManagement/Clases');
     })->name('clases');
 
+    Route::get('/asistencias', function () {
+        return Inertia::render('AsistenciasManagement/AttendanceCrud');
+    })->name('asistencias');
+
     Route::get('/index', function () {
         return Inertia::render('Index');
     })->name('index');

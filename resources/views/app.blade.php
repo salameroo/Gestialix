@@ -20,6 +20,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])
 
     @inertiaHead
+    <style>
+    </style>
 </head>
 
 <body class="font-sans antialiased">

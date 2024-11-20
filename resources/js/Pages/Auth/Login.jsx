@@ -157,7 +157,7 @@ export default function LoginForm({ title }) {
                     </div>
                 </div>
 
-                <Footer text="¿No tienes una cuenta? Regístrate" link="/register" />
+                <Footer text="¿No tienes una cuenta? Regístrate" link="/register" size='text-xs' />
             </motion.div>
         </div>
     );

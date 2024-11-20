@@ -75,23 +75,33 @@ class ClaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
+    // public function update(Request $request, $id)
+    // {
+    //     // Validate the request data
+    //     $request->validate([
+    //         'nombre' => 'required|string|max:255',
+    //         'curso_academico' => 'required|string|max:255',
+    //     ]);
+
+    //     // Find the class by ID or throw a 404 error
+    //     $clase = Clase::findOrFail($id);
+
+    //     // Update the class with validated data
+    //     $clase->update($request->all());
+
+    //     // Redirect to the classes index with a success message
+
+    //     return response()->json($clase, 201);
+    // }
     public function update(Request $request, $id)
     {
-        // Validate the request data
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'curso_academico' => 'required|string|max:255',
-        ]);
-
-        // Find the class by ID or throw a 404 error
-        $clase = Clase::findOrFail($id);
-
-        // Update the class with validated data
-        $clase->update($request->all());
-
-        // Redirect to the classes index with a success message
-        return redirect()->route('clases.index')->with('success', 'Clase actualizada.');
+        $class = Clase::findOrFail($id);
+        $class->update($request->all());
+        // return response()->json($class);
+        return response()->json(['message' => 'Clase actualizada correctamente']);
     }
+
+
 
     /*************  ✨ Codeium Command 🌟  *************/
     /**

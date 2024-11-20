@@ -18,6 +18,7 @@ class CreateEstudiantesTable extends Migration
             $table->boolean('pago')->default(false);
             $table->string('intolerancia_religion')->nullable();
             $table->boolean('beca')->default(false);
+            $table->boolean('asignado_comedor')->default(false);
             $table->timestamps();
         });
     }

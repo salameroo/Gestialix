@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import { Menu, X, Home, Users, BarChart, Settings, HelpCircle, Moon, Sun, LogOut } from 'lucide-react';
+import { Menu, X, Home, Users, BarChart, Settings, HelpCircle, Moon, Sun, LogOut, List } from 'lucide-react';
 
 const MenuItem = ({ icon: Icon, label, isOpen, onClick }) => (
     <li
@@ -73,6 +73,7 @@ export default function SidebarMenu({ isOpen, toggleSidebar }) {
                     <MenuItem icon={Home} label="Inicio" isOpen={isOpen} onClick={() => navigateTo('/inicio')} />
                     <MenuItem icon={BarChart} label="Panel de control" isOpen={isOpen} onClick={() => navigateTo('/dashboard')} />
                     <MenuItem icon={Users} label="Clases" isOpen={isOpen} onClick={() => navigateTo('/clases')} />
+                    <MenuItem icon={List} label="Asistencias" isOpen={isOpen} onClick={() => navigateTo('/asistencias')} />
                     <MenuItem icon={Settings} label="Configuración" isOpen={isOpen} onClick={() => navigateTo('/configuracion')} />
                     <MenuItem icon={HelpCircle} label="Ayuda" isOpen={isOpen} onClick={() => navigateTo('/ayuda')} />
                 </ul>

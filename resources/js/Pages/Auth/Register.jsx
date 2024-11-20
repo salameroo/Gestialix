@@ -190,14 +190,6 @@ export default function RegistrationForm() {
                         {errors.agreeTerms && <p className="mt-1 text-xs text-red-500">{errors.agreeTerms}</p>}
 
                         <div>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                type="submit"
-                                className=""
-                            >
-                                Registrarse
-                            </motion.button>
                         </div>
                         <ButtonForms
                             text="Registrarse"

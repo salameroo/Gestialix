@@ -1,5 +1,5 @@
 import AppLayout from "@/Layouts/AppLayout";
-import ClaseManagement from "@/Components/ClaseManagement";
+import ClaseManagement from "@/Components/Clases/ClaseManagement";
 
 const Clases = () => {
     return (

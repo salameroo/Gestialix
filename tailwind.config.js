@@ -18,8 +18,12 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            }, animation: {
+                'spin-reverse': 'spin 1s linear reverse',
             },
         },
     },
     plugins: [forms, typography], // Incluye los plugins necesarios
 };
+
+
