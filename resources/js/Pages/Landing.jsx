@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Check, Utensils, Users, Carrot, DollarSign } from 'lucide-react'
 import Logo from '@/Components/ui/Logo'
 
-import { Button } from "@/Components/ui/Button"
+// import { Button } from "@/Components/ui/Button"
 
 export default function LandingPage() {
     return (
