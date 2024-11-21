@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\AsistenciaController;
@@ -8,11 +9,28 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\DashboardController;
 
 
 
+// Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+//     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+//     Route::resource('users', UserController::class); // CRUD de usuarios
+// });
+
+// Route::middleware(['auth', 'role:admin'])->group(function () {
+//     Route::prefix('admin')->group(function () {
+//         Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+//         Route::resource('users', UserController::class);
+//         Route::resource('roles', RoleController::class);
+//     });
+// });
 
 
+// Route::domain('admin.gestialix.com')->middleware(['auth', 'role:admin'])->group(function () {
+//     Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+// });
 
 
 
@@ -62,6 +80,12 @@ Route::middleware([
     Route::put('/user-profile', function (Request $request) {
         return $request->user();
     })->name('user-profile');
+
+    Route::get('/user/two-factor-authentication', function () {
+        return Inertia::render('TwoFactorAuthentication', [
+            'user' => auth()->user(),
+        ]);
+    })->middleware(['auth']);
 });
 
 

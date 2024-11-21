@@ -111,8 +111,8 @@ const ClassItem = ({ classData, isOpen, onToggle, onEdit, onDelete, toggleAssign
 
 
     return (
-        <div className="mb-4 ">
-            <div className="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
+        <div className="mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 flex items-center justify-between">
                 {/* Información de la Clase */}
                 <div onClick={onToggle} className="flex items-center relative">
                     <button className="mr-2">

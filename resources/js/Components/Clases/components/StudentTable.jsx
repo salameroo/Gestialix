@@ -55,10 +55,10 @@ const StudentTable = ({ students, onStudentDelete, toggleAssignment, onStudentEd
     };
 
     return (
-        <div className="mt-2 bg-gray-50 rounded-lg p-4">
+        <div className="mt-2 bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
             <table className="w-full">
                 <thead>
-                    <tr className="text-left text-gray-600">
+                    <tr className="text-left text-gray-600 dark:text-gray-200">
                         <th className="py-2">Nombre</th>
                         <th className="py-2">Asignado al Comedor</th>
                         <th className="py-2">Acciones</th>
@@ -66,7 +66,7 @@ const StudentTable = ({ students, onStudentDelete, toggleAssignment, onStudentEd
                 </thead>
                 <tbody>
                     {students.map((student) => (
-                        <tr key={student.id} className="border-t border-gray-200">
+                        <tr key={student.id} className="border-t border-gray-200 text-gray-600 dark:text-gray-200">
                             <td className="py-2">
                                 {student.nombre} {student.apellidos}
                             </td>
@@ -74,8 +74,8 @@ const StudentTable = ({ students, onStudentDelete, toggleAssignment, onStudentEd
                                 <button
                                     onClick={() => toggleAssignment(student.id)}
                                     className={`px-2 py-1 rounded-full text-xs font-semibold ${student.asignado_comedor
-                                        ? 'bg-green-100 text-green-800'
-                                        : 'bg-red-200 text-gray-800'
+                                        ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-green-800'
+                                        : 'bg-red-200 text-gray-800 dark:bg-red-600 dark:text-gray-200'
                                         }`}
                                     disabled={student.loading}
                                 >
