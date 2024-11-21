@@ -20,10 +20,20 @@ module.exports = {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             }, animation: {
                 'spin-reverse': 'spin 1s linear reverse',
+            }, animation: {
+                'spin-slow': 'spin 3s linear infinite',
+                'float': 'float 3s ease-in-out infinite',
             },
+            keyframes: {
+                float: {
+                    '0%, 100%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-10px)' },
+                }
+            }
         },
     },
     plugins: [forms, typography], // Incluye los plugins necesarios
 };
+
 
 

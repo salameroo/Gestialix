@@ -58,7 +58,7 @@ Route::middleware([
     })->name('inicio');
 
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Dashboard/Index');
     })->name('dashboard');
 
     Route::get('/clases', function () {
@@ -71,6 +71,10 @@ Route::middleware([
 
     Route::get('/index', function () {
         return Inertia::render('Index');
+    })->name('index');
+
+    Route::get('/settings', function () {
+        return Inertia::render('Settings/Ajustes');
     })->name('index');
 
     Route::get('/user-profile', function (Request $request) {

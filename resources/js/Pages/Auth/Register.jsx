@@ -4,7 +4,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { Inertia } from '@inertiajs/inertia'; // Importar Inertia
 import Footer from '@/Components/ui/footer';
 import Logo from '@/Components/ui/Logo';
-import ButtonForms from '@/Components/ui/ButtonForms';
+import { ButtonForms } from '@/Components/ui/Buttons';
 
 export default function RegistrationForm() {
     const [formData, setFormData] = useState({

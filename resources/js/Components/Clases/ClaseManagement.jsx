@@ -175,7 +175,7 @@ export default function ClaseManagement() {
     );
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 p-8">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-700 py-12 px-4 sm:px-6 lg:px-8 p-8">
             <div className="max-w-6xl mx-auto">
                 <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">Gestión de Clases</h1>
                 {error && <div className="bg-red-500 text-white p-2 rounded">{error}</div>}

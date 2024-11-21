@@ -1,5 +1,7 @@
 import React from "react"
 import { ArrowLeft } from "lucide-react"
+import { InnovativeButton } from "@/Components/ui/Buttons"
+import { Inertia } from '@inertiajs/inertia';
 
 // Button component
 const Button = React.forwardRef(
@@ -18,6 +20,7 @@ const Button = React.forwardRef(
         ${className}`}
                 ref={ref}
                 {...props}
+                href={props.href}
             />
         )
     }
@@ -80,120 +83,86 @@ export default function PrivacyPolicy() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center p-4">
-            <Card className="w-full max-w-4xl shadow-xl">
-                <CardHeader className="text-center">
-                    <CardTitle className="text-3xl font-bold text-gray-800">
-                        Política de Privacidad
-                    </CardTitle>
-                    <CardDescription>Comedor Escolar App</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                    <section>
-                        <h2 className="text-xl font-semibold text-gray-700 mb-2">
-                            1. Introducción
-                        </h2>
-                        <p className="text-gray-600">
-                            En Comedor Escolar App, nos comprometemos a proteger la privacidad
-                            de nuestros usuarios, especialmente considerando que muchos son
-                            menores de edad. Esta política describe cómo recopilamos, usamos y
-                            protegemos la información personal.
-                        </p>
-                    </section>
+            <div className="min-h-screen bg-gray-100 py-10 px-4 sm:px-6 lg:px-8">
+                <InnovativeButton onClick={() => Inertia.visit('/inicio')}>
+                    Volver al inicio
+                </InnovativeButton>
+                <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-8">
+                    <h1 className="text-4xl font-bold text-gray-800 mb-6">Términos de Servicio</h1>
 
-                    <Separator />
-
-                    <section>
-                        <h2 className="text-xl font-semibold text-gray-700 mb-2">
-                            2. Información que Recopilamos
-                        </h2>
-                        <ul className="list-disc list-inside text-gray-600 space-y-2">
-                            <li>
-                                Información de registro: nombre, apellido, correo electrónico,
-                                grado escolar.
-                            </li>
-                            <li>
-                                Información dietética: alergias, restricciones alimentarias.
-                            </li>
-                            <li>
-                                Información de uso: registros de comidas, preferencias
-                                alimentarias.
-                            </li>
-                        </ul>
-                    </section>
-
-                    <Separator />
-
-                    <section>
-                        <h2 className="text-xl font-semibold text-gray-700 mb-2">
-                            3. Cómo Usamos la Información
-                        </h2>
-                        <p className="text-gray-600">
-                            Utilizamos la información recopilada para:
-                        </p>
-                        <ul className="list-disc list-inside text-gray-600 space-y-2">
-                            <li>
-                                Proporcionar y mejorar nuestros servicios de comedor escolar.
-                            </li>
-                            <li>Garantizar la seguridad alimentaria de los estudiantes.</li>
-                            <li>Comunicarnos con padres o tutores sobre el servicio.</li>
-                            <li>Cumplir con requisitos legales y reglamentarios.</li>
-                        </ul>
-                    </section>
-
-                    <Separator />
-
-                    <section>
-                        <h2 className="text-xl font-semibold text-gray-700 mb-2">
-                            4. Protección de Datos
-                        </h2>
-                        <p className="text-gray-600">
-                            Implementamos medidas de seguridad técnicas y organizativas para
-                            proteger la información personal contra acceso no autorizado,
-                            alteración, divulgación o destrucción.
-                        </p>
-                    </section>
-
-                    <Separator />
-
-                    <section>
-                        <h2 className="text-xl font-semibold text-gray-700 mb-2">
-                            5. Derechos de los Usuarios
-                        </h2>
-                        <p className="text-gray-600">
-                            Los usuarios o sus representantes legales tienen derecho a:
-                        </p>
-                        <ul className="list-disc list-inside text-gray-600 space-y-2">
-                            <li>Acceder a su información personal.</li>
-                            <li>Corregir datos inexactos.</li>
-                            <li>Solicitar la eliminación de sus datos.</li>
-                            <li>Oponerse al procesamiento de sus datos.</li>
-                        </ul>
-                    </section>
-
-                    <Separator />
-
-                    <section>
-                        <h2 className="text-xl font-semibold text-gray-700 mb-2">
-                            6. Contacto
-                        </h2>
-                        <p className="text-gray-600">
-                            Para cualquier pregunta sobre esta política de privacidad, por
-                            favor contacte a:
-                        </p>
-                        <p className="text-gray-600 font-semibold mt-2">
-                            privacy@comedorescolar.app
-                        </p>
-                    </section>
-                </CardContent>
-                <CardFooter className="flex flex-col sm:flex-row justify-between items-center bg-gray-50 mt-6">
-                    <Button variant="outline" className="mb-2 sm:mb-0">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Volver a la aplicación
-                    </Button>
-                    <p className="text-sm text-gray-500">
-                        © {currentYear} Comedor Escolar App. Todos los derechos reservados.
+                    <p className="text-gray-600 mb-4">
+                        Estos términos de servicio describen las reglas y regulaciones para el uso de nuestra aplicación y servicios.
+                        Al acceder o utilizar el servicio, aceptas estar sujeto a estos términos.
                     </p>
-                </CardFooter>
-            </Card>
+
+                    <hr className="my-6" />
+
+                    <section className="mb-8">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">1. Condiciones Generales</h2>
+                        <p className="text-gray-600">
+                            Al utilizar nuestros servicios, declaras que tienes al menos la mayoría de edad en tu jurisdicción o
+                            que cuentas con el consentimiento de un tutor legal.
+                        </p>
+                        <p className="text-gray-600 mt-2">
+                            Está prohibido utilizar nuestros servicios para actividades ilegales, violar derechos de terceros
+                            o distribuir contenido dañino.
+                        </p>
+                    </section>
+
+                    <section className="mb-8">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">2. Uso del Servicio</h2>
+                        <p className="text-gray-600">
+                            No puedes utilizar este servicio para cualquier propósito no autorizado. Esto incluye, entre otros,
+                            el acceso no autorizado a nuestros sistemas o la distribución de contenido no permitido.
+                        </p>
+                    </section>
+
+                    <section className="mb-8">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">3. Propiedad Intelectual</h2>
+                        <p className="text-gray-600">
+                            Todo el contenido disponible en nuestra aplicación, incluidos textos, imágenes, logotipos y código,
+                            es propiedad exclusiva de nuestra empresa o de nuestros socios, y está protegido por las leyes de derechos de autor.
+                        </p>
+                    </section>
+
+                    <section className="mb-8">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">4. Cancelación y Terminación</h2>
+                        <p className="text-gray-600">
+                            Nos reservamos el derecho de suspender o cancelar tu acceso al servicio si violas estos términos.
+                            En caso de cancelación, perderás el acceso a cualquier contenido o información asociada con tu cuenta.
+                        </p>
+                    </section>
+
+                    <section className="mb-8">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">5. Limitación de Responsabilidad</h2>
+                        <p className="text-gray-600">
+                            En ningún caso seremos responsables por daños indirectos, incidentales o consecuentes derivados del uso
+                            o la imposibilidad de usar nuestros servicios.
+                        </p>
+                    </section>
+
+                    <section className="mb-8">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">6. Cambios en los Términos</h2>
+                        <p className="text-gray-600">
+                            Nos reservamos el derecho de modificar estos términos en cualquier momento. Cualquier cambio será
+                            notificado a través de la aplicación o por correo electrónico. Es tu responsabilidad revisar estos términos periódicamente.
+                        </p>
+                    </section>
+
+                    <section className="mb-8">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">7. Contacto</h2>
+                        <p className="text-gray-600">
+                            Si tienes alguna pregunta sobre estos términos, puedes contactarnos en <a href="mailto:soporte@gestialix.com" className="text-blue-500 hover:underline">soporte@gestialix.com</a>.
+                        </p>
+                    </section>
+
+                    <hr className="my-6" />
+
+                    <div className="text-sm text-gray-500 text-center">
+                        <p>&copy; {new Date().getFullYear()} Gestialix. Todos los derechos reservados.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

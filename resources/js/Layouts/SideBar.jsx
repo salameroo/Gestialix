@@ -74,8 +74,8 @@ export default function SidebarMenu({ isOpen, toggleSidebar }) {
                     <MenuItem icon={BarChart} label="Panel de control" isOpen={isOpen} onClick={() => navigateTo('/dashboard')} />
                     <MenuItem icon={Users} label="Clases" isOpen={isOpen} onClick={() => navigateTo('/clases')} />
                     <MenuItem icon={List} label="Asistencias" isOpen={isOpen} onClick={() => navigateTo('/asistencias')} />
-                    <MenuItem icon={Settings} label="Configuración" isOpen={isOpen} onClick={() => navigateTo('/configuracion')} />
-                    <MenuItem icon={HelpCircle} label="Ayuda" isOpen={isOpen} onClick={() => navigateTo('/ayuda')} />
+                    <MenuItem icon={Settings} label="Configuración" isOpen={isOpen} onClick={() => navigateTo('/settings')} />
+                    <MenuItem icon={HelpCircle} label="Ayuda" isOpen={isOpen} onClick={() => navigateTo('/terms')} />
                 </ul>
             </nav>
 

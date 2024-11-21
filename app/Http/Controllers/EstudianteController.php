@@ -109,10 +109,16 @@ class EstudianteController extends Controller
         return response()->json(['message' => 'Estudiante eliminado correctamente']);
     }
 
-
     public function toggleAssignment(Estudiante $student)
     {
-        $student->asignado_comedor = !$student->asignado_comedor; // Cambia el valor booleano
+        $student->asignado_comedor = !$student->asignado_comedor;
+
+        if ($student->asignado_comedor) {
+            $student->asignado_at = now(); // Asigna la fecha actual
+        } else {
+            $student->asignado_at = null; // Borra la fecha si se desasigna
+        }
+
         $student->save();
 
         return response()->json($student); // Devuelve el estudiante actualizado

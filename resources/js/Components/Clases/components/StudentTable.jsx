@@ -55,7 +55,7 @@ const StudentTable = ({ students, onStudentDelete, toggleAssignment, onStudentEd
     };
 
     return (
-        <div className="mt-2 bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+        <div className="mt-2 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
             <table className="w-full">
                 <thead>
                     <tr className="text-left text-gray-600 dark:text-gray-200">

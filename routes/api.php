@@ -6,6 +6,7 @@ use App\Http\Controllers\crud;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\StatsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,11 @@ Route::get('/students', [EstudianteController::class, 'index']);
 
 
 
+Route::get('/stats/asistencias', [StatsController::class, 'getAttendanceSummary']);
+
+// AAAAA
+
+Route::get('/stats/altasEstudiantes', [StatsController::class, 'getStudentsSummary']);
 
 // Route::middleware('auth:sanctum')->post('/classes', [ClaseController::class, 'store']);
 // routes/web.php

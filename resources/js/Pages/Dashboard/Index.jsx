@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { Calendar, Users, Utensils, DollarSign, LogOut } from 'lucide-react'
-import { Inertia } from '@inertiajs/inertia' // Para manejar el cierre de sesión
-import Button from '@/Components/ui/Button'
-import ButtonForms from '@/Components/ui/ButtonForms'
-import ButtonProfile from '@/Components/ui/ButtonProfile'
-import Logo from '@/Components/ui/Logo'
-import NavbarLayout from '@/Layouts/NavbarLayout'
+import { Inertia } from '@inertiajs/inertia'
+import { Button } from '@/Components/ui/Buttons'
+import { Charts, StudentRegistrationsChart } from '@/Components/Dashboard/Charts'
 import AppLayout from '@/Layouts/AppLayout'
 
 // Datos de ejemplo para el gráfico de asistencia
@@ -57,10 +54,9 @@ export default function Dashboard() {
                 <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     <div className="px-4 py-6 sm:px-0 text-center">
                         <h2>Menu Principal</h2><br />
-                        <Button link={route("inicio")} text={"Inicio"} className="w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
-                        </Button>
+                        {/* <Button link={route("inicio")} text={"Inicio"} className="w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"> */}
+                        {/* </Button> */}
                     </div>
-
                     <div className="px-4 py-6 sm:px-0">
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                             <Card title="Estudiantes Hoy" value="180" icon={Users} />
@@ -70,21 +66,9 @@ export default function Dashboard() {
                         </div>
 
                         {/* Gráfico de Asistencia */}
-                        <div className="mt-8">
-                            <h2 className="text-lg font-semibold text-gray-700 mb-4">Asistencia Semanal</h2>
-                            <div className="bg-white p-4 rounded-lg shadow">
-                                <ResponsiveContainer width="100%" height={300}>
-                                    <BarChart data={menuData}>
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="day" />
-                                        <YAxis />
-                                        <Tooltip />
-                                        <Legend />
-                                        <Bar dataKey="students" fill="#3b82f6" name="Estudiantes" />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
+                        <Charts menuData={menuData} />
+                        <hr />
+                        <StudentRegistrationsChart menuData={menuData} />
 
                         {/* Menú y Próximos Eventos */}
                         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">

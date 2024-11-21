@@ -38,11 +38,18 @@ export default function Asistencia() {
     const fetchAttendanceData = async (date, classId) => {
         try {
             setLoading(true);
-            console.log(`Fetching attendance data for date ${date} and class ${classId}`);
             const response = await fetch(`/api/attendance-or-create?date=${date}&class_id=${classId}`);
             if (!response.ok) throw new Error('Error fetching attendance data');
             const data = await response.json();
-            setAttendanceData(data);
+
+            console.log("Data de atendancia: " + data);
+            // Establece el estado por defecto como "asiste"
+            const updatedData = data.map((record) => ({
+                ...record,
+                asiste: record.asiste !== null ? record.asiste : 1,
+            }));
+
+            setAttendanceData(updatedData);
         } catch (err) {
             console.error(err);
             setError(err.message);
@@ -50,6 +57,7 @@ export default function Asistencia() {
             setLoading(false);
         }
     };
+
 
     const handleAttendanceChange = async (attendanceId, newStatus) => {
         try {

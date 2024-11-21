@@ -9,7 +9,7 @@ export default function AppLayout({ children }) {
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
     return (
-        <div className="flex min-h-screen w-full bg-gray-100 ">
+        <div className="flex min-h-screen w-full bg-gray-100 dark:bg-gray-300 ">
             {/* Barra lateral */}
             <SidebarMenu isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 

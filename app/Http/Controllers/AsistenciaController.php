@@ -124,7 +124,7 @@ class AsistenciaController extends Controller
                 return [
                     'estudiante_id' => $estudiante->id,
                     'fecha' => $fecha,
-                    'asiste' => 0,
+                    'asiste' => 1,
                     'es_dia_suelto' => 0,
                 ];
             })->toArray()
