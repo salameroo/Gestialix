@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, Utensils, Users } from 'lucide-react';
-import Button from '@/Components/ui/Button';
+import { Button } from '@/Components/ui/Buttons';
 import Footer from '@/Components/ui/footer';
 import Logo from '@/Components/ui/Logo';
 import WordSlider from '@/Components/ui/WordSlider';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { usePage } from '@inertiajs/inertia-react';
-import Button from '@/Components/ui/Button';
+import {Button} from '@/Components/ui/Buttons';
 
 export default function MenuForm({ menu = {} }) {
     const [formData, setFormData] = useState({
