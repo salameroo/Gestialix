@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Check, X, Search, Calendar, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import Spinner from '@/Components/ui/Spinner';
+import DataSelector from '../Date/Picker';
 
 export default function Asistencia() {
     const [attendanceData, setAttendanceData] = useState([]);
@@ -92,9 +93,11 @@ export default function Asistencia() {
 
     const handleDayChange = async (newDate) => {
         setCurrentDay(newDate);
-        if (selectedClass) {
-            await fetchAttendanceData(newDate, selectedClass);
+        if (!selectedClass) {
+            console.warn("Selecciona una clase primero.");
+            return;
         }
+        await fetchAttendanceData(newDate, selectedClass);
     };
 
     const filteredStudents = attendanceData.filter(
@@ -165,7 +168,13 @@ export default function Asistencia() {
                         </div>
 
                         {/* Fecha */}
-                        <div className="flex items-center space-x-4">
+                        <DataSelector
+                            currentDay={currentDay}
+                            changeDate={changeDate}
+                            handleDayChange={handleDayChange}
+                        />
+
+                        {/* <div className="flex items-center space-x-4">
                             <button onClick={() => changeDate(-1)} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
                                 <ChevronLeft className="w-6 h-6 text-gray-700 dark:text-gray-300" />
                             </button>
@@ -176,7 +185,7 @@ export default function Asistencia() {
                             <button onClick={() => changeDate(1)} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
                                 <ChevronRight className="w-6 h-6 text-gray-700 dark:text-gray-300" />
                             </button>
-                        </div>
+                        </div> */}
 
                         {/* Búsqueda */}
                         <div className="relative w-full md:w-auto">

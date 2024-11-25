@@ -46,18 +46,19 @@ export function Charts() {
 
             const { start, end } = calculateRange();
 
-            const params = new URLSearchParams({
-                class_id: selectedClass || '',
-                start_date: start.toISOString().split('T')[0],
-                end_date: end.toISOString().split('T')[0],
-                time_filter: timeFilter,
-            });
+            // Construir los parámetros condicionalmente
+            const params = new URLSearchParams();
+            if (selectedClass) params.append('class_id', selectedClass);
+            if (start && end) {
+                params.append('start_date', start.toISOString().split('T')[0]);
+                params.append('end_date', end.toISOString().split('T')[0]);
+            }
 
             const response = await fetch(`/api/stats/asistencias?${params}`);
             if (!response.ok) throw new Error('Error fetching attendance data');
             const data = await response.json();
 
-            // Reformatea los datos si es necesario
+            // Reformatear los datos si es necesario
             const formattedData = data.map((item) => ({
                 day: item.period,
                 presentes: item.presentes,
@@ -73,6 +74,7 @@ export function Charts() {
             setLoading(false);
         }
     };
+
 
 
     useEffect(() => {
@@ -121,14 +123,16 @@ export function Charts() {
 
     return (
         <div className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-700 mb-4">Asistencia por {timeFilter === 'week' ? 'Semana' : 'Mes'}</h2>
+            <h2 className="text-lg font-semibold text-gray-700 mb-4 text-green-400">
+                Asistencia por {timeFilter === 'week' ? 'Semana' : 'Mes'}
+            </h2>
 
             {/* Filtros */}
             <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
                 <select
                     value={timeFilter}
                     onChange={(e) => setTimeFilter(e.target.value)}
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border dark:text-black rounded-lg p-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                     <option value="week">Semana</option>
                     <option value="month">Mes</option>
@@ -136,7 +140,7 @@ export function Charts() {
                 <select
                     value={selectedClass || ''}
                     onChange={(e) => setSelectedClass(e.target.value)}
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border dark:text-black rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                     <option value="">Todas las clases</option>
                     {classes.map((cls) => (
@@ -149,33 +153,39 @@ export function Charts() {
 
             {/* Controles de rango */}
             <div className="flex justify-between items-center mb-4">
-                <button onClick={() => changeRange(-1)} className="bg-gray-200 hover:bg-gray-300 p-2 rounded">
+                <button
+                    onClick={() => changeRange(-1)}
+                    className="bg-green-200 hover:bg-orange-600 p-2 dark:text-gray-800 rounded"
+                >
                     {timeFilter === 'week' ? 'Semana Anterior' : 'Mes Anterior'}
                 </button>
                 <h3 className="text-lg font-semibold">
                     {start.toLocaleDateString()} - {end.toLocaleDateString()}
                 </h3>
-                <button onClick={() => changeRange(1)} className="bg-gray-200 hover:bg-gray-300 p-2 rounded">
+                <button
+                    onClick={() => changeRange(1)}
+                    className="bg-green-200 hover:bg-orange-600 p-2 dark:text-gray-800 rounded"
+                >
                     {timeFilter === 'week' ? 'Semana Siguiente' : 'Mes Siguiente'}
                 </button>
             </div>
 
             {/* Gráfico */}
             <div className="bg-white p-4 rounded-lg shadow">
-                <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={chartData}>
+                <ResponsiveContainer width="100%" height={500}>
+                    <LineChart data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="day" tick={{ fontSize: 12 }} />
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="presentes" fill="#34d399" name="Presentes" />
-                        <Bar dataKey="ausentes" fill="#f87171" name="Ausentes" />
-                        <Bar dataKey="desconocidos" fill="#d1d5db" name="Sin marcar" />
-                    </BarChart>
+                        <Line type="monotone" dataKey="presentes" stroke="#34d399" name="Presentes" />
+                        <Line type="monotone" dataKey="ausentes" stroke="#f87171" name="Ausentes" />
+                    </LineChart>
                 </ResponsiveContainer>
             </div>
         </div>
+
     );
 }
 
@@ -218,7 +228,7 @@ export function StudentRegistrationsChart() {
 
     return (
         <div className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-700 mb-4">Registros de Estudiantes</h2>
+            <h2 className="text-lg font-semibold text-green-400 mb-4">Registros de Estudiantes</h2>
             <div className="bg-white p-4 rounded-lg shadow">
                 <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={chartData}>

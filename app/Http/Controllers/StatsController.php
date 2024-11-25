@@ -27,45 +27,80 @@ class StatsController extends Controller
         return response()->json($summary);
     }
 
+
+
     public function getAttendanceData(Request $request)
     {
-        // Validar entrada
-        $request->validate([
-            'class_id' => 'nullable|integer|exists:classes,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'time_filter' => 'required|in:week,month',
-        ]);
-
-        $classId = $request->input('class_id');
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-        $timeFilter = $request->input('time_filter');
+        $classId = $request->input('clase_id');
 
-        // Base query
         $query = DB::table('asistencias')
             ->selectRaw("
-            DATE_FORMAT(fecha, ?) as period,
-            SUM(presentes) as presentes,
-            SUM(ausentes) as ausentes,
-            SUM(desconocidos) as desconocidos,
-            class_id
-        ", [$timeFilter === 'week' ? '%x-W%v' : '%Y-%m']) // %x-W%v para semana, %Y-%m para mes
-            ->whereBetween('fecha', [$startDate, $endDate]);
+            DATE_FORMAT(fecha, '%Y-%m-%d') as period,
+            SUM(CASE WHEN asiste = 1 THEN 1 ELSE 0 END) as presentes,
+            SUM(CASE WHEN asiste = 0 THEN 1 ELSE 0 END) as ausentes,
+            SUM(CASE WHEN asiste IS NULL THEN 1 ELSE 0 END) as desconocidos
+        ")
+            ->groupBy('period')
+            ->orderBy('period');
 
-        // Filtro por clase
-        if ($classId) {
-            $query->where('class_id', $classId);
+        // Aplica filtros si están presentes
+        if ($startDate && $endDate) {
+            $query->whereBetween('fecha', [$startDate, $endDate]);
         }
 
-        // Agrupar y ordenar
-        $data = $query->groupBy(['period', 'class_id'])
-            ->orderBy('period')
-            ->get();
+        if ($classId) {
+            $query->where('clase_id', $classId);
+        }
 
-        // Estructura la respuesta
-        return response()->json($data);
+        return response()->json($query->get());
     }
+
+
+
+    // public function getAttendanceData(Request $request)
+    // {
+    //     $request->validate([
+    //         'estudiante_id' => 'nullable|integer|exists:estudiantes,id', // Valida estudiante_id
+    //         'class_id' => 'nullable|string', // Puede ser 'all' para todas las clases
+    //         'start_date' => 'required|date',
+    //         'end_date' => 'required|date|after_or_equal:start_date',
+    //         'time_filter' => 'required|in:week,month',
+    //     ]);
+
+    //     $estudianteId = $request->input('estudiante_id');
+    //     $classId = $request->input('class_id');
+    //     $startDate = $request->input('start_date');
+    //     $endDate = $request->input('end_date');
+    //     $timeFilter = $request->input('time_filter');
+
+    //     $dateFormat = $timeFilter === 'week' ? '%x-W%v' : '%Y-%m';
+
+    //     $data = DB::table('asistencias')
+    //         ->join('estudiantes', 'asistencias.estudiante_id', '=', 'estudiantes.id')
+    //         ->join('clases', 'estudiantes.clase_id', '=', 'clases.id')
+    //         ->selectRaw("
+    //         DATE_FORMAT(asistencias.fecha, ?) as period,
+    //         clases.id as class_id,
+    //         clases.nombre as class_name,
+    //         SUM(CASE WHEN asistencias.asiste = 1 THEN 1 ELSE 0 END) as presentes,
+    //         SUM(CASE WHEN asistencias.asiste = 0 THEN 1 ELSE 0 END) as ausentes,
+    //         SUM(CASE WHEN asistencias.asiste IS NULL THEN 1 ELSE 0 END) as desconocidos
+    //     ", [$dateFormat])
+    //         ->whereBetween('asistencias.fecha', [$startDate, $endDate])
+    //         ->when($estudianteId, function ($query, $estudianteId) {
+    //             return $query->where('asistencias.estudiante_id', $estudianteId);
+    //         })
+    //         ->when($classId && $classId !== 'all', function ($query, $classId) {
+    //             return $query->where('clases.id', $classId);
+    //         })
+    //         ->groupBy('period', 'clases.id', 'clases.nombre')
+    //         ->orderBy('period')
+    //         ->get();
+
+    //     return response()->json($data);
+    // }
 
 
     public function getStudentsSummary()

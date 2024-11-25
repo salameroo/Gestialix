@@ -27,7 +27,6 @@ Route::get('/attendance-or-create', [AsistenciaController::class, 'getOrCreateAt
 Route::get('/students', [EstudianteController::class, 'index']);
 
 
-
 Route::get('/stats/asistencias', [StatsController::class, 'getAttendanceData']);
 Route::post('/estudiantes/filtrar', [EstudianteController::class, 'filtrar']);
 Route::get('/stats/altasEstudiantes', [StatsController::class, 'getStudentsSummary']);
