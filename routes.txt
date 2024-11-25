@@ -1,0 +1,90 @@
+
+
+  GET|HEAD        / .......................................................................................................... 
+  GET|HEAD        api/attendance .............................................. AsistenciaController@obtenerAsistenciaFiltrada
+  POST            api/attendance .................................................................. AsistenciaController@store
+  GET|HEAD        api/attendance-or-create ........................................ AsistenciaController@getOrCreateAttendance
+  GET|HEAD        api/attendance/{id} .............................................................. AsistenciaController@show
+  DELETE          api/attendance/{id} ........................................................... AsistenciaController@destroy
+  PATCH           api/attendance/{id} ............................................................ AsistenciaController@update
+  GET|HEAD        api/classes ........................................................... clases.index › ClaseController@index
+  POST            api/classes/new ...................................................................... ClaseController@store
+  POST            api/classes/{class}/students .................................................... EstudianteController@store
+  DELETE          api/classes/{class}/students/{student} ........................................ EstudianteController@destroy
+  GET|HEAD        api/classes/{id} ........................................................ clases.show › ClaseController@show
+  PUT             api/classes/{id} .................................................................... ClaseController@update
+  DELETE          api/classes/{id} .................................................. clases.destroy › ClaseController@destroy
+  GET|HEAD        api/data ........................................................................................ crud@index
+  POST            api/estudiantes ............................................. estudiantes.store › EstudianteController@store
+  POST            api/estudiantes/filtrar ....................................................... EstudianteController@filtrar
+  GET|HEAD        api/stats/altasEstudiantes .............................................. StatsController@getStudentsSummary
+  POST            api/stats/altasEstudiantes ................................................ StatsController@altasEstudiantes
+  GET|HEAD        api/stats/asistencias .................................................... StatsController@getAttendanceData
+  GET|HEAD        api/students .................................................................... EstudianteController@index
+  PUT             api/students/{id} .............................................................. EstudianteController@update
+  PATCH           api/students/{student}/toggle-assignment ............................. EstudianteController@toggleAssignment
+  GET|HEAD        asistencias .................................................................................... asistencias
+  GET|HEAD        clases .............................................................................................. clases
+  GET|HEAD        dashboard ........................................................................................ dashboard
+  GET|HEAD        forgot-password .................... password.request › Laravel\Fortify › PasswordResetLinkController@create
+  POST            forgot-password ....................... password.email › Laravel\Fortify › PasswordResetLinkController@store
+  GET|HEAD        index ................................................................................................ index
+  GET|HEAD        inicio .............................................................................................. inicio
+  GET|HEAD        login ...................................... login › Laravel\Fortify › AuthenticatedSessionController@create
+  POST            login ................................. login.store › Laravel\Fortify › AuthenticatedSessionController@store
+  POST            logout ................................... logout › Laravel\Fortify › AuthenticatedSessionController@destroy
+  GET|HEAD        menus ................................................................... menus.index › MenuController@index
+  POST            menus ................................................................... menus.store › MenuController@store
+  GET|HEAD        menus/create .......................................................... menus.create › MenuController@create
+  GET|HEAD        menus/{menu} .............................................................. menus.show › MenuController@show
+  PUT|PATCH       menus/{menu} .......................................................... menus.update › MenuController@update
+  DELETE          menus/{menu} ........................................................ menus.destroy › MenuController@destroy
+  GET|HEAD        menus/{menu}/edit ......................................................... menus.edit › MenuController@edit
+  GET|HEAD        oauth/authorize ... passport.authorizations.authorize › Laravel\Passport › AuthorizationController@authorize
+  POST            oauth/authorize passport.authorizations.approve › Laravel\Passport › ApproveAuthorizationController@approve
+  DELETE          oauth/authorize ......... passport.authorizations.deny › Laravel\Passport › DenyAuthorizationController@deny
+  GET|HEAD        oauth/clients ......................... passport.clients.index › Laravel\Passport › ClientController@forUser
+  POST            oauth/clients ........................... passport.clients.store › Laravel\Passport › ClientController@store
+  PUT             oauth/clients/{client_id} ............. passport.clients.update › Laravel\Passport › ClientController@update
+  DELETE          oauth/clients/{client_id} ........... passport.clients.destroy › Laravel\Passport › ClientController@destroy
+  GET|HEAD        oauth/personal-access-tokens passport.personal.tokens.index › Laravel\Passport › PersonalAccessTokenControl…
+  POST            oauth/personal-access-tokens passport.personal.tokens.store › Laravel\Passport › PersonalAccessTokenControl…
+  DELETE          oauth/personal-access-tokens/{token_id} passport.personal.tokens.destroy › Laravel\Passport › PersonalAcces…
+  GET|HEAD        oauth/scopes ................................ passport.scopes.index › Laravel\Passport › ScopeController@all
+  POST            oauth/token ........................... passport.token › Laravel\Passport › AccessTokenController@issueToken
+  POST            oauth/token/refresh ........... passport.token.refresh › Laravel\Passport › TransientTokenController@refresh
+  GET|HEAD        oauth/tokens ............ passport.tokens.index › Laravel\Passport › AuthorizedAccessTokenController@forUser
+  DELETE          oauth/tokens/{token_id} passport.tokens.destroy › Laravel\Passport › AuthorizedAccessTokenController@destroy
+  GET|HEAD        register ...................................... register › Laravel\Fortify › RegisteredUserController@create
+  POST            register ................................. register.store › Laravel\Fortify › RegisteredUserController@store
+  POST            reset-password ............................. password.update › Laravel\Fortify › NewPasswordController@store
+  GET|HEAD        reset-password/{token} ..................... password.reset › Laravel\Fortify › NewPasswordController@create
+  GET|HEAD        sanctum/csrf-cookie ...................... sanctum.csrf-cookie › Laravel\Sanctum › CsrfCookieController@show
+  GET|HEAD        settings ............................................................................................. index
+  GET|HEAD        storage/{path} ............................................................................... storage.local
+  GET|HEAD        terms ................................................................................................ terms
+  GET|HEAD        two-factor-challenge ... two-factor.login › Laravel\Fortify › TwoFactorAuthenticatedSessionController@create
+  POST            two-factor-challenge two-factor.login.store › Laravel\Fortify › TwoFactorAuthenticatedSessionController@sto…
+  GET|HEAD        up ......................................................................................................... 
+  DELETE          user .............................. current-user.destroy › Laravel\Jetstream › CurrentUserController@destroy
+  GET|HEAD        user-profile .................................................................................. user-profile
+  PUT             user-profile .................................................................................. user-profile
+  GET|HEAD        user/confirm-password .............. password.confirm › Laravel\Fortify › ConfirmablePasswordController@show
+  POST            user/confirm-password ....... password.confirm.store › Laravel\Fortify › ConfirmablePasswordController@store
+  GET|HEAD        user/confirmed-password-status password.confirmation › Laravel\Fortify › ConfirmedPasswordStatusController@…
+  POST            user/confirmed-two-factor-authentication two-factor.confirm › Laravel\Fortify › ConfirmedTwoFactorAuthentic…
+  DELETE          user/other-browser-sessions other-browser-sessions.destroy › Laravel\Jetstream › OtherBrowserSessionsContro…
+  PUT             user/password ........................... user-password.update › Laravel\Fortify › PasswordController@update
+  GET|HEAD        user/profile ................................. profile.show › Laravel\Jetstream › UserProfileController@show
+  PUT             user/profile-information user-profile-information.update › Laravel\Fortify › ProfileInformationController@u…
+  DELETE          user/profile-photo ......... current-user-photo.destroy › Laravel\Jetstream › ProfilePhotoController@destroy
+  POST            user/two-factor-authentication two-factor.enable › Laravel\Fortify › TwoFactorAuthenticationController@store
+  DELETE          user/two-factor-authentication two-factor.disable › Laravel\Fortify › TwoFactorAuthenticationController@des…
+  GET|HEAD        user/two-factor-authentication ............................................................................. 
+  GET|HEAD        user/two-factor-qr-code .............. two-factor.qr-code › Laravel\Fortify › TwoFactorQrCodeController@show
+  GET|HEAD        user/two-factor-recovery-codes .. two-factor.recovery-codes › Laravel\Fortify › RecoveryCodeController@index
+  POST            user/two-factor-recovery-codes .............................. Laravel\Fortify › RecoveryCodeController@store
+  GET|HEAD        user/two-factor-secret-key ..... two-factor.secret-key › Laravel\Fortify › TwoFactorSecretKeyController@show
+
+                                                                                                           Showing [85] routes
+

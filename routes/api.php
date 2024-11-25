@@ -15,6 +15,11 @@ use Inertia\Inertia;
 
 
 
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified',
+// ])->group(function () {
 Route::get('/attendance', [AsistenciaController::class, 'obtenerAsistenciaFiltrada']);
 Route::get('/attendance/{id}', [AsistenciaController::class, 'show']);
 Route::post('/attendance', [AsistenciaController::class, 'store']);
@@ -26,16 +31,11 @@ Route::patch('/attendance/{id}', [AsistenciaController::class, 'update']);
 Route::get('/attendance-or-create', [AsistenciaController::class, 'getOrCreateAttendance']);
 Route::get('/students', [EstudianteController::class, 'index']);
 
-
 Route::get('/stats/asistencias', [StatsController::class, 'getAttendanceData']);
 Route::post('/estudiantes/filtrar', [EstudianteController::class, 'filtrar']);
 Route::get('/stats/altasEstudiantes', [StatsController::class, 'getStudentsSummary']);
 // Route::post('/stats/asistencias', [StatsController::class, 'asistencias']);
 Route::post('/stats/altasEstudiantes', [StatsController::class, 'altasEstudiantes']);
-
-// Route::middleware('auth:sanctum')->post('/classes', [ClaseController::class, 'store']);
-// routes/web.php
-// routes/web.php
 
 Route::patch('/students/{student}/toggle-assignment', [EstudianteController::class, 'toggleAssignment']);
 
@@ -51,3 +51,4 @@ Route::post('/classes/new', [ClaseController::class, 'store']);
 Route::get('/classes/{id}', [ClaseController::class, 'show'])->name('clases.show');
 Route::put('/classes/{id}', [ClaseController::class, 'update']);
 Route::delete('/classes/{id}', [ClaseController::class, 'destroy'])->name('clases.destroy');
+// });
