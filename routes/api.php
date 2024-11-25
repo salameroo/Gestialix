@@ -28,11 +28,11 @@ Route::get('/students', [EstudianteController::class, 'index']);
 
 
 
-Route::get('/stats/asistencias', [StatsController::class, 'getAttendanceSummary']);
-
-// AAAAA
-
+Route::get('/stats/asistencias', [StatsController::class, 'getAttendanceData']);
+Route::post('/estudiantes/filtrar', [EstudianteController::class, 'filtrar']);
 Route::get('/stats/altasEstudiantes', [StatsController::class, 'getStudentsSummary']);
+// Route::post('/stats/asistencias', [StatsController::class, 'asistencias']);
+Route::post('/stats/altasEstudiantes', [StatsController::class, 'altasEstudiantes']);
 
 // Route::middleware('auth:sanctum')->post('/classes', [ClaseController::class, 'store']);
 // routes/web.php

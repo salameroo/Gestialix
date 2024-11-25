@@ -109,8 +109,11 @@ export default function Asistencia() {
     };
 
     const changeDate = (days) => {
-        const newDate = new Date(currentDay);
-        newDate.setDate(newDate.getDate() + days);
+        let newDate = new Date(currentDay);
+        do {
+            newDate.setDate(newDate.getDate() + days);
+        } while (newDate.getDay() === 0 || newDate.getDay() === 6); // 0 = Domingo, 6 = Sábado
+
         handleDayChange(newDate.toISOString().split('T')[0]);
     };
 
