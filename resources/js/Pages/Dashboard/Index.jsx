@@ -47,7 +47,7 @@ export default function Dashboard() {
     }
 
     return (
-        <AppLayout>
+        <AppLayout >
             <div className="min-h-screen bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
 
 

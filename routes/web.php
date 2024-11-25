@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController;
-
-
+use App\Http\Controllers\crud;
+use App\Http\Controllers\StatsController;
+use Illuminate\Support\Facades\Auth;
 
 // Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 //     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -48,17 +49,21 @@ Route::get('/', function (): mixed {
     ]);
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    // Route::get('/dashboard', function () {
+    //     return Inertia::render(('Dashboard/Index'), [
+    //         'auth' => [
+    //             'user' => Auth::user(), // Pasa el usuario autenticado
+    //         ],
+    //     ]);
+    // });
+
     Route::get('/inicio', function () {
         return Inertia::render('Inicio');
     })->name('inicio');
 
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard/Index');
+        return Inertia::render('Dashboard/Index');;
     })->name('dashboard');
 
     Route::get('/clases', function () {
@@ -85,12 +90,59 @@ Route::middleware([
         return $request->user();
     })->name('user-profile');
 
-    Route::get('/user/two-factor-authentication', function () {
-        return Inertia::render('TwoFactorAuthentication', [
-            'user' => auth()->user(),
+    // Route::get('/user/two-factor-authentication', function () {
+    //     return Inertia::render('TwoFactorAuthentication', [
+    //         'user' => auth()->user(),
+    //     ]);
+    // })->middleware(['auth']);
+
+    Route::middleware('auth')->get('/api/user', function () {
+        return response()->json([
+            'user' => Auth::user(),
         ]);
-    })->middleware(['auth']);
+    })->name('api.user');
+
+
+    Route::get('/api/attendance', [AsistenciaController::class, 'obtenerAsistenciaFiltrada']);
+    Route::get('/api/attendance/{id}', [AsistenciaController::class, 'show']);
+    Route::post('/api/attendance', [AsistenciaController::class, 'store']);
+    // Route::put('/attendance/{id}', [AsistenciaController::class, 'update']);
+    Route::delete('/api/attendance/{id}', [AsistenciaController::class, 'destroy']);
+    // Route::put('/attendance/{student}', [AsistenciaController::class, 'update'])->name('attendance.update');
+    Route::patch('/api/attendance/{id}', [AsistenciaController::class, 'update']);
+
+    Route::get('/api/attendance-or-create', [AsistenciaController::class, 'getOrCreateAttendance']);
+    Route::get('/api/students', [EstudianteController::class, 'index']);
+
+    Route::get('/api/stats/asistencias', [StatsController::class, 'getAttendanceData']);
+    Route::post('/api/estudiantes/filtrar', [EstudianteController::class, 'filtrar']);
+    Route::get('/api/stats/altasEstudiantes', [StatsController::class, 'getStudentsSummary']);
+    // Route::post('/stats/asistencias', [StatsController::class, 'asistencias']);
+    Route::post('/api/stats/altasEstudiantes', [StatsController::class, 'altasEstudiantes']);
+
+    Route::patch('/api/students/{student}/toggle-assignment', [EstudianteController::class, 'toggleAssignment']);
+
+    Route::get('/api/data', [crud::class, 'index']);
+
+    Route::post('/api/estudiantes', [EstudianteController::class, 'store'])->name('estudiantes.store');
+    Route::post('/api/classes/{class}/students', [EstudianteController::class, 'store']);
+    Route::put('/api/students/{id}', [EstudianteController::class, 'update']);
+    Route::delete('/api/classes/{class}/students/{student}', [EstudianteController::class, 'destroy']);
+
+    Route::get('/api/classes', [ClaseController::class, 'index'])->name('clases.index');
+    Route::post('/api/classes/new', [ClaseController::class, 'store']);
+    Route::get('/api/classes/{id}', [ClaseController::class, 'show'])->name('clases.show');
+    Route::put('/api/classes/{id}', [ClaseController::class, 'update']);
+    Route::delete('/api/classes/{id}', [ClaseController::class, 'destroy'])->name('clases.destroy');
 });
+
+
+
+
+
+
+
+
 
 
 

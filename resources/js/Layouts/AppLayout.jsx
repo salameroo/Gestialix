@@ -1,25 +1,23 @@
-// AppLayout.js
 import React, { useState } from 'react';
 import SidebarMenu from './SideBar';
 
-export default function AppLayout({ children }) {
+export default function AppLayout({ children, auth }) {
+    console.log('Auth Props:', auth); // Muestra los datos de autenticación
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    // Función para alternar el estado de la barra lateral
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
     return (
-        <div className="flex min-h-screen w-full bg-gray-100 dark:bg-gray-300 ">
-            {/* Barra lateral */}
-            <SidebarMenu isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
-            {/* Contenedor principal para el contenido de la página */}
+        <div className="flex min-h-screen w-full bg-gray-100 dark:bg-gray-300">
+            <SidebarMenu isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} auth={auth} />
             <div
-                className={`transition-all duration-300 w-full ${isSidebarOpen ? 'sm:ml-64 md:ml-20 ml-0' : 'sm:ml-20  ml-0'
+                className={`transition-all duration-300 w-full ${isSidebarOpen ? 'sm:ml-64 md:ml-20 ml-0' : 'sm:ml-20 ml-0'
                     }`}
             >
-                {children}
+                <main>{children}</main>
             </div>
         </div>
     );
 }
+
