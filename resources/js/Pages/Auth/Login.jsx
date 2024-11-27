@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Facebook, Mail } from 'lucide-react';
 import { Inertia } from '@inertiajs/inertia';
+import apiClient from '@/apiClient'; // Asegúrate de importar tu cliente Axios
 import Footer from '@/Components/ui/footer';
 import Logo from '@/Components/ui/Logo';
 import { ButtonForms } from '@/Components/ui/Buttons';
+import { client } from '@/apiClient';
 
 export default function LoginForm() {
     const [email, setEmail] = useState('');
@@ -13,16 +15,30 @@ export default function LoginForm() {
     const [rememberMe, setRememberMe] = useState(false);
     const [errors, setErrors] = useState({});
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        Inertia.post('/login', {
-            email,
-            password,
-            remember: rememberMe,
-        }, {
-            onSuccess: () => console.log('Login exitoso'),
-            onError: (errorMessages) => setErrors(errorMessages),
-        });
+
+        try {
+            // Obtener el token CSRF antes de enviar la solicitud
+            await client.get('/sanctum/csrf-cookie');
+
+            // Enviar datos de inicio de sesión con Inertia
+            Inertia.post(
+                '/login',
+                { email, password, remember: rememberMe },
+                {
+                    onSuccess: () => {
+                        console.log('Login exitoso');
+                    },
+                    onError: (errorMessages) => {
+                        setErrors(errorMessages); // Manejar errores en el estado
+                    },
+                }
+            );
+        } catch (error) {
+            console.error('Error durante el inicio de sesión:', error);
+            setErrors({ general: 'Ocurrió un error al iniciar sesión.' });
+        }
     };
 
     const SocialLoginButton = ({ href, icon: Icon, text, color }) => (

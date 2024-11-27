@@ -49,6 +49,15 @@ Route::get('/', function (): mixed {
     ]);
 });
 
+// Route::middleware(['auth'])->get('/api/user', function (Request $request) {
+//     return response()->json([
+//         'user' => $request->user(),
+//         'roles' => $request->user()->getRoleNames(),
+//         'permissions' => $request->user()->getPermissionNames(),
+//     ]);
+// });
+
+
 Route::middleware(['auth'])->group(function () {
     // Route::get('/dashboard', function () {
     //     return Inertia::render(('Dashboard/Index'), [
@@ -96,11 +105,13 @@ Route::middleware(['auth'])->group(function () {
     //     ]);
     // })->middleware(['auth']);
 
-    Route::middleware('auth')->get('/api/user', function () {
-        return response()->json([
-            'user' => Auth::user(),
-        ]);
-    })->name('api.user');
+    // Route::middleware('auth')->get('/api/user', function () {
+    //     return response()->json([
+    //         'user' => Auth::user(),
+    //     ]);
+    // })->name('api.user');
+
+
 
 
     Route::get('/api/attendance', [AsistenciaController::class, 'obtenerAsistenciaFiltrada']);

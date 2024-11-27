@@ -14,8 +14,29 @@ use App\Http\Controllers\Admin\DashboardController;
 
 use App\Http\Controllers\crud;
 use App\Http\Controllers\StatsController;
+use Illuminate\Support\Facades\Auth;
 
 
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->get('/user', function (Request $request) {
+    $user = Auth::user();
+    // dd($user);
+    if (!$user) {
+        return response()->json([
+            'message' => 'User not found',
+        ], 404);
+    }
+
+    return response()->json([
+        'user' => $user->only(['id', 'name', 'email']), // Datos básicos del usuario
+        'roles' => $user->getRoleNames(), // Devuelve los nombres de los roles
+        'permissions' => $user->getPermissionNames(), // Devuelve los nombres de los permisos
+    ]);
+});
 
 
 // Route::middleware([

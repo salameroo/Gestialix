@@ -15,18 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Clase::factory()
-            ->count(5) // Crear 5 clases
-            ->hasEstudiantes(10) // Cada clase tiene 10 estudiantes
-            ->create();
-
-        \App\Models\Clase::factory()
-            ->count(5)
-            ->has(
-                \App\Models\Estudiante::factory()
-                    ->count(10)
-                    ->hasAsistencias(5) // Cada estudiante tiene 5 registros de asistencia
-            )
-            ->create();
+        $this->call(PermissionsSeeder::class);
     }
 }
