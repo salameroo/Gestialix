@@ -4,7 +4,7 @@ import { Users, Utensils, DollarSign, Calendar } from "lucide-react";
 import "@inertiajs/inertia";
 import "./Buttons-D9lSxtz5.js";
 import { c as csrfFetch } from "./csrfFetch-DJvw9o1x.js";
-import { S as Spinner, A as AppLayout } from "./AppLayout-CjAjFLYY.js";
+import { S as Spinner, A as AppLayout } from "./AppLayout-B3gs--5v.js";
 import Chart from "chart.js/auto";
 import "framer-motion";
 import "@inertiajs/inertia-react";
@@ -14,7 +14,7 @@ import "@inertiajs/react";
 import "react-dom/client";
 import "@mui/material/styles/index.js";
 import "@mui/material";
-import "./Logo-DP-0HC_V.js";
+import "./Logo-BTvsT383.js";
 import "./apiClient-Dnn-wRlU.js";
 function StudentRegistrationsChart() {
   const [chartData, setChartData] = useState([]);

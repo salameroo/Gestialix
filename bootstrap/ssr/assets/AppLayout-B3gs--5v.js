@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { X, Menu, Sun, Moon, Home, BarChart, Users, List, Settings, HelpCircle, LogOut } from "lucide-react";
 import { T as ThemeContext } from "../app.js";
-import { L as Logo } from "./Logo-DP-0HC_V.js";
+import { L as Logo } from "./Logo-BTvsT383.js";
 import { a as apiClient } from "./apiClient-Dnn-wRlU.js";
 const MenuItem = ({ icon: Icon, label, isOpen, onClick }) => /* @__PURE__ */ jsxs(
   "li",

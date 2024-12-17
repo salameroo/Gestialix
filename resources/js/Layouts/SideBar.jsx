@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import { Menu, X, Home, Users, BarChart, Settings, HelpCircle, Moon, Sun, LogOut, List } from 'lucide-react';
+import { Menu, Grid2x2, X, Home, Users, BarChart, Settings, HelpCircle, Moon, Sun, LogOut, List } from 'lucide-react';
 import { ThemeContext } from '../utils/ThemeContext';
 import Logo from '@/Components/ui/Logo';
-
 const MenuItem = ({ icon: Icon, label, isOpen, onClick }) => (
     <li
         onClick={onClick}
@@ -39,7 +38,7 @@ export default function SidebarMenu({ isOpen, toggleSidebar, userData }) {
 
     return (
         <div
-            className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 ease-in-out
+            className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-gray-700 shadow-lg transition-all duration-300 ease-in-out
                         ${isOpen ? 'w-64' : 'w-20'} ${isMobile && !isOpen ? '-translate-x-full' : ''}`}
         >
             <button
@@ -75,6 +74,7 @@ export default function SidebarMenu({ isOpen, toggleSidebar, userData }) {
                     <MenuItem icon={BarChart} label="Panel de control" isOpen={isOpen} onClick={() => navigateTo('/dashboard')} />
                     <MenuItem icon={Users} label="Clases" isOpen={isOpen} onClick={() => navigateTo('/clases')} />
                     <MenuItem icon={List} label="Asistencias" isOpen={isOpen} onClick={() => navigateTo('/asistencias')} />
+                    <MenuItem icon={Grid2x2} label="Cuadricula" isOpen={isOpen} onClick={() => navigateTo('/info')} />
                     <MenuItem icon={Settings} label="Configuración" isOpen={isOpen} onClick={() => navigateTo('/profile')} />
                     <MenuItem icon={HelpCircle} label="Ayuda" isOpen={isOpen} onClick={() => navigateTo('/terms')} />
                     {/* <div className="ml-4">

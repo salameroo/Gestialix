@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Users, Utensils, Check } from "lucide-react";
 import { B as Button } from "./Buttons-D9lSxtz5.js";
 import { F as Footer } from "./footer-BJKdI4B5.js";
-import { L as Logo } from "./Logo-DP-0HC_V.js";
+import { L as Logo } from "./Logo-BTvsT383.js";
 import { Head } from "@inertiajs/react";
 import "@inertiajs/inertia-react";
 function WordSlider({ words, interval = 3e3 }) {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { toast } from "react-toastify";
 import { c as csrfFetch } from "./csrfFetch-DJvw9o1x.js";
-import { A as AppLayout } from "./AppLayout-CjAjFLYY.js";
+import { A as AppLayout } from "./AppLayout-B3gs--5v.js";
 import "lucide-react";
 import "../app.js";
 import "axios";
@@ -11,7 +11,7 @@ import "@inertiajs/react";
 import "react-dom/client";
 import "@mui/material/styles/index.js";
 import "@mui/material";
-import "./Logo-DP-0HC_V.js";
+import "./Logo-BTvsT383.js";
 import "./apiClient-Dnn-wRlU.js";
 function Input({ label, ...props }) {
   return /* @__PURE__ */ jsxs("div", { children: [

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Clase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ClaseController extends Controller
@@ -11,6 +12,58 @@ class ClaseController extends Controller
     public function index()
     {
         return Clase::with('estudiantes')->get();
+    }
+
+    public function obtenerClases()
+    {
+        $clases = DB::table('clases')->select('id', 'nombre')->get();
+        return response()->json($clases);
+    }
+
+    public function obtenerAlumnos(Request $request)
+    {
+        $claseId = $request->query('clase_id');
+        $mes = $request->query('mes');
+        $anio = date('Y'); // Año actual
+
+        // Validar parámetros
+        if (!$claseId || !$mes) {
+            return response()->json(['error' => 'Parámetros inválidos'], 400);
+        }
+
+        // Obtener estudiantes de la clase
+        $alumnos = DB::table('estudiantes')
+            ->where('clase_id', $claseId)
+            ->select('id', 'nombre', 'apellidos')
+            ->get();
+
+        $diasEnMes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
+
+        if ($alumnos->isEmpty()) {
+            return response()->json(['message' => 'No hay estudiantes para esta clase'], 200);
+        }
+
+        // Obtener asistencias
+        $asistencias = DB::table('asistencias')
+            ->whereIn('estudiante_id', $alumnos->pluck('id'))
+            ->whereYear('fecha', $anio)
+            ->whereMonth('fecha', $mes)
+            ->get();
+
+        // Mapear estudiantes con interrogantes por defecto si no hay asistencias
+        $alumnos = $alumnos->map(function ($alumno) use ($asistencias, $diasEnMes, $anio, $mes) {
+            $alumno->diasComedor = [];
+            for ($dia = 1; $dia <= $diasEnMes; $dia++) {
+                $fecha = sprintf('%04d-%02d-%02d', $anio, $mes, $dia);
+                $asistencia = $asistencias->first(function ($a) use ($alumno, $fecha) {
+                    return $a->estudiante_id == $alumno->id && $a->fecha == $fecha;
+                });
+                $alumno->diasComedor[] = $asistencia ? (bool)$asistencia->asiste : null; // null = ?
+            }
+            return $alumno;
+        });
+
+        return response()->json($alumnos);
     }
 
     /**

@@ -1,5 +1,5 @@
 import { usePage } from '@inertiajs/react';
-import AppLayout from '../Layouts/AppLayout';
+import AppLayout from '../../Layouts/AppLayout';
 
 const NavBar = () => {
     const { auth } = usePage().props;

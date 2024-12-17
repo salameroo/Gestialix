@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState } from "react";
 function Logo({ isOpen = true, textPosition = "side" }) {
-  const [imageSrc, setImageSrc] = useState("/images/gestialixLargo.gif");
+  const [imageSrc, setImageSrc] = useState("/images/gestialixLargo.webp");
   const handleError = () => {
     setImageSrc("/images/logoGestialix.svg");
   };
@@ -25,7 +25,7 @@ function Logo({ isOpen = true, textPosition = "side" }) {
         isOpen && /* @__PURE__ */ jsx(
           "h1",
           {
-            className: "text-xl md:text-2xl font-bold text-gray-700 dark:text-gray-300 tracking-tight",
+            className: "text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-800 tracking-tight",
             children: "Gestialix"
           }
         )

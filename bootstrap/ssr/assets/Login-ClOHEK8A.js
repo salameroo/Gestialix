@@ -5,7 +5,7 @@ import { EyeOff, Eye, Facebook, Mail } from "lucide-react";
 import { useForm, Head } from "@inertiajs/react";
 import { I as InputError } from "./InputError-2JjWc6nJ.js";
 import { F as Footer } from "./footer-BJKdI4B5.js";
-import { L as Logo } from "./Logo-DP-0HC_V.js";
+import { L as Logo } from "./Logo-BTvsT383.js";
 import { a as ButtonForms } from "./Buttons-D9lSxtz5.js";
 import "@inertiajs/inertia-react";
 const SocialLoginButton = ({ href, icon: Icon, text, color }) => /* @__PURE__ */ jsx(motion.div, { whileHover: { scale: 1.05 }, whileTap: { scale: 0.95 }, children: /* @__PURE__ */ jsxs(

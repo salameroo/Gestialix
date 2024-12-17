@@ -4,6 +4,8 @@ import { Inertia } from '@inertiajs/inertia'
 import { Button } from '@/Components/ui/Buttons'
 import { Charts, StudentRegistrationsChart } from '@/Components/Dashboard/Charts'
 import AppLayout from '@/Layouts/AppLayout'
+import TituloPagina from '@/Components/TitlePage'
+import { Title } from '@mui/icons-material'
 // import { Charts } from "./Charts";
 
 // Datos de ejemplo para el gráfico de asistencia
@@ -52,11 +54,7 @@ export default function Dashboard() {
 
 
                 <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 md:text-center">
-                    <div className="px-4 py-6 sm:px-0 text-center">
-                        <h2 className='text-4xl font-semibold text-gray-700 dark:text-gray-200'>Menu Principal</h2><br />
-                        {/* <Button link={route("inicio")} text={"Inicio"} className="w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"> */}
-                        {/* </Button> */}
-                    </div>
+                    <TituloPagina titulo="Menu Principal"></TituloPagina>
                     <hr className='my-6' />
                     <div className="px-4 py-6 sm:px-0">
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

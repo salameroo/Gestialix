@@ -34,10 +34,22 @@ export default function Login({ status, canResetPassword }) {
                     transition={{ duration: 0.5 }}
                     className="bg-white rounded-2xl shadow-xl overflow-hidden max-w-md w-full"
                 >
+
                     <div className="p-8">
-                        <div className="text-center flex flex-col items-center justify-center mb-8">
+                        <div className="text-center flex flex-col items-center justify-center mb-4">
                             <Logo textPosition="below" />
-                            <p className="text-gray-600">Inicio de sesión</p>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-white text-gray-500"></span>
+                            </div>
+                        </div>
+                        <div className="relative mb-4">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div className="relative flex justify-center text-md">
+                                {/* <p className="text-gray-600">Inicio de sesión</p> */}
+                                <span className="px-2 bg-white text-gray-500">Inicio de sesion</span>
+                            </div>
                         </div>
 
                         {status && (

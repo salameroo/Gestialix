@@ -1,6 +1,6 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { S as Spinner, A as AppLayout } from "./AppLayout-CjAjFLYY.js";
+import { S as Spinner, A as AppLayout } from "./AppLayout-B3gs--5v.js";
 import { ChevronLeft, Calendar, ChevronRight, Users, Search, Eye, Check, X, User, Star, UserX } from "lucide-react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
@@ -13,7 +13,7 @@ import "axios";
 import "@inertiajs/react";
 import "react-dom/client";
 import "@mui/material/styles/index.js";
-import "./Logo-DP-0HC_V.js";
+import "./Logo-BTvsT383.js";
 import "./apiClient-Dnn-wRlU.js";
 registerLocale("es", es);
 const DataSelector = ({ currentDay, changeDate, handleDayChange }) => {

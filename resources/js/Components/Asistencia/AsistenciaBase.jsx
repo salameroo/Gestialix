@@ -7,6 +7,7 @@ import OccasionalStudents from './ModalOcasionales';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { StudentIntolerancesModal } from './ModalIntolerancia';
 import { UserX, User } from 'lucide-react'
+import TituloPagina from '../TitlePage';
 
 export default function Asistencia() {
     const [attendanceData, setAttendanceData] = useState([]);
@@ -335,14 +336,17 @@ export default function Asistencia() {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-2">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-800 p-2">
             <div className="max-w-6xl mx-auto">
-                <h1 className="text-4xl font-bold mb-8 text-gray-800 dark:text-gray-200">
-                    Asistencia al Comedor
-                </h1>
+                <div className='flex justify-center'>
+                    {/* <h1 className="text-4xl font-bold mb-8 text-gray-800 dark:text-gray-200">
+                        Asistencia al Comedor
+                    </h1> */}
+                    <TituloPagina titulo={'Asistencia al Comedor'}></TituloPagina>
+                </div>
 
                 {/* Controles */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6 mb-8">
                     <div className="flex flex-col md:flex-row items-center justify-between mb-6 space-y-4 md:space-y-0">
                         {/* Selección de Clase */}
                         <div className="flex items-center space-x-4">
@@ -380,7 +384,7 @@ export default function Asistencia() {
 
                     {/* Tabla de Asistencia */}
                     <div className="overflow-x-auto">
-                        <table className="w-full">
+                        <table className="w-full border border-gray-200 rounded-lg shadow dark:border-gray-700 ">
                             <thead>
                                 <tr className="bg-gray-50 dark:bg-gray-700">
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -394,7 +398,7 @@ export default function Asistencia() {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <tbody className="bg-white dark:bg-gray-700  divide-y divide-gray-200 dark:divide-gray-700">
                                 {filteredStudents.map((record) => (
                                     <tr key={record.id}>
                                         <td className="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">
@@ -447,8 +451,8 @@ export default function Asistencia() {
                                 ))}
                             </tbody>
                         </table>
+                        <br />
                         <div className="flex items-center space-x-4">
-
                             {/* Botón para abrir el modal */}
                             <button
                                 onClick={openOccasionalModal}
@@ -478,7 +482,7 @@ export default function Asistencia() {
                                         {occasionalStudentsFromDB && occasionalStudentsFromDB.map((student) => (
                                             <tr
                                                 key={student.estudiante_id}
-                                                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                className="bg-white border-b dark:bg-gray-700 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                             >
                                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     <div className="flex items-center space-x-3">
@@ -517,7 +521,7 @@ export default function Asistencia() {
                 </div>
 
                 {/* Resumen de Asistencia */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
                     <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
                         Resumen de Asistencia
                     </h2>

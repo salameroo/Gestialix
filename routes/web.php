@@ -52,8 +52,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/asistencias', 'asistencias')->name('asistencias');
         Route::get('/index', 'index')->name('index');
         Route::get('/settings', 'settings')->name('settings');
+        Route::get('/info', 'info')->name('info');
     });
 
+    Route::prefix('api/info')->group(function () {
+        Route::get('/clasees', [ClaseController::class, 'obtenerClases']);
+        Route::get('/alumnos', [ClaseController::class, 'obtenerAlumnos']);
+    });
 
     // --------------------------------------------------
     // Dashboard Routes

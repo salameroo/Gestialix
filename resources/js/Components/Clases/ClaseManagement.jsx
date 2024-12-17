@@ -6,6 +6,7 @@ import AddEditClassModal from './components/AddEditClassModal';
 import AddStudentModal from './components/AddStudentModal';
 import csrfFetch from '@/utils/csrfFetch';
 import classesReducer from './reducers/classesReducer';
+import TituloPagina from '../TitlePage';
 import {
     Box,
     Paper,
@@ -253,20 +254,10 @@ export default function ClaseManagement() {
                         borderRadius: 2,
                     }}
                 >
-                    <Typography
-                        variant="h4"
-                        component="h1"
-                        align="center"
-                        gutterBottom
-                        sx={{
-                            fontWeight: 'bold',
-                            color: 'primary.main', // Usa tokens de color del tema
-                            mb: 4,
-                        }}
-                    >
-                        Gestión de Clases
-                    </Typography>
-
+                    <div className='mb-4'>
+                        <TituloPagina titulo={'Gestión de Clases'}></TituloPagina>
+                    </div><br />
+                    {/* Gestión de Clases */}
                     <Grid container spacing={3} alignItems="stretch">
                         <Grid item xs={12} md={6}>
                             <TextField

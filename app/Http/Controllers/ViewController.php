@@ -9,7 +9,7 @@ class ViewController extends Controller
 {
     public function inicio()
     {
-        return Inertia::render('Inicio');
+        return Inertia::render('Inicio/Inicio');
     }
 
     public function clases()
@@ -30,5 +30,10 @@ class ViewController extends Controller
     public function settings()
     {
         return Inertia::render('Settings/Ajustes');
+    }
+
+    public function info()
+    {
+        return Inertia::render('Info/Info');
     }
 }

@@ -1,5 +1,5 @@
 import { jsxs, jsx, Fragment } from "react/jsx-runtime";
-import { A as AppLayout } from "./AppLayout-CjAjFLYY.js";
+import { A as AppLayout } from "./AppLayout-B3gs--5v.js";
 import { useState, useEffect, forwardRef, useImperativeHandle, useRef, useReducer } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
@@ -14,7 +14,7 @@ import "axios";
 import "@inertiajs/react";
 import "react-dom/client";
 import "@mui/material/styles/index.js";
-import "./Logo-DP-0HC_V.js";
+import "./Logo-BTvsT383.js";
 import "./apiClient-Dnn-wRlU.js";
 const EditStudentModal = ({ open, onClose, onSave, studentData = {} }) => {
   const [formData, setFormData] = useState({

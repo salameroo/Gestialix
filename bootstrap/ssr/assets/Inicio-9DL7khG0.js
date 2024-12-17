@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { Search, User, ClipboardCheck, Calendar, BookOpen } from "lucide-react";
-import { A as AppLayout } from "./AppLayout-CjAjFLYY.js";
+import { A as AppLayout } from "./AppLayout-B3gs--5v.js";
 import { c as csrfFetch } from "./csrfFetch-DJvw9o1x.js";
 import "@inertiajs/inertia";
 import "../app.js";
@@ -10,7 +10,7 @@ import "@inertiajs/react";
 import "react-dom/client";
 import "@mui/material/styles/index.js";
 import "@mui/material";
-import "./Logo-DP-0HC_V.js";
+import "./Logo-BTvsT383.js";
 import "./apiClient-Dnn-wRlU.js";
 const DashboardCard = ({ title, value, icon: Icon, color }) => /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex items-center", children: [
   /* @__PURE__ */ jsx("div", { className: `p-4 rounded-full mr-4 ${color}`, children: /* @__PURE__ */ jsx(Icon, { className: "w-6 h-6 text-white" }) }),
