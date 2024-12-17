@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { Menu, X, Home, Users, BarChart, Settings, HelpCircle, Moon, Sun, LogOut, List } from 'lucide-react';
 import { ThemeContext } from '../utils/ThemeContext';
+import Logo from '@/Components/ui/Logo';
 
 const MenuItem = ({ icon: Icon, label, isOpen, onClick }) => (
     <li
@@ -50,12 +51,15 @@ export default function SidebarMenu({ isOpen, toggleSidebar, userData }) {
                 {isOpen ? <X className="w-6 h-6 text-gray-600 dark:text-white" /> : <Menu className="w-6 h-6 text-gray-600 dark:text-gray-300" />}
             </button>
 
-            <div className={`flex items-center justify-center h-20 ${isOpen ? 'px-4' : ''}`}>
+            <div className="p-4">
+                <Logo isOpen={isOpen} />
+            </div>
+            {/* <div className={`flex items-center justify-center h-20 ${isOpen ? 'px-4' : ''}`}>
                 <a href="/dashboard" target='_blank'>
                     <img src="/images/logoGestialix.svg" alt="Logo" className="w-10 h-10" />
                     {isOpen && <h1 className="ml-4 text-xl font-bold text-gray-700 dark:text-gray-300">Gestialix</h1>}
                 </a>
-            </div>
+            </div> */}
 
             <button
                 onClick={toggleTheme}

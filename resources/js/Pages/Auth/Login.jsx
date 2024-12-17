@@ -36,7 +36,7 @@ export default function Login({ status, canResetPassword }) {
                 >
                     <div className="p-8">
                         <div className="text-center flex flex-col items-center justify-center mb-8">
-                            <Logo />
+                            <Logo textPosition="below" />
                             <p className="text-gray-600">Inicio de sesión</p>
                         </div>
 
@@ -56,7 +56,7 @@ export default function Login({ status, canResetPassword }) {
                                     type="email"
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    className="w-full px-3 py-2 border border-gray-300 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                                     placeholder="tu@ejemplo.com"
                                     autoComplete="email"
                                     required
@@ -74,7 +74,7 @@ export default function Login({ status, canResetPassword }) {
                                         type={showPassword ? 'text' : 'password'}
                                         value={data.password}
                                         onChange={(e) => setData('password', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        className="w-full px-3 py-2 border text-gray-800 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                                         placeholder="Tu contraseña"
                                         autoComplete="current-password"
                                         required
@@ -119,11 +119,11 @@ export default function Login({ status, canResetPassword }) {
                                     <div className="w-full border-t border-gray-300"></div>
                                 </div>
                                 <div className="relative flex justify-center text-sm">
-                                    <span className="px-2 bg-white text-gray-500">O continúa con</span>
+                                    <span className="px-2 bg-white text-gray-500">Otras opciones</span>
                                 </div>
                             </div>
 
-                            <div className="mt-6 grid grid-cols-1 gap-3">
+                            <div className="mt-6 grid grid-cols-1 gap-3 hidden">
                                 <SocialLoginButton
                                     href="/auth/facebook"
                                     icon={Facebook}
@@ -154,4 +154,3 @@ export default function Login({ status, canResetPassword }) {
         </>
     );
 }
-

@@ -40,12 +40,12 @@ export default function Asistencia() {
         const fetchInitialData = async () => {
             try {
                 setLoading(true);
-                console.log('Fetching classes...');
+                // console.log('Fetching classes...');
                 const classResponse = await csrfFetch('/api/classes');
                 if (!classResponse.ok) throw new Error('Error fetching classes');
                 const classData = await classResponse.json();
 
-                console.log('Clases Traídas:', classData);
+                // console.log('Clases Traídas:', classData);
 
                 setClasses(classData);
                 setSelectedClass(classData[0]?.id || null); // Selecciona la primera clase
@@ -76,7 +76,7 @@ export default function Asistencia() {
 
             if (!response.ok) throw new Error('Error al obtener los estudiantes ocasionales');
             const data = await response.json();
-            console.log('Estudiantes ocasionales:', data);
+            // console.log('Estudiantes ocasionales:', data);
             setOccasionalStudentsFromDB(data);
         } catch (err) {
             console.error(err);
@@ -236,7 +236,7 @@ export default function Asistencia() {
             return;
         }
 
-        console.log('Clase seleccionada:', classData);
+        // console.log('Clase seleccionada:', classData);
 
         // Verificar si occasionalStudentsFromDB es un array
         if (!Array.isArray(occasionalStudentsFromDB)) {
@@ -246,13 +246,13 @@ export default function Asistencia() {
         }
 
         const assignedIds = new Set(occasionalStudentsFromDB.map((oc) => oc.estudiante_id));
-        console.log('IDs de estudiantes ocasionales:', assignedIds);
+        // console.log('IDs de estudiantes ocasionales:', assignedIds);
 
         const notAssignedStudents = estudiantes.filter(
             (student) => !student.asignado_comedor && !assignedIds.has(student.id)
         );
 
-        console.log('Estudiantes no asignados al comedor:', notAssignedStudents);
+        // console.log('Estudiantes no asignados al comedor:', notAssignedStudents);
 
         setOccasionalStudents(notAssignedStudents);
         setIsOccasionalModalOpen(true);

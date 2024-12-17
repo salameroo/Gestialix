@@ -61,7 +61,7 @@ export default function StudentList({ clase, estudiantes, onEditClass, onDeleteC
         );
     };
     const handleApplyGroupAction = async () => {
-        console.log(`Aplicando ${groupAction} a`, selectedStudents);
+        //console.log(`Aplicando ${groupAction} a`, selectedStudents);
         if (selectedStudents.length === 0 || !groupAction) return;
 
         try {
@@ -134,7 +134,7 @@ export default function StudentList({ clase, estudiantes, onEditClass, onDeleteC
             }
 
             const updatedStudent = await response.json();
-            console.log('Estudiante actualizado correctamente:', updatedStudent);
+            //console.log('Estudiante actualizado correctamente:', updatedStudent);
 
             // Opcional: Actualizar el estado del frontend
         } catch (error) {

@@ -17,10 +17,10 @@ export default function LandingPage(auth, laravelVersion, phpVersion) {
                     <div className="flex justify-between items-center py-4">
                         {/* Logo */}
                         <div className="flex items-center">
-                            <Logo showText={false} sizeW={10} sizeH={10} />
-                            <h1 className="ml-4 text-2xl sm:text-3xl font-bold text-gray-700">
+                            <Logo />
+                            {/* <h1 className="ml-4 text-2xl sm:text-3xl font-bold text-gray-700">
                                 Gestialix
-                            </h1>
+                            </h1> */}
                         </div>
                         <nav className="-mx-3 flex flex-1 justify-end">
                             {/* Links */}

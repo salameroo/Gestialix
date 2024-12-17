@@ -107,7 +107,7 @@ export default function ClaseManagement() {
     // Manejar la creación/edición de clases
     const handleSaveClass = async (clase) => {
         try {
-            console.log("clase", clase)
+            // console.log("clase", clase)
             const method = editingClass ? 'PUT' : 'POST';
             const endpoint = editingClass ? `/api/classes/${clase.id}` : '/api/classes/new';
 
@@ -143,7 +143,7 @@ export default function ClaseManagement() {
     // Manejar el guardado de estudiantes
     const handleSaveStudent = async (studentData) => {
         try {
-            console.log("Entrando en el save...");
+            // console.log("Entrando en el save...");
             const response = await csrfFetch(`/api/students`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -152,7 +152,7 @@ export default function ClaseManagement() {
 
             // Extrae el estudiante correctamente
             const { estudiante } = await response.json();
-            console.log('Estudiante recibido:', estudiante);
+            // console.log('Estudiante recibido:', estudiante);
 
             // Actualizar el estado de la clase correspondiente
             dispatch({
@@ -163,7 +163,7 @@ export default function ClaseManagement() {
                 },
             });
 
-            console.log('Estudiante añadido correctamente:', estudiante);
+            // console.log('Estudiante añadido correctamente:', estudiante);
         } catch (error) {
             console.error('Error al guardar el estudiante:', error);
             alert('No se pudo guardar el estudiante.');
@@ -194,14 +194,14 @@ export default function ClaseManagement() {
 
 
     const handleOpenStudentModal = (classId) => {
-        console.log('ID de la clase recibido en el padre:', classId);
+        // console.log('ID de la clase recibido en el padre:', classId);
         setSelectedClassId(classId);
         setIsStudentModalOpen(true);
     };
 
     const handleEditStudent = async (classId, editedStudent) => {
         try {
-            console.log("Estudiante editado:", editedStudent, "Estudiante id:", editedStudent.studentId);
+            // console.log("Estudiante editado:", editedStudent, "Estudiante id:", editedStudent.studentId);
             const response = await csrfFetch(`/api/students/${editedStudent.studentId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },

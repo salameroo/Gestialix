@@ -1,0 +1,10 @@
+import "react/jsx-runtime";
+import "@inertiajs/react";
+import "react";
+import "@inertiajs/inertia";
+import "../app.js";
+import "./apiClient-Dnn-wRlU.js";
+import "axios";
+import "react-dom/client";
+import "@mui/material/styles/index.js";
+import "@mui/material";
