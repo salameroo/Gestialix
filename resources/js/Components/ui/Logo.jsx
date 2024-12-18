@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 export default function Logo({ isOpen = true, textPosition = "side" }) {
-    const [imageSrc, setImageSrc] = useState("/images/gestialixLargo.webp");
+    const [imageSrc, setImageSrc] = useState("https://gestialix.somontanosocial.com/images/favicon.png");
 
     const handleError = () => {
-        setImageSrc("/images/logoGestialix.svg");
+        setImageSrc("https://gestialix.somontanosocial.com/images/favicon.png");
     };
 
     return (
@@ -26,7 +26,7 @@ export default function Logo({ isOpen = true, textPosition = "side" }) {
                 {/* Texto del Logo */}
                 {isOpen && (
                     <h1
-                        className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-800 tracking-tight"
+                        className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white tracking-tight"
                     >
                         Gestialix
                     </h1>
@@ -35,3 +35,4 @@ export default function Logo({ isOpen = true, textPosition = "side" }) {
         </a>
     );
 }
+

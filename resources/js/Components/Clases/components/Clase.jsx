@@ -31,6 +31,7 @@ import {
 } from '@mui/icons-material';
 import EditStudentModal from './EditStudentModal';
 import csrfFetch from '@/utils/csrfFetch';
+import { useConfirmationModal } from './ConfirmModal';
 
 const truncateText = (text, maxLength) => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
@@ -42,6 +43,7 @@ export default function StudentList({ clase, estudiantes, onEditClass, onDeleteC
     const [groupAction, setGroupAction] = useState('');
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState(null);
+    const { showConfirmationModal, ConfirmationModal } = useConfirmationModal();
 
     const toggleExpand = () => setExpanded(!expanded);
 
@@ -253,12 +255,46 @@ export default function StudentList({ clase, estudiantes, onEditClass, onDeleteC
                                                         type: 'TOGGLE_ASSIGNMENT_LOADING',
                                                         payload: { classId: clase.id, studentId: estudiante.id },
                                                     });
+
                                                     try {
-                                                        await onToggleAssignment(clase.id, estudiante.id);
-                                                        dispatch({
-                                                            type: 'TOGGLE_ASSIGNMENT_SUCCESS',
-                                                            payload: { classId: clase.id, studentId: estudiante.id },
-                                                        });
+                                                        // Primera solicitud al servidor
+                                                        const response = await onToggleAssignment(clase.id, estudiante.id);
+
+                                                        if (response.warning) {
+                                                            // Mostrar modal de confirmación
+                                                            const confirm = await showConfirmationModal(response.warning);
+
+                                                            if (confirm) {
+                                                                // Si el usuario confirma, reintentar con el flag "forzar"
+                                                                const confirmResponse = await onToggleAssignment(clase.id, estudiante.id, true);
+
+                                                                // Manejar éxito en la asignación
+                                                                dispatch({
+                                                                    type: 'TOGGLE_ASSIGNMENT_SUCCESS',
+                                                                    payload: {
+                                                                        classId: clase.id,
+                                                                        studentId: estudiante.id,
+                                                                        asignado: confirmResponse.asignado_comedor,
+                                                                    },
+                                                                });
+                                                            } else {
+                                                                // Si el usuario cancela, fallo controlado
+                                                                dispatch({
+                                                                    type: 'TOGGLE_ASSIGNMENT_FAILURE',
+                                                                    payload: { classId: clase.id, studentId: estudiante.id },
+                                                                });
+                                                            }
+                                                        } else {
+                                                            // Caso sin advertencia
+                                                            dispatch({
+                                                                type: 'TOGGLE_ASSIGNMENT_SUCCESS',
+                                                                payload: {
+                                                                    classId: clase.id,
+                                                                    studentId: estudiante.id,
+                                                                    asignado: response.asignado_comedor,
+                                                                },
+                                                            });
+                                                        }
                                                     } catch (error) {
                                                         console.error('Error al alternar el estado:', error);
                                                         dispatch({
@@ -269,6 +305,8 @@ export default function StudentList({ clase, estudiantes, onEditClass, onDeleteC
                                                 }}
                                                 color="secondary"
                                             />
+
+
                                             <IconButton
                                                 onClick={() => onDeleteStudent(clase.id, estudiante.id)}
                                                 size="small"

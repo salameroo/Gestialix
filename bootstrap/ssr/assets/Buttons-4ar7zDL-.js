@@ -95,11 +95,19 @@ const ButtonDos = React.forwardRef(({ className, variant = "default", size = "de
   );
 });
 ButtonDos.displayName = "ButtonDos";
-function Button({ text, link, type }) {
-  return /* @__PURE__ */ jsxs("a", { href: link, className: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline", type: "submit", children: [
-    text,
-    text === "Cerrar sesión" && /* @__PURE__ */ jsx(LogOut, { className: "h-4 w-4 mr-2 inline-block" })
-  ] });
+function Button({ text, link, ariaLabel }) {
+  return /* @__PURE__ */ jsx(
+    "a",
+    {
+      href: link || "#",
+      className: "bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
+      "aria-label": ariaLabel || text,
+      children: text && /* @__PURE__ */ jsxs(Fragment, { children: [
+        text,
+        text === "Cerrar sesión" && /* @__PURE__ */ jsx(LogOut, { className: "h-4 w-4 ml-2 inline-block", "aria-hidden": "true" })
+      ] })
+    }
+  );
 }
 export {
   Button as B,

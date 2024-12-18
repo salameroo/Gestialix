@@ -2,10 +2,11 @@ import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useRef, useEffect } from "react";
 import { Users, Utensils, DollarSign, Calendar } from "lucide-react";
 import "@inertiajs/inertia";
-import "./Buttons-D9lSxtz5.js";
+import "./Buttons-4ar7zDL-.js";
 import { c as csrfFetch } from "./csrfFetch-DJvw9o1x.js";
-import { S as Spinner, A as AppLayout } from "./AppLayout-B3gs--5v.js";
+import { S as Spinner, A as AppLayout } from "./AppLayout-DDPqkKXY.js";
 import Chart from "chart.js/auto";
+import { T as TituloPagina } from "./TitlePage-BlITtWYW.js";
 import "framer-motion";
 import "@inertiajs/inertia-react";
 import "../app.js";
@@ -14,8 +15,8 @@ import "@inertiajs/react";
 import "react-dom/client";
 import "@mui/material/styles/index.js";
 import "@mui/material";
-import "./Logo-BTvsT383.js";
-import "./apiClient-Dnn-wRlU.js";
+import "./Logo-BY9AhvHn.js";
+import "./apiClient-CBG167bR.js";
 function StudentRegistrationsChart() {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -291,10 +292,7 @@ const Card = ({ title, value, icon: Icon }) => /* @__PURE__ */ jsxs("div", { cla
 function Dashboard() {
   useState((/* @__PURE__ */ new Date()).toLocaleDateString("es-ES", { weekday: "long", year: "numeric", month: "long", day: "numeric" }));
   return /* @__PURE__ */ jsx(AppLayout, { children: /* @__PURE__ */ jsx("div", { className: "min-h-screen bg-gray-100 dark:bg-gray-800 dark:text-gray-400", children: /* @__PURE__ */ jsxs("main", { className: "max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 md:text-center", children: [
-    /* @__PURE__ */ jsxs("div", { className: "px-4 py-6 sm:px-0 text-center", children: [
-      /* @__PURE__ */ jsx("h2", { className: "text-4xl font-semibold text-gray-700 dark:text-gray-200", children: "Menu Principal" }),
-      /* @__PURE__ */ jsx("br", {})
-    ] }),
+    /* @__PURE__ */ jsx(TituloPagina, { titulo: "Menu Principal" }),
     /* @__PURE__ */ jsx("hr", { className: "my-6" }),
     /* @__PURE__ */ jsxs("div", { className: "px-4 py-6 sm:px-0", children: [
       /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4", children: [

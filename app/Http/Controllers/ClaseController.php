@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Clase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class ClaseController extends Controller
@@ -16,9 +17,16 @@ class ClaseController extends Controller
 
     public function obtenerClases()
     {
+        $start = microtime(true);
+
         $clases = DB::table('clases')->select('id', 'nombre')->get();
+
+        $time = microtime(true) - $start;
+        Log::info("Tiempo total del controlador: {$time} segundos");
+
         return response()->json($clases);
     }
+
 
     public function obtenerAlumnos(Request $request)
     {
@@ -50,21 +58,45 @@ class ClaseController extends Controller
             ->whereMonth('fecha', $mes)
             ->get();
 
-        // Mapear estudiantes con interrogantes por defecto si no hay asistencias
-        $alumnos = $alumnos->map(function ($alumno) use ($asistencias, $diasEnMes, $anio, $mes) {
+        // Obtener ocasionales
+        $ocasionales = DB::table('ocasionals')
+            ->where('clase_id', $claseId)
+            ->whereYear('fecha', $anio)
+            ->whereMonth('fecha', $mes)
+            ->select('id', 'fecha', 'estudiante_id')
+            ->get();
+
+        // Mapear estudiantes con asistencias y ocasionales
+        $alumnos = $alumnos->map(function ($alumno) use ($asistencias, $ocasionales, $diasEnMes, $anio, $mes) {
             $alumno->diasComedor = [];
             for ($dia = 1; $dia <= $diasEnMes; $dia++) {
                 $fecha = sprintf('%04d-%02d-%02d', $anio, $mes, $dia);
+
+                // Verificar asistencia
                 $asistencia = $asistencias->first(function ($a) use ($alumno, $fecha) {
                     return $a->estudiante_id == $alumno->id && $a->fecha == $fecha;
                 });
-                $alumno->diasComedor[] = $asistencia ? (bool)$asistencia->asiste : null; // null = ?
+
+                // Verificar ocasional
+                $ocasional = $ocasionales->first(function ($o) use ($alumno, $fecha) {
+                    return $o->estudiante_id == $alumno->id && $o->fecha == $fecha;
+                });
+
+                // Prioridad: Ocasionales > Asistencias
+                if ($ocasional) {
+                    $alumno->diasComedor[] = 'O'; // Indicar día ocasional
+                } elseif ($asistencia) {
+                    $alumno->diasComedor[] = (bool)$asistencia->asiste ? '✓' : '✗'; // Asistencia
+                } else {
+                    $alumno->diasComedor[] = '-'; // Sin datos
+                }
             }
             return $alumno;
         });
 
         return response()->json($alumnos);
     }
+
 
     /**
      * Store a newly created resource in storage.

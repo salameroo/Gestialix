@@ -1,6 +1,7 @@
 import axios from "axios";
 const apiClient = axios.create({
-  baseURL: "https://gestialix.somontanosocial.com/api",
+  // baseURL: 'https://gestialix.somontanosocial.com/api', // Cambia a tu dominio de producción si es necesario
+  baseURL: "http://127.0.0.1:8000/api",
   // Cambia a tu dominio de producción si es necesario
   withCredentials: true,
   // Incluye cookies para autenticación
@@ -21,8 +22,9 @@ apiClient.interceptors.response.use(
   }
 );
 axios.create({
-  baseURL: "https://gestialix.somontanosocial.com",
-  // Cambia a tu baseURL
+  baseURL: "http://127.0.0.1:8000/api",
+  // Cambia a tu dominio de producción si es necesario
+  // baseURL: 'https://gestialix.somontanosocial.com', // Cambia a tu baseURL
   withCredentials: true,
   // Necesario para enviar cookies
   headers: {

@@ -7,6 +7,7 @@ use App\Models\Estudiante;
 use App\Models\Clase;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EstudianteController extends Controller
 {
@@ -140,20 +141,51 @@ class EstudianteController extends Controller
         return response()->json(['message' => 'Estudiante eliminado correctamente']);
     }
 
-    public function toggleAssignment(Estudiante $student)
+    // public function toggleAssignment(Estudiante $student)
+    // {
+    //     $student->asignado_comedor = !$student->asignado_comedor;
+
+    //     if ($student->asignado_comedor) {
+    //         $student->asignado_at = now(); // Asigna la fecha actual
+    //     } else {
+    //         $student->asignado_at = null; // Borra la fecha si se desasigna
+    //     }
+
+    //     $student->save();
+
+    //     return response()->json($student); // Devuelve el estudiante actualizado
+    // }
+    public function toggleAssignment(Estudiante $student, Request $request)
     {
+        $forzar = $request->input('forzar', false);
+
+        // Verificar registros ocasionales
+        $registrosOcasionales = DB::table('ocasionals')
+            ->where('estudiante_id', $student->id)
+            ->whereDate('fecha', now()->toDateString())
+            ->exists();
+
+        if ($registrosOcasionales && !$student->asignado_comedor && !$forzar) {
+            return response()->json([
+                'warning' => 'Este estudiante tiene registros ocasionales. ¿Deseas continuar?',
+            ], 200);
+        }
+
+        // Alternar estado
         $student->asignado_comedor = !$student->asignado_comedor;
 
         if ($student->asignado_comedor) {
-            $student->asignado_at = now(); // Asigna la fecha actual
+            $student->asignado_at = now();
         } else {
-            $student->asignado_at = null; // Borra la fecha si se desasigna
+            $student->asignado_at = null;
         }
 
         $student->save();
 
-        return response()->json($student); // Devuelve el estudiante actualizado
+        return response()->json($student);
     }
+
+
 
     public function updateStudent(Request $request, $id)
     {

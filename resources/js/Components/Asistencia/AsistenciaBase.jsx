@@ -8,6 +8,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/
 import { StudentIntolerancesModal } from './ModalIntolerancia';
 import { UserX, User } from 'lucide-react'
 import TituloPagina from '../TitlePage';
+import { Container } from '@mui/material';
 
 export default function Asistencia() {
     const [attendanceData, setAttendanceData] = useState([]);
@@ -336,7 +337,8 @@ export default function Asistencia() {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-800 p-2">
+        <Container maxWidth="xl" className="h-full mb-8 mt-0">
+            {/* <div className="min-h-screen bg-gray-100 dark:bg-gray-800 p-2"> */}
             <div className="max-w-6xl mx-auto">
                 <div className='flex justify-center'>
                     {/* <h1 className="text-4xl font-bold mb-8 text-gray-800 dark:text-gray-200">
@@ -572,7 +574,7 @@ export default function Asistencia() {
                 />
 
             )}
-        </div >
-
+            {/* </div > */}
+        </Container>
     );
 }

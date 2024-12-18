@@ -1,9 +1,9 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState } from "react";
 function Logo({ isOpen = true, textPosition = "side" }) {
-  const [imageSrc, setImageSrc] = useState("/images/gestialixLargo.webp");
+  const [imageSrc, setImageSrc] = useState("https://gestialix.somontanosocial.com/images/favicon.png");
   const handleError = () => {
-    setImageSrc("/images/logoGestialix.svg");
+    setImageSrc("https://gestialix.somontanosocial.com/images/favicon.png");
   };
   return /* @__PURE__ */ jsx("a", { href: "/", className: "block", children: /* @__PURE__ */ jsxs(
     "div",
@@ -25,7 +25,7 @@ function Logo({ isOpen = true, textPosition = "side" }) {
         isOpen && /* @__PURE__ */ jsx(
           "h1",
           {
-            className: "text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-800 tracking-tight",
+            className: "text-xl md:text-2xl font-bold text-gray-800 dark:text-white tracking-tight",
             children: "Gestialix"
           }
         )

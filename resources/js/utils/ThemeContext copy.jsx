@@ -25,7 +25,7 @@ const darkTheme = createTheme({
             main: '#f48fb1',
         },
         background: {
-            default: '#1f2021',
+            default: '#121212',
             paper: '#1e1e1e',
         },
     },
@@ -35,22 +35,28 @@ const darkTheme = createTheme({
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
+    // Inicializar tema basado en localStorage o preferencia del sistema
     const [darkMode, setDarkMode] = useState(() => {
-        return localStorage.getItem('theme') === 'dark';
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme) return storedTheme === 'dark';
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
     });
 
+    // Sincronizar tema con Tailwind y localStorage
     useEffect(() => {
-        // Aplicar la clase `dark` para TailwindCSS
+        const root = document.documentElement;
+
         if (darkMode) {
-            document.documentElement.classList.add('dark');
+            root.classList.add('dark');
         } else {
-            document.documentElement.classList.remove('dark');
+            root.classList.remove('dark');
         }
 
-        // Guardar la preferencia en localStorage
+        // Guardar preferencia en localStorage
         localStorage.setItem('theme', darkMode ? 'dark' : 'light');
     }, [darkMode]);
 
+    // Alternar tema
     const toggleTheme = () => setDarkMode((prev) => !prev);
 
     // Seleccionar el tema correcto para Material-UI

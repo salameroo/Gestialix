@@ -23,6 +23,7 @@ import {
 } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
 import ToastManager from '../ToastManager';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 export default function ClaseManagement() {
     const toastRef = useRef();
@@ -35,6 +36,9 @@ export default function ClaseManagement() {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
     const [selectedClassId, setSelectedClassId] = useState(null);
+    const [open, setOpen] = useState(false);
+    const [warningMessage, setWarningMessage] = useState('');
+    const [pendingAssignment, setPendingAssignment] = useState(null);
 
 
     const showToast = (message, severity) => {
@@ -174,24 +178,47 @@ export default function ClaseManagement() {
 
 
     // Alternar la asignación de un estudiante
-    const toggleAssignment = async (classId, studentId) => {
+    // const toggleAssignment = async (classId, studentId) => {
+    //     try {
+    //         const response = await csrfFetch(`/api/students/${studentId}/toggle-assignment`, {
+    //             method: 'PATCH',
+    //         });
+
+    //         if (response.status === 200) {
+    //             const { asignado } = await response.json();
+    //             dispatch({
+    //                 type: 'TOGGLE_ASSIGNMENT',
+    //                 payload: { classId, studentId, asignado },
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.error('Error al alternar el estado de asignación:', error);
+    //         alert('No se pudo alternar el estado de asignación.');
+    //     }
+    // };
+
+    const toggleAssignment = async (classId, studentId, forzar = false) => {
         try {
             const response = await csrfFetch(`/api/students/${studentId}/toggle-assignment`, {
                 method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ forzar }),
             });
 
-            if (response.status === 200) {
-                const { asignado } = await response.json();
-                dispatch({
-                    type: 'TOGGLE_ASSIGNMENT',
-                    payload: { classId, studentId, asignado },
-                });
+            const data = await response.json();
+
+            if (response.ok) {
+                return data; // Devuelve la respuesta al hijo para manejar advertencias
+            } else {
+                throw new Error(data.error || 'Error al alternar la asignación');
             }
         } catch (error) {
-            console.error('Error al alternar el estado de asignación:', error);
-            alert('No se pudo alternar el estado de asignación.');
+            console.error('Error al alternar la asignación:', error);
+            throw error;
         }
     };
+
+
 
 
     const handleOpenStudentModal = (classId) => {
@@ -255,7 +282,7 @@ export default function ClaseManagement() {
                     }}
                 >
                     <div className='mb-4'>
-                        <TituloPagina titulo={'Gestión de Clases'}></TituloPagina>
+                        <TituloPagina titulo={'Gestión de Clases'} borderColor='indigo'></TituloPagina>
                     </div><br />
                     {/* Gestión de Clases */}
                     <Grid container spacing={3} alignItems="stretch">
@@ -317,19 +344,21 @@ export default function ClaseManagement() {
                     return (
                         <Grid item xs={12} sm={6} md={4} key={clase.id}>
                             <StudentList
-                                clase={clase} // La clase actual
-                                estudiantes={clase.estudiantes || []} // Lista de estudiantes (asegúrate de que clase tenga estudiantes como array)
-                                orderBy={orderBy} // Si lo necesitas, aunque no se usa directamente aquí
-                                onToggleAssignment={toggleAssignment} // Función para alternar asignación de comedor
+                                key={clase.id}
+                                clase={clase}
+                                estudiantes={clase.estudiantes || []}
+                                onToggleAssignment={toggleAssignment}
                                 onEditClass={(clase) => {
                                     setEditingClass(clase);
                                     setIsModalOpen(true);
-                                }} // Función para editar clase
-                                onDeleteClass={(clase) => handleDeleteClass(clase.id)} // Función para eliminar clase
-                                onDeleteStudent={handleDeleteStudent} // Función para eliminar un estudiante
-                                onEditStudent={handleEditStudent} // Función para guardar cambios de un estudiante
-                                onOpenStudentModal={handleOpenStudentModal} // Función para abrir el modal de añadir estudiante
-                                dispatch={dispatch} // Dispatch para manejar el estado global
+                                }}
+                                onDeleteClass={(clase) => {
+                                    // Lógica para eliminar clase
+                                }}
+                                onDeleteStudent={(studentId) => {
+                                    // Lógica para eliminar estudiante
+                                }}
+                                dispatch={dispatch}
                             />
 
                         </Grid>

@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import { EyeOff, Eye, Facebook, Mail } from "lucide-react";
 import { useForm, Head } from "@inertiajs/react";
 import { I as InputError } from "./InputError-2JjWc6nJ.js";
-import { F as Footer } from "./footer-BJKdI4B5.js";
-import { L as Logo } from "./Logo-BTvsT383.js";
-import { a as ButtonForms } from "./Buttons-D9lSxtz5.js";
+import { F as Footer } from "./footer-DYKrvjct.js";
+import { L as Logo } from "./Logo-BY9AhvHn.js";
+import { a as ButtonForms } from "./Buttons-4ar7zDL-.js";
 import "@inertiajs/inertia-react";
 const SocialLoginButton = ({ href, icon: Icon, text, color }) => /* @__PURE__ */ jsx(motion.div, { whileHover: { scale: 1.05 }, whileTap: { scale: 0.95 }, children: /* @__PURE__ */ jsxs(
   "a",
@@ -43,9 +43,13 @@ function Login({ status, canResetPassword }) {
         className: "bg-white rounded-2xl shadow-xl overflow-hidden max-w-md w-full",
         children: [
           /* @__PURE__ */ jsxs("div", { className: "p-8", children: [
-            /* @__PURE__ */ jsxs("div", { className: "text-center flex flex-col items-center justify-center mb-8", children: [
+            /* @__PURE__ */ jsxs("div", { className: "text-center flex flex-col items-center justify-center mb-4", children: [
               /* @__PURE__ */ jsx(Logo, { textPosition: "below" }),
-              /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Inicio de sesión" })
+              /* @__PURE__ */ jsx("div", { className: "relative flex justify-center text-sm", children: /* @__PURE__ */ jsx("span", { className: "px-2 bg-white text-gray-500" }) })
+            ] }),
+            /* @__PURE__ */ jsxs("div", { className: "relative mb-4", children: [
+              /* @__PURE__ */ jsx("div", { className: "absolute inset-0 flex items-center", children: /* @__PURE__ */ jsx("div", { className: "w-full border-t border-gray-300" }) }),
+              /* @__PURE__ */ jsx("div", { className: "relative flex justify-center text-md", children: /* @__PURE__ */ jsx("span", { className: "px-2 bg-white text-gray-500", children: "Inicio de sesion" }) })
             ] }),
             status && /* @__PURE__ */ jsx("div", { className: "mb-4 text-sm font-medium text-green-600", children: status }),
             /* @__PURE__ */ jsxs("form", { onSubmit: submit, className: "space-y-6", children: [

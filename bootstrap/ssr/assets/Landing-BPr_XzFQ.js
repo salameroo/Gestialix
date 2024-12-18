@@ -1,7 +1,7 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import "react";
 import { Users, Carrot, DollarSign, ArrowRight } from "lucide-react";
-import { L as Logo } from "./Logo-BTvsT383.js";
+import { L as Logo } from "./Logo-BY9AhvHn.js";
 function LandingPage() {
   return /* @__PURE__ */ jsxs("div", { className: "min-h-screen bg-gradient-to-br from-green-50 to-blue-50", children: [
     /* @__PURE__ */ jsx("header", { className: "bg-white shadow-sm", children: /* @__PURE__ */ jsx("nav", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxs("div", { className: "flex justify-between items-center py-6 md:justify-start md:space-x-10", children: [

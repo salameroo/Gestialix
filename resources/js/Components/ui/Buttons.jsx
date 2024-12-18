@@ -249,11 +249,21 @@ ButtonDos.displayName = 'ButtonDos'
 
 
 
-export function Button({ text, link, type }) {
+export function Button({ text, link, ariaLabel }) {
     return (
-        <a href={link} className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-            {text}
-            {text === "Cerrar sesión" && <LogOut className="h-4 w-4 mr-2 inline-block" />}
+        <a
+            href={link || '#'} // Predeterminado si no se proporciona `link`
+            className="bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            aria-label={ariaLabel || text} // Usa `ariaLabel` como respaldo
+        >
+            {text && (
+                <>
+                    {text}
+                    {text === "Cerrar sesión" && (
+                        <LogOut className="h-4 w-4 ml-2 inline-block" aria-hidden="true" />
+                    )}
+                </>
+            )}
         </a>
-    )
+    );
 }

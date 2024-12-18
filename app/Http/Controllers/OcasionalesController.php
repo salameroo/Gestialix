@@ -171,4 +171,6 @@ class OcasionalesController extends Controller
 
         return response()->json($ocasionales);
     }
+
+    
 }

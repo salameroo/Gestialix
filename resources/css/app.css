@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* styles.css o un archivo similar */
+:root {
+    --global-bg: #ffffff;
+    /* Fondo claro */
+    --global-sidebar: #f7f7f7;
+    /* Sidebar claro */
+}
+
+.dark {
+    --global-bg: #121212;
+    /* Fondo oscuro */
+    --global-sidebar: #1e1e1e;
+    /* Sidebar oscuro */
+}
+
+body {
+    background-color: var(--global-bg);
+    color: var(--text-color, black);
+    /* Color de texto predeterminado */
+}
+
+.sidebar {
+    background-color: var(--global-sidebar);
+}

@@ -2,7 +2,7 @@ import { jsxs, jsx } from "react/jsx-runtime";
 import { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import "@inertiajs/inertia-react";
-import { B as Button } from "./Buttons-D9lSxtz5.js";
+import { B as Button } from "./Buttons-4ar7zDL-.js";
 import "lucide-react";
 import "framer-motion";
 function MenuForm({ menu = {} }) {

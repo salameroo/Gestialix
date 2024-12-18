@@ -3,6 +3,7 @@ import { Inertia } from '@inertiajs/inertia';
 import { Menu, Grid2x2, X, Home, Users, BarChart, Settings, HelpCircle, Moon, Sun, LogOut, List } from 'lucide-react';
 import { ThemeContext } from '../utils/ThemeContext';
 import Logo from '@/Components/ui/Logo';
+
 const MenuItem = ({ icon: Icon, label, isOpen, onClick }) => (
     <li
         onClick={onClick}
@@ -41,6 +42,7 @@ export default function SidebarMenu({ isOpen, toggleSidebar, userData }) {
             className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-gray-700 shadow-lg transition-all duration-300 ease-in-out
                         ${isOpen ? 'w-64' : 'w-20'} ${isMobile && !isOpen ? '-translate-x-full' : ''}`}
         >
+
             <button
                 onClick={toggleSidebar}
                 className={`absolute top-4 -right-12 bg-white dark:bg-gray-900 p-2 rounded-full shadow-md transition-transform duration-300 ease-in-out

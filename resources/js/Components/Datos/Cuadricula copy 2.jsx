@@ -1,20 +1,10 @@
-'use client';
+'use client'
 
 import React, { useState, useEffect } from 'react';
-import {
-    Select,
-    MenuItem,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-} from '@mui/material';
+import { Select, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { Circle } from 'lucide-react';
 
-// Funciones para peticiones al backend
+// Funciones vacías para peticiones al backend
 const obtenerClases = async () => {
     const response = await fetch('/api/info/clasees');
     const data = await response.json();
@@ -26,6 +16,7 @@ const obtenerAlumnos = async (claseId, mes) => {
     if (!response.ok) throw new Error('Error al obtener alumnos');
     return await response.json();
 };
+
 
 export default function ComedorEscolar() {
     const [claseSeleccionada, setClaseSeleccionada] = useState('');
@@ -75,7 +66,7 @@ export default function ComedorEscolar() {
                 >
                     {clases.map((clase) => (
                         <MenuItem key={clase.id} value={clase.id}>
-                            {clase.nombre}
+                            {clase.nombre} {/* Renderiza solo el nombre */}
                         </MenuItem>
                     ))}
                 </Select>
@@ -96,7 +87,9 @@ export default function ComedorEscolar() {
                 {mensaje ? (
                     <div className="text-center text-gray-500">{mensaje}</div>
                 ) : (
-                    <TableContainer component={Paper} className="mt-4 shadow-md rounded-lg w-full">
+                    /* Aquí renderizas la tabla */
+
+                    <TableContainer component={Paper} className="mt-4 shadow-md rounded-lg">
                         <Table className="border-collapse border border-gray-200 dark:border-gray-700">
                             <TableHead>
                                 <TableRow className="bg-gray-100 dark:bg-gray-800">
@@ -124,25 +117,23 @@ export default function ComedorEscolar() {
                                             <TableCell
                                                 component="th"
                                                 scope="row"
-                                                className="text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700 px-12"
+                                                className="text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700"
                                             >
                                                 {alumno.nombre}
                                             </TableCell>
-                                            {alumno.diasComedor.map((diaData, dia) => (
+                                            {alumno.diasComedor.map((asistio, dia) => (
                                                 <TableCell
                                                     key={dia}
                                                     align="center"
                                                     className={`w-8 h-8 font-bold text-white border border-gray-200 dark:border-gray-700
-                                    ${diaData === '✓'
+                                    ${asistio === true
                                                             ? 'bg-lime-700 hover:bg-lime-950 dark:bg-lime-500 hover:text-white dark:hover:bg-lime-600'
-                                                            : diaData === '✗'
+                                                            : asistio === false
                                                                 ? 'bg-red-600 hover:bg-red-950 dark:bg-red-400 hover:text-white dark:hover:bg-red-500'
-                                                                : diaData === 'O'
-                                                                    ? 'bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-400 dark:hover:bg-yellow-500'
-                                                                    : 'bg-sky-100 hover:bg-sky-600 dark:bg-neutral-400 dark:text-sky-700 dark:hover:text-white hover:text-white dark:hover:bg-sky-500'
+                                                                : 'bg-sky-100 hover:bg-sky-600 dark:bg-neutral-400 dark:text-sky-700 dark:hover:text-white hover:text-white dark:hover:bg-sky-500'
                                                         }`}
                                                 >
-                                                    {diaData}
+                                                    {asistio === true ? '✓' : asistio === false ? '✗' : '◯'}
                                                 </TableCell>
                                             ))}
                                         </TableRow>
@@ -161,8 +152,11 @@ export default function ComedorEscolar() {
                             </TableBody>
                         </Table>
                     </TableContainer>
+
+
                 )}
             </div>
         </div>
     );
 }
+

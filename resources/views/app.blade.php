@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="es">
+<!-- lang="{{ str_replace('_', '-', app()->getLocale()) }}" -->
 
 <head>
     <meta charset="utf-8">
@@ -9,7 +10,7 @@
     <!-- Necesario para que funcione toda la aplicación -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="icon" href="{{ asset('/images/logo.svg') }}" type="image/svg+xml">
+    <link rel="icon" href="https://gestialix.somontanosocial.com/images/logo.svg" type="image/svg+xml">
     <title inertia>{{ config('app.name', 'Gestialix') }}</title>
 
 

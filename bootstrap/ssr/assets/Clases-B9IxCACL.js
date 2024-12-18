@@ -1,12 +1,13 @@
 import { jsxs, jsx, Fragment } from "react/jsx-runtime";
-import { A as AppLayout } from "./AppLayout-B3gs--5v.js";
+import { A as AppLayout } from "./AppLayout-DDPqkKXY.js";
 import { useState, useEffect, forwardRef, useImperativeHandle, useRef, useReducer } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-import { Dialog, DialogTitle, DialogContent, Grid, TextField, FormControl, InputLabel, Select, Box, Chip, MenuItem, DialogActions, Button, Card, CardHeader, Tooltip, Typography, IconButton, CardActions, Collapse, CardContent, ListItem, ListItemIcon, Checkbox, ListItemText, List, CircularProgress, Switch, Snackbar, Alert, Container, Paper, InputAdornment } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Grid, TextField, FormControl, InputLabel, Select, Box, Chip, MenuItem, DialogActions, Button, DialogContentText, Card, CardHeader, Tooltip, Typography, IconButton, CardActions, Collapse, CardContent, ListItem, ListItemIcon, Checkbox, ListItemText, List, CircularProgress, Switch, Snackbar, Alert, Container, Paper, InputAdornment } from "@mui/material";
 import { Edit, Delete, ExpandLess, ExpandMore, Add, Visibility } from "@mui/icons-material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { c as csrfFetch } from "./csrfFetch-DJvw9o1x.js";
+import { T as TituloPagina } from "./TitlePage-BlITtWYW.js";
 import "@inertiajs/inertia";
 import "lucide-react";
 import "../app.js";
@@ -14,8 +15,8 @@ import "axios";
 import "@inertiajs/react";
 import "react-dom/client";
 import "@mui/material/styles/index.js";
-import "./Logo-BTvsT383.js";
-import "./apiClient-Dnn-wRlU.js";
+import "./Logo-BY9AhvHn.js";
+import "./apiClient-CBG167bR.js";
 const EditStudentModal = ({ open, onClose, onSave, studentData = {} }) => {
   const [formData, setFormData] = useState({
     studentId: "",
@@ -145,6 +146,33 @@ const EditStudentModal = ({ open, onClose, onSave, studentData = {} }) => {
     ] })
   ] });
 };
+function useConfirmationModal() {
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [resolve, setResolve] = useState(null);
+  const showConfirmationModal = (msg) => {
+    setMessage(msg);
+    setOpen(true);
+    return new Promise((res) => setResolve(() => res));
+  };
+  const handleConfirm = () => {
+    setOpen(false);
+    resolve(true);
+  };
+  const handleCancel = () => {
+    setOpen(false);
+    resolve(false);
+  };
+  const ConfirmationModal = () => /* @__PURE__ */ jsxs(Dialog, { open, onClose: handleCancel, children: [
+    /* @__PURE__ */ jsx(DialogTitle, { children: "Advertencia" }),
+    /* @__PURE__ */ jsx(DialogContent, { children: /* @__PURE__ */ jsx(DialogContentText, { children: message }) }),
+    /* @__PURE__ */ jsxs(DialogActions, { children: [
+      /* @__PURE__ */ jsx(Button, { onClick: handleCancel, color: "secondary", children: "Cancelar" }),
+      /* @__PURE__ */ jsx(Button, { onClick: handleConfirm, color: "primary", children: "Confirmar" })
+    ] })
+  ] });
+  return { showConfirmationModal, ConfirmationModal };
+}
 const truncateText = (text, maxLength) => {
   return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
 };
@@ -154,6 +182,7 @@ function StudentList({ clase, estudiantes, onEditClass, onDeleteClass, onOpenStu
   const [groupAction, setGroupAction] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const { showConfirmationModal, ConfirmationModal } = useConfirmationModal();
   const toggleExpand = () => setExpanded(!expanded);
   const handleSelectAll = (event) => {
     if (event.target.checked) {
@@ -332,11 +361,35 @@ function StudentList({ clase, estudiantes, onEditClass, onDeleteClass, onOpenStu
                   payload: { classId: clase.id, studentId: estudiante.id }
                 });
                 try {
-                  await onToggleAssignment(clase.id, estudiante.id);
-                  dispatch({
-                    type: "TOGGLE_ASSIGNMENT_SUCCESS",
-                    payload: { classId: clase.id, studentId: estudiante.id }
-                  });
+                  const response = await onToggleAssignment(clase.id, estudiante.id);
+                  if (response.warning) {
+                    const confirm = await showConfirmationModal(response.warning);
+                    if (confirm) {
+                      const confirmResponse = await onToggleAssignment(clase.id, estudiante.id, true);
+                      dispatch({
+                        type: "TOGGLE_ASSIGNMENT_SUCCESS",
+                        payload: {
+                          classId: clase.id,
+                          studentId: estudiante.id,
+                          asignado: confirmResponse.asignado_comedor
+                        }
+                      });
+                    } else {
+                      dispatch({
+                        type: "TOGGLE_ASSIGNMENT_FAILURE",
+                        payload: { classId: clase.id, studentId: estudiante.id }
+                      });
+                    }
+                  } else {
+                    dispatch({
+                      type: "TOGGLE_ASSIGNMENT_SUCCESS",
+                      payload: {
+                        classId: clase.id,
+                        studentId: estudiante.id,
+                        asignado: response.asignado_comedor
+                      }
+                    });
+                  }
                 } catch (error) {
                   console.error("Error al alternar el estado:", error);
                   dispatch({
@@ -789,6 +842,9 @@ function ClaseManagement() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
   const [selectedClassId, setSelectedClassId] = useState(null);
+  useState(false);
+  useState("");
+  useState(null);
   const showToast = (message, severity) => {
     toastRef.current.showToast(message, severity);
   };
@@ -812,19 +868,6 @@ function ClaseManagement() {
     };
     fetchClasses();
   }, []);
-  const handleDeleteStudent = async (classId, studentId) => {
-    try {
-      await csrfFetch(`/api/classes/${classId}/students/${studentId}`, {
-        method: "DELETE"
-      });
-      dispatch({
-        type: "DELETE_STUDENT",
-        payload: { classId, studentId }
-      });
-    } catch (error) {
-      console.error("Error al eliminar el estudiante:", error);
-    }
-  };
   const handleSaveClass = async (clase) => {
     try {
       const method = editingClass ? "PUT" : "POST";
@@ -843,14 +886,6 @@ function ClaseManagement() {
       setEditingClass(null);
     } catch (error) {
       console.error("Error al guardar la clase:", error);
-    }
-  };
-  const handleDeleteClass = async (classId) => {
-    try {
-      await csrfFetch(`/api/classes/${classId}`, { method: "DELETE" });
-      dispatch({ type: "DELETE_CLASS", payload: classId });
-    } catch (error) {
-      console.error("Error al eliminar la clase:", error);
     }
   };
   const handleSaveStudent = async (studentData) => {
@@ -874,41 +909,22 @@ function ClaseManagement() {
       alert("No se pudo guardar el estudiante.");
     }
   };
-  const toggleAssignment = async (classId, studentId) => {
+  const toggleAssignment = async (classId, studentId, forzar = false) => {
     try {
       const response = await csrfFetch(`/api/students/${studentId}/toggle-assignment`, {
-        method: "PATCH"
-      });
-      if (response.status === 200) {
-        const { asignado } = await response.json();
-        dispatch({
-          type: "TOGGLE_ASSIGNMENT",
-          payload: { classId, studentId, asignado }
-        });
-      }
-    } catch (error) {
-      console.error("Error al alternar el estado de asignación:", error);
-      alert("No se pudo alternar el estado de asignación.");
-    }
-  };
-  const handleOpenStudentModal = (classId) => {
-    setSelectedClassId(classId);
-    setIsStudentModalOpen(true);
-  };
-  const handleEditStudent = async (classId, editedStudent) => {
-    try {
-      const response = await csrfFetch(`/api/students/${editedStudent.studentId}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editedStudent)
+        body: JSON.stringify({ forzar })
       });
-      if (!response.ok) {
-        throw new Error("Error en la actualización.");
+      const data = await response.json();
+      if (response.ok) {
+        return data;
+      } else {
+        throw new Error(data.error || "Error al alternar la asignación");
       }
-      const updatedStudent = await response.json();
-      dispatch({ type: "UPDATE_STUDENT", payload: updatedStudent });
     } catch (error) {
-      console.error("Error al actualizar el estudiante:", error);
+      console.error("Error al alternar la asignación:", error);
+      throw error;
     }
   };
   const processedClasses = classes.filter((cls) => {
@@ -939,22 +955,8 @@ function ClaseManagement() {
           borderRadius: 2
         },
         children: [
-          /* @__PURE__ */ jsx(
-            Typography,
-            {
-              variant: "h4",
-              component: "h1",
-              align: "center",
-              gutterBottom: true,
-              sx: {
-                fontWeight: "bold",
-                color: "primary.main",
-                // Usa tokens de color del tema
-                mb: 4
-              },
-              children: "Gestión de Clases"
-            }
-          ),
+          /* @__PURE__ */ jsx("div", { className: "mb-4", children: /* @__PURE__ */ jsx(TituloPagina, { titulo: "Gestión de Clases", borderColor: "indigo" }) }),
+          /* @__PURE__ */ jsx("br", {}),
           /* @__PURE__ */ jsxs(Grid, { container: true, spacing: 3, alignItems: "stretch", children: [
             /* @__PURE__ */ jsx(Grid, { item: true, xs: 12, md: 6, children: /* @__PURE__ */ jsx(
               TextField,
@@ -1012,18 +1014,18 @@ function ClaseManagement() {
         {
           clase,
           estudiantes: clase.estudiantes || [],
-          orderBy,
           onToggleAssignment: toggleAssignment,
           onEditClass: (clase2) => {
             setEditingClass(clase2);
             setIsModalOpen(true);
           },
-          onDeleteClass: (clase2) => handleDeleteClass(clase2.id),
-          onDeleteStudent: handleDeleteStudent,
-          onEditStudent: handleEditStudent,
-          onOpenStudentModal: handleOpenStudentModal,
+          onDeleteClass: (clase2) => {
+          },
+          onDeleteStudent: (studentId) => {
+          },
           dispatch
-        }
+        },
+        clase.id
       ) }, clase.id);
     }) }),
     /* @__PURE__ */ jsx(

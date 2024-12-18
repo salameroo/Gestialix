@@ -1,10 +1,10 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useContext, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { X, Menu, Sun, Moon, Home, BarChart, Users, List, Settings, HelpCircle, LogOut } from "lucide-react";
+import { X, Menu, Sun, Moon, Home, BarChart, Users, List, Grid2x2, Settings, HelpCircle, LogOut } from "lucide-react";
 import { T as ThemeContext } from "../app.js";
-import { L as Logo } from "./Logo-BTvsT383.js";
-import { a as apiClient } from "./apiClient-Dnn-wRlU.js";
+import { L as Logo } from "./Logo-BY9AhvHn.js";
+import { a as apiClient } from "./apiClient-CBG167bR.js";
 const MenuItem = ({ icon: Icon, label, isOpen, onClick }) => /* @__PURE__ */ jsxs(
   "li",
   {
@@ -38,7 +38,7 @@ function SidebarMenu({ isOpen, toggleSidebar, userData }) {
   return /* @__PURE__ */ jsxs(
     "div",
     {
-      className: `fixed inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 ease-in-out
+      className: `fixed inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-gray-700 shadow-lg transition-all duration-300 ease-in-out
                         ${isOpen ? "w-64" : "w-20"} ${isMobile && !isOpen ? "-translate-x-full" : ""}`,
       children: [
         /* @__PURE__ */ jsx(
@@ -68,6 +68,7 @@ function SidebarMenu({ isOpen, toggleSidebar, userData }) {
           /* @__PURE__ */ jsx(MenuItem, { icon: BarChart, label: "Panel de control", isOpen, onClick: () => navigateTo("/dashboard") }),
           /* @__PURE__ */ jsx(MenuItem, { icon: Users, label: "Clases", isOpen, onClick: () => navigateTo("/clases") }),
           /* @__PURE__ */ jsx(MenuItem, { icon: List, label: "Asistencias", isOpen, onClick: () => navigateTo("/asistencias") }),
+          /* @__PURE__ */ jsx(MenuItem, { icon: Grid2x2, label: "Cuadricula", isOpen, onClick: () => navigateTo("/info") }),
           /* @__PURE__ */ jsx(MenuItem, { icon: Settings, label: "Configuración", isOpen, onClick: () => navigateTo("/profile") }),
           /* @__PURE__ */ jsx(MenuItem, { icon: HelpCircle, label: "Ayuda", isOpen, onClick: () => navigateTo("/terms") })
         ] }) }),
@@ -151,7 +152,7 @@ function AppLayout({ children }) {
   if (loading) {
     return /* @__PURE__ */ jsx(Spinner, {});
   }
-  return /* @__PURE__ */ jsxs("div", { className: "flex min-h-screen w-full bg-gray-100 dark:bg-gray-500", children: [
+  return /* @__PURE__ */ jsxs("div", { className: "flex min-h-screen w-full ", children: [
     /* @__PURE__ */ jsx(SidebarMenu, { isOpen: isSidebarOpen, toggleSidebar, userData }),
     /* @__PURE__ */ jsxs(
       "div",

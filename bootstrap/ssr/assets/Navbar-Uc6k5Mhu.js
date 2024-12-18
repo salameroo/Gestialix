@@ -3,7 +3,7 @@ import "@inertiajs/react";
 import "react";
 import "@inertiajs/inertia";
 import "../app.js";
-import "./apiClient-Dnn-wRlU.js";
+import "./apiClient-CBG167bR.js";
 import "axios";
 import "react-dom/client";
 import "@mui/material/styles/index.js";

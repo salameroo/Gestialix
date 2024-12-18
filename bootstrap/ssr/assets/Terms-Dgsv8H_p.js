@@ -1,6 +1,6 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import React from "react";
-import { I as InnovativeButton } from "./Buttons-D9lSxtz5.js";
+import { I as InnovativeButton } from "./Buttons-4ar7zDL-.js";
 import { Inertia } from "@inertiajs/inertia";
 import "lucide-react";
 import "framer-motion";

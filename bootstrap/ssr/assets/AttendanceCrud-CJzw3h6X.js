@@ -1,20 +1,21 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { S as Spinner, A as AppLayout } from "./AppLayout-B3gs--5v.js";
+import { S as Spinner, A as AppLayout } from "./AppLayout-DDPqkKXY.js";
 import { ChevronLeft, Calendar, ChevronRight, Users, Search, Eye, Check, X, User, Star, UserX } from "lucide-react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
 import { c as csrfFetch } from "./csrfFetch-DJvw9o1x.js";
-import { Dialog, DialogTitle, DialogContent, Checkbox, DialogActions, Button, IconButton, Typography, Box, Chip } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Checkbox, DialogActions, Button, IconButton, Typography, Box, Chip, Container } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import { T as TituloPagina } from "./TitlePage-BlITtWYW.js";
 import "@inertiajs/inertia";
 import "../app.js";
 import "axios";
 import "@inertiajs/react";
 import "react-dom/client";
 import "@mui/material/styles/index.js";
-import "./Logo-BTvsT383.js";
-import "./apiClient-Dnn-wRlU.js";
+import "./Logo-BY9AhvHn.js";
+import "./apiClient-CBG167bR.js";
 registerLocale("es", es);
 const DataSelector = ({ currentDay, changeDate, handleDayChange }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -426,10 +427,10 @@ function Asistencia() {
   const closeOccasionalModal = () => {
     setIsOccasionalModalOpen(false);
   };
-  return /* @__PURE__ */ jsxs("div", { className: "min-h-screen bg-gray-100 dark:bg-gray-900 p-2", children: [
+  return /* @__PURE__ */ jsxs(Container, { maxWidth: "xl", className: "h-full mb-8 mt-0", children: [
     /* @__PURE__ */ jsxs("div", { className: "max-w-6xl mx-auto", children: [
-      /* @__PURE__ */ jsx("h1", { className: "text-4xl font-bold mb-8 text-gray-800 dark:text-gray-200", children: "Asistencia al Comedor" }),
-      /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8", children: [
+      /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx(TituloPagina, { titulo: "Asistencia al Comedor" }) }),
+      /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-gray-700 rounded-lg shadow-md p-6 mb-8", children: [
         /* @__PURE__ */ jsxs("div", { className: "flex flex-col md:flex-row items-center justify-between mb-6 space-y-4 md:space-y-0", children: [
           /* @__PURE__ */ jsxs("div", { className: "flex items-center space-x-4", children: [
             /* @__PURE__ */ jsx(Users, { className: "text-blue-500 dark:text-blue-400" }),
@@ -469,13 +470,13 @@ function Asistencia() {
           ] })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "overflow-x-auto", children: [
-          /* @__PURE__ */ jsxs("table", { className: "w-full", children: [
+          /* @__PURE__ */ jsxs("table", { className: "w-full border border-gray-200 rounded-lg shadow dark:border-gray-700 ", children: [
             /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { className: "bg-gray-50 dark:bg-gray-700", children: [
               /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider", children: "Alumno" }),
               /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider", children: "Intolerancia / Alergia" }),
               /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider", children: "Asistencia" })
             ] }) }),
-            /* @__PURE__ */ jsx("tbody", { className: "bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700", children: filteredStudents.map((record) => /* @__PURE__ */ jsxs("tr", { children: [
+            /* @__PURE__ */ jsx("tbody", { className: "bg-white dark:bg-gray-700  divide-y divide-gray-200 dark:divide-gray-700", children: filteredStudents.map((record) => /* @__PURE__ */ jsxs("tr", { children: [
               /* @__PURE__ */ jsxs("td", { className: "px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200", children: [
                 /* @__PURE__ */ jsx("span", { className: "block sm:hidden", children: truncateText(`${record.estudiante.nombre} ${record.estudiante.apellidos}`, 16) }),
                 /* @__PURE__ */ jsx("span", { className: "hidden sm:block", children: truncateText(`${record.estudiante.nombre} ${record.estudiante.apellidos}`, 40) })
@@ -509,6 +510,7 @@ function Asistencia() {
               ] }) })
             ] }, record.id)) })
           ] }),
+          /* @__PURE__ */ jsx("br", {}),
           /* @__PURE__ */ jsx("div", { className: "flex items-center space-x-4", children: /* @__PURE__ */ jsx(
             "button",
             {
@@ -526,7 +528,7 @@ function Asistencia() {
             /* @__PURE__ */ jsx("tbody", { children: occasionalStudentsFromDB && occasionalStudentsFromDB.map((student) => /* @__PURE__ */ jsxs(
               "tr",
               {
-                className: "bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600",
+                className: "bg-white border-b dark:bg-gray-700 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600",
                 children: [
                   /* @__PURE__ */ jsx("td", { className: "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center space-x-3", children: [
                     /* @__PURE__ */ jsx(User, { className: "h-5 w-5 text-gray-500 dark:text-gray-300" }),
@@ -558,7 +560,7 @@ function Asistencia() {
           ] }) })
         ] })
       ] }),
-      /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-gray-800 rounded-lg shadow-md p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-gray-700 rounded-lg shadow-md p-6", children: [
         /* @__PURE__ */ jsx("h2", { className: "text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200", children: "Resumen de Asistencia" }),
         /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-4", children: [
           /* @__PURE__ */ jsxs("div", { className: "bg-green-100 dark:bg-green-800 p-4 rounded-lg", children: [
