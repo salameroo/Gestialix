@@ -20,8 +20,8 @@ const menuData = [
 // Componente Card
 const Card = ({ title, value, icon: Icon }) => (
     <div className="bg-white rounded-lg shadow p-6 flex items-center">
-        <div className="rounded-full bg-blue-100 p-3 mr-4">
-            <Icon className="h-8 w-8 text-blue-500" />
+        <div className="rounded-full bg-red-100 p-3 mr-4">
+            <Icon className="h-8 w-8 text-red-500" />
         </div>
         <div>
             <h3 className="text-lg font-semibold text-gray-700">{title}</h3>
@@ -50,7 +50,7 @@ export default function Dashboard() {
 
     return (
         <AppLayout >
-            <div className="min-h-screen bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
+            <div className="min-h-screen bg-gray-100 dark:bg-neutral-800 dark:text-gray-400">
 
 
                 <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 md:text-center">

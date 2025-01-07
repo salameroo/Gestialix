@@ -15,11 +15,11 @@ import {
     ListItemText,
 } from '@mui/material';
 
-const AddStudentModal = ({ open, onClose, onSave, classId }) => {
+const AddStudentModal = ({ open, onClose, onSave, classId, studentData = null }) => {
     const [formData, setFormData] = useState({
         nombre: '',
         apellidos: '',
-        clase_id: '', // Inicialmente vacío
+        clase_id: '',
         pago: '',
         intolerancia_religion: [],
         intolerancia_especifica: '',
@@ -27,14 +27,30 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
     });
 
     useEffect(() => {
-        if (classId) {
-            setFormData((prevData) => ({
-                ...prevData,
-                clase_id: classId,
-            }));
+        if (studentData) {
+            // Si hay datos del estudiante, carga los valores para editar
+            setFormData({
+                nombre: studentData.nombre || '',
+                apellidos: studentData.apellidos || '',
+                clase_id: studentData.clase_id || classId || '',
+                pago: studentData.pago || '',
+                intolerancia_religion: studentData.intolerancia_religion || [],
+                intolerancia_especifica: studentData.intolerancia_especifica || '',
+                beca: studentData.beca || false,
+            });
+        } else {
+            // Inicializa los valores para un nuevo estudiante
+            setFormData({
+                nombre: '',
+                apellidos: '',
+                clase_id: classId || '',
+                pago: '',
+                intolerancia_religion: [],
+                intolerancia_especifica: '',
+                beca: false,
+            });
         }
-    }, [classId]);
-
+    }, [studentData, classId]);
 
     const intoleranciaOptions = [
         'No Carne',
@@ -45,7 +61,6 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
     ];
 
     const handleSave = () => {
-        // Validación básica antes de guardar
         if (!formData.nombre || !formData.apellidos || !formData.pago) {
             alert('Por favor, completa los campos obligatorios.');
             return;
@@ -61,17 +76,7 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
             intolerancia_religion: intolerancias,
         });
 
-        setFormData({
-            nombre: '',
-            apellidos: '',
-            clase_id: classId || '',
-            pago: '',
-            intolerancia_religion: [],
-            intolerancia_especifica: '',
-            beca: false,
-        });
         onClose();
-        
     };
 
     const handleChange = (e) => {
@@ -84,10 +89,9 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth>
-            <DialogTitle>Añadir Nuevo Estudiante</DialogTitle>
+            <DialogTitle>{studentData ? 'Editar Estudiante' : 'Añadir Nuevo Estudiante'}</DialogTitle>
             <DialogContent>
                 <Grid container spacing={2} sx={{ mt: 1 }}>
-                    {/* Nombre */}
                     <Grid item xs={12}>
                         <TextField
                             label="Nombre"
@@ -98,8 +102,6 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
                             onChange={handleChange}
                         />
                     </Grid>
-
-                    {/* Apellidos */}
                     <Grid item xs={12}>
                         <TextField
                             label="Apellidos"
@@ -110,8 +112,6 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
                             onChange={handleChange}
                         />
                     </Grid>
-
-                    {/* Clase ID */}
                     <Grid item xs={12}>
                         <TextField
                             label="Clase ID"
@@ -122,8 +122,6 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
                             disabled
                         />
                     </Grid>
-
-                    {/* Pago */}
                     <Grid item xs={12}>
                         <FormControl fullWidth>
                             <InputLabel id="pago-label">Método de Pago</InputLabel>
@@ -138,8 +136,6 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
                             </Select>
                         </FormControl>
                     </Grid>
-
-                    {/* Intolerancia Religión */}
                     <Grid item xs={12}>
                         <FormControl fullWidth>
                             <InputLabel id="intolerancia-label">Intolerancia Religiosa/Alimenticia</InputLabel>
@@ -165,8 +161,6 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
                             </Select>
                         </FormControl>
                     </Grid>
-
-                    {/* Especificar otros */}
                     {formData.intolerancia_religion.includes('Otros (Especificar)') && (
                         <Grid item xs={12}>
                             <TextField
@@ -181,15 +175,13 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
                             />
                         </Grid>
                     )}
-
-                    {/* Beca */}
                     <Grid item xs={12}>
                         <FormControl fullWidth>
                             <InputLabel id="beca-label">Beca</InputLabel>
                             <Select
                                 labelId="beca-label"
                                 name="beca"
-                                value={formData.beca}
+                                value={formData.beca.toString()}
                                 onChange={(e) =>
                                     setFormData((prev) => ({
                                         ...prev,
@@ -207,7 +199,7 @@ const AddStudentModal = ({ open, onClose, onSave, classId }) => {
             <DialogActions>
                 <Button onClick={onClose}>Cancelar</Button>
                 <Button onClick={handleSave} variant="contained" color="primary">
-                    Guardar
+                    {studentData ? 'Guardar Cambios' : 'Guardar'}
                 </Button>
             </DialogActions>
         </Dialog>

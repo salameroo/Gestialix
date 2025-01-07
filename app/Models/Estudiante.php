@@ -9,11 +9,13 @@ class Estudiante extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'apellidos', 'clase_id', 'pago', 'intolerancia_religion', 'beca'];
+    protected $table = 'app_students';
+    protected $fillable = ['name', 'surname', 'class_id', 'payment', 'intolerance_religion', 'scholarship', 'assigned_lunch', 'assigned_at'];
+
 
     public function clase()
     {
-        return $this->belongsTo(Clase::class, 'clase_id');
+        return $this->belongsTo(Clase::class, 'class_id');
     }
     public function asistencias()
     {
@@ -25,6 +27,6 @@ class Estudiante extends Model
     }
 
     protected $casts = [
-        'intolerancia_religion' => 'array', // Laravel convierte automáticamente JSON a array y viceversa
+        'intolerance_religion' => 'array', // Laravel convierte automáticamente JSON a array y viceversa
     ];
 }

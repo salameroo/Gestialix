@@ -56,6 +56,7 @@ export default function StudentList({ clase, estudiantes, onEditClass, onDeleteC
     };
 
     const handleSelectStudent = (studentId) => {
+        console.log('Estudiante seleccionado:', estudiantes, studentId);
         setSelectedStudents(prev =>
             prev.includes(studentId)
                 ? prev.filter(id => id !== studentId)
@@ -104,6 +105,7 @@ export default function StudentList({ clase, estudiantes, onEditClass, onDeleteC
 
 
     const handleOpenEditModal = (student) => {
+        // console.log('Estudiante seleccionado para editar:', student);
         setSelectedStudent(student);
         setIsEditModalOpen(true);
     };
@@ -123,8 +125,8 @@ export default function StudentList({ clase, estudiantes, onEditClass, onDeleteC
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    nombre: editedStudent.nombre,
-                    apellidos: editedStudent.apellidos,
+                    name: editedStudent.name,
+                    surname: editedStudent.surname,
                     clase_id: editedStudent.clase_id,
                     intolerancia_religion: intoleranciaReligion, // Incluye "Otros" y "intolerancia_especifica"
                     beca: editedStudent.beca,
@@ -150,13 +152,13 @@ export default function StudentList({ clase, estudiantes, onEditClass, onDeleteC
         <Card>
             <CardHeader
                 title={
-                    <Tooltip title={clase.nombre}>
+                    <Tooltip title={clase.name}>
                         <Typography variant="h6" noWrap>
-                            {truncateText(clase.nombre, 20)}
+                            {truncateText(clase.name, 20)}
                         </Typography>
                     </Tooltip>
                 }
-                subheader={`Curso Académico: ${clase.curso_academico || 'N/A'}`}
+                subheader={`Curso Académico: ${clase.academic_year || 'N/A'}`}
                 action={
                     <Box>
                         <IconButton onClick={() => onEditClass(clase)}>
@@ -224,106 +226,108 @@ export default function StudentList({ clase, estudiantes, onEditClass, onDeleteC
                     </ListItem>
 
                     <List>
-                        {estudiantes.map((estudiante) => (
-                            <ListItem key={`${clase.id}-${estudiante.id}`} dense>
-                                <ListItemIcon>
-                                    <Checkbox
-                                        edge="start"
-                                        checked={selectedStudents.includes(estudiante.id)}
-                                        onChange={() => handleSelectStudent(estudiante.id)}
+                        {estudiantes
+                            .filter((estudiante) => estudiante && estudiante.id) // Filtra solo los estudiantes válidos
+                            .map((estudiante) => (
+                                <ListItem key={`${estudiante.class_id}-${estudiante.id}`} dense>
+                                    <ListItemIcon>
+                                        <Checkbox
+                                            edge="start"
+                                            checked={selectedStudents.includes(estudiante.id)} // Verifica si está seleccionado
+                                            onChange={() => handleSelectStudent(estudiante.id)} // Maneja la selección
+                                        />
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        primary={
+                                            <Tooltip title={`${estudiante.name} ${estudiante.surname}`}>
+                                                <Typography noWrap>
+                                                    {truncateText(`${estudiante.name} ${estudiante.surname}`, 30)}
+                                                </Typography>
+                                            </Tooltip>
+                                        }
+                                        secondary={`Asignado: ${estudiante.assigned_lunch ? 'Sí' : 'No'}`}
                                     />
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary={
-                                        <Tooltip title={`${estudiante.nombre} ${estudiante.apellidos}`}>
-                                            <Typography noWrap>
-                                                {truncateText(`${estudiante.nombre} ${estudiante.apellidos}`, 30)}
-                                            </Typography>
-                                        </Tooltip>
-                                    }
-                                    secondary={`Asignado: ${estudiante.asignado_comedor ? 'Sí' : 'No'}`}
-                                />
-                                <Box display="flex" alignItems="center">
-                                    {estudiante.loading ? (
-                                        <CircularProgress size={24} />
-                                    ) : (
-                                        <>
-                                            <Switch
-                                                checked={estudiante.asignado_comedor}
-                                                onChange={async () => {
-                                                    dispatch({
-                                                        type: 'TOGGLE_ASSIGNMENT_LOADING',
-                                                        payload: { classId: clase.id, studentId: estudiante.id },
-                                                    });
+                                    <Box display="flex" alignItems="center">
+                                        {estudiante.loading ? (
+                                            <CircularProgress size={24} />
+                                        ) : (
+                                            <>
+                                                <Switch
+                                                    checked={!!estudiante.assigned_lunch}
+                                                    onChange={async () => {
+                                                        dispatch({
+                                                            type: 'TOGGLE_ASSIGNMENT_LOADING',
+                                                            payload: { classId: clase.id, studentId: estudiante.id },
+                                                        });
 
-                                                    try {
-                                                        // Primera solicitud al servidor
-                                                        const response = await onToggleAssignment(clase.id, estudiante.id);
+                                                        try {
+                                                            // Primera solicitud al servidor
+                                                            const response = await onToggleAssignment(clase.id, estudiante.id);
 
-                                                        if (response.warning) {
-                                                            // Mostrar modal de confirmación
-                                                            const confirm = await showConfirmationModal(response.warning);
+                                                            if (response.warning) {
+                                                                // Mostrar modal de confirmación
+                                                                const confirm = await showConfirmationModal(response.warning);
 
-                                                            if (confirm) {
-                                                                // Si el usuario confirma, reintentar con el flag "forzar"
-                                                                const confirmResponse = await onToggleAssignment(clase.id, estudiante.id, true);
+                                                                if (confirm) {
+                                                                    // Si el usuario confirma, reintentar con el flag "forzar"
+                                                                    const confirmResponse = await onToggleAssignment(clase.id, estudiante.id, true);
 
-                                                                // Manejar éxito en la asignación
+                                                                    // Manejar éxito en la asignación
+                                                                    dispatch({
+                                                                        type: 'TOGGLE_ASSIGNMENT_SUCCESS',
+                                                                        payload: {
+                                                                            classId: clase.id,
+                                                                            studentId: estudiante.id,
+                                                                            asignado: confirmResponse.assigned_lunch,
+                                                                        },
+                                                                    });
+                                                                } else {
+                                                                    // Si el usuario cancela, fallo controlado
+                                                                    dispatch({
+                                                                        type: 'TOGGLE_ASSIGNMENT_FAILURE',
+                                                                        payload: { classId: clase.id, studentId: estudiante.id },
+                                                                    });
+                                                                }
+                                                            } else {
+                                                                // Caso sin advertencia
                                                                 dispatch({
                                                                     type: 'TOGGLE_ASSIGNMENT_SUCCESS',
                                                                     payload: {
                                                                         classId: clase.id,
                                                                         studentId: estudiante.id,
-                                                                        asignado: confirmResponse.asignado_comedor,
+                                                                        asignado: response.assigned_lunch,
                                                                     },
                                                                 });
-                                                            } else {
-                                                                // Si el usuario cancela, fallo controlado
-                                                                dispatch({
-                                                                    type: 'TOGGLE_ASSIGNMENT_FAILURE',
-                                                                    payload: { classId: clase.id, studentId: estudiante.id },
-                                                                });
                                                             }
-                                                        } else {
-                                                            // Caso sin advertencia
+                                                        } catch (error) {
+                                                            console.error('Error al alternar el estado:', error);
                                                             dispatch({
-                                                                type: 'TOGGLE_ASSIGNMENT_SUCCESS',
-                                                                payload: {
-                                                                    classId: clase.id,
-                                                                    studentId: estudiante.id,
-                                                                    asignado: response.asignado_comedor,
-                                                                },
+                                                                type: 'TOGGLE_ASSIGNMENT_FAILURE',
+                                                                payload: { classId: clase.id, studentId: estudiante.id },
                                                             });
                                                         }
-                                                    } catch (error) {
-                                                        console.error('Error al alternar el estado:', error);
-                                                        dispatch({
-                                                            type: 'TOGGLE_ASSIGNMENT_FAILURE',
-                                                            payload: { classId: clase.id, studentId: estudiante.id },
-                                                        });
-                                                    }
-                                                }}
-                                                color="secondary"
-                                            />
+                                                    }}
+                                                    color="secondary"
+                                                />
 
 
-                                            <IconButton
-                                                onClick={() => onDeleteStudent(clase.id, estudiante.id)}
-                                                size="small"
-                                            >
-                                                <DeleteIcon fontSize="small" color="error" />
-                                            </IconButton>
-                                            <IconButton
-                                                onClick={() => handleOpenEditModal(estudiante)}
-                                                size="small"
-                                            >
-                                                <VisibilityIcon fontSize="small" color="primary" />
-                                            </IconButton>
-                                        </>
-                                    )}
-                                </Box>
-                            </ListItem>
-                        ))}
+                                                <IconButton
+                                                    onClick={() => onDeleteStudent(clase.id, estudiante.id)}
+                                                    size="small"
+                                                >
+                                                    <DeleteIcon fontSize="small" color="error" />
+                                                </IconButton>
+                                                <IconButton
+                                                    onClick={() => handleOpenEditModal(estudiante)}
+                                                    size="small"
+                                                >
+                                                    <VisibilityIcon fontSize="small" color="primary" />
+                                                </IconButton>
+                                            </>
+                                        )}
+                                    </Box>
+                                </ListItem>
+                            ))}
                     </List>
                 </CardContent>
             </Collapse>

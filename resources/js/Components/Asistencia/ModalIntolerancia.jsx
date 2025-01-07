@@ -15,8 +15,8 @@ import { Close as CloseIcon } from '@mui/icons-material';
 export function StudentIntolerancesModal({ isOpen, onClose, student }) {
     if (!student) return null;
 
-    const intolerances = student.intolerancia_religion
-        ? JSON.parse(student.intolerancia_religion)
+    const intolerances = student.intolerance_religion
+        ? JSON.parse(student.intolerance_religion)
         : [];
 
     return (
@@ -34,7 +34,7 @@ export function StudentIntolerancesModal({ isOpen, onClose, student }) {
             }}
         >
             <DialogTitle>
-                Intolerancias de {student.nombre}
+                Intolerancias de {student.name}
                 <IconButton
                     aria-label="close"
                     onClick={onClose}

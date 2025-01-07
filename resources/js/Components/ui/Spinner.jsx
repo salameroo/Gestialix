@@ -30,7 +30,7 @@ export default function Spinner({
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-600">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-300 dark:bg-neutral-600">
             <div className="relative flex items-center justify-center">
                 <div className={`absolute rounded-full border-4 border-t-${color}-500 border-r-transparent border-b-${color}-500 border-l-transparent ${sizeClasses[size]} animate-spin`}></div>
                 <div className={`absolute rounded-full border-4 border-t-transparent border-r-${color}-500 border-b-transparent border-l-${color}-500 ${sizeClasses[size]} animate-spin-reverse`}></div>

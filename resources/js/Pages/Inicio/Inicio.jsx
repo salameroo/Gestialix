@@ -3,28 +3,29 @@ import { Users, Calendar, Search, User, ClipboardCheck, BookOpen, Moon, Sun } fr
 import AppLayout from '@/Layouts/AppLayout';
 import csrfFetch from '@/utils/csrfFetch';
 import TituloPagina from '@/Components/TitlePage';
+import ExportarAsistencias from '../Exports/Inicio';
 
 const DashboardCard = ({ title, value, icon: Icon, color }) => (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:scale-105">
+    <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:scale-105">
         <div className={`p-4 rounded-full mb-4 ${color}`}>
             <Icon className="w-6 h-6 text-white" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">{title}</h3>
-        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value}</p>
+        <h3 className="text-lg font-semibold text-neutral-700 dark:text-neutral-200">{title}</h3>
+        <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{value}</p>
     </div>
 );
 
 const RecentActivity = ({ activities }) => (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-lg">
-        <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Actividad Reciente</h2>
+    <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-lg">
+        <h2 className="text-lg font-semibold text-neutral-700 dark:text-neutral-200 mb-4">Actividad Reciente</h2>
         <ul className="space-y-4">
             {activities.map((activity, index) => (
-                <li key={index} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                <li key={index} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors duration-200">
                     <div className="flex-shrink-0 w-2 h-2 bg-indigo-500 rounded-full" />
-                    <p className="flex-1 text-gray-800 dark:text-gray-300">
+                    <p className="flex-1 text-neutral-800 dark:text-neutral-300">
                         <span className="font-medium">{activity.action}</span> - {activity.client}
                     </p>
-                    <span className="text-gray-500 dark:text-gray-400">{activity.time}</span>
+                    <span className="text-neutral-500 dark:text-neutral-400">{activity.time}</span>
                 </li>
             ))}
         </ul>
@@ -34,15 +35,15 @@ const RecentActivity = ({ activities }) => (
 const FeatureCard = ({ title, description, icon: Icon, link }) => (
     <a
         href={link}
-        className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition duration-300 hover:scale-105 group"
+        className="p-6 bg-white dark:bg-neutral-800 rounded-lg shadow-md hover:shadow-lg transition duration-300 hover:scale-105 group"
     >
         <div className="flex items-center justify-center w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-full mb-4 group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800 transition-colors duration-300">
             <Icon className="w-6 h-6 text-indigo-600 dark:text-indigo-300 group-hover:text-indigo-700 dark:group-hover:text-indigo-200" />
         </div>
-        <h3 className="text-lg font-medium text-gray-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+        <h3 className="text-lg font-medium text-neutral-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
             {title}
         </h3>
-        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
             {description}
         </p>
     </a>
@@ -109,8 +110,8 @@ const Dashboard = () => {
 
     return (
         <AppLayout>
-            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-                <header className="bg-white dark:bg-gray-800 shadow-sm transition-colors duration-300">
+            <div className="min-h-screen bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
+                <header className="bg-white dark:bg-neutral-800 shadow-sm transition-colors duration-300">
                     <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
                         <TituloPagina titulo="Panel de Control" borderColor="transparent" />
                         <div className="flex items-center space-x-4">
@@ -118,13 +119,13 @@ const Dashboard = () => {
                                 <input
                                     type="text"
                                     placeholder="Buscar..."
-                                    className="bg-gray-100 dark:bg-gray-700 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300"
+                                    className="bg-neutral-100 dark:bg-neutral-700 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300"
                                 />
-                                <Search className="w-5 h-5 text-gray-500 dark:text-gray-300 absolute left-3 top-2.5" />
+                                <Search className="w-5 h-5 text-neutral-500 dark:text-neutral-300 absolute left-3 top-2.5" />
                             </div>
                             <button
                                 onClick={toggleDarkMode}
-                                className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-300"
+                                className="p-2 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 transition-colors duration-300"
                             >
                                 {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                             </button>
@@ -149,7 +150,7 @@ const Dashboard = () => {
                         <RecentActivity activities={recentActivities} />
 
                         <div className="mt-10">
-                            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Accesos Rápidos</h2>
+                            <h2 className="text-2xl font-bold text-neutral-800 dark:text-white mb-6">Accesos Rápidos</h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                 {features.map((feature, index) => (
                                     <FeatureCard key={index} {...feature} />
@@ -158,6 +159,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </main>
+                <ExportarAsistencias />
             </div>
         </AppLayout>
     );

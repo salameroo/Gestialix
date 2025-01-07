@@ -18,7 +18,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 const EditStudentModal = ({ open, onClose, onSave, studentData = {} }) => {
     const [formData, setFormData] = useState({
-        studentId: '',
+        estudianteId: '',
         nombre: '',
         apellidos: '',
         clase_id: '',
@@ -30,15 +30,15 @@ const EditStudentModal = ({ open, onClose, onSave, studentData = {} }) => {
     useEffect(() => {
         if (studentData) {
             setFormData({
-                studentId: studentData.id || '',
-                nombre: studentData.nombre || '',
-                apellidos: studentData.apellidos || '',
-                clase_id: studentData.clase_id || '',
-                intolerancia_religion: Array.isArray(studentData.intolerancia_religion)
-                    ? studentData.intolerancia_religion
-                    : JSON.parse(studentData.intolerancia_religion || '[]'),
-                intolerancia_especifica: studentData.intolerancia_especifica || '',
-                beca: !!studentData.beca,
+                estudianteId: studentData.id || '',
+                nombre: studentData.name || '',
+                apellidos: studentData.surname || '',
+                clase_id: studentData.class_id || '',
+                intolerancia_religion: Array.isArray(studentData.intolerance_religion)
+                    ? studentData.intolerance_religion
+                    : JSON.parse(studentData.intolerance_religion || '[]'),
+                intolerancia_especifica: studentData.intolerance_specific || '',
+                beca: studentData.scholarship === 1,
             });
         }
     }, [studentData]);
@@ -133,15 +133,6 @@ const EditStudentModal = ({ open, onClose, onSave, studentData = {} }) => {
                     </Grid>
                     {formData.intolerancia_religion.includes('Otros') && (
                         <Grid item xs={12}>
-                            {/* <TextField
-                                label="Especificar Intolerancia"
-                                name="intolerancia_especifica"
-                                value={formData.intolerancia_especifica}
-                                onChange={handleChange}
-                                fullWidth
-                                variant="outlined"
-                                multiline
-                            /> */}
                             <TextField
                                 label="Especificar Intolerancia"
                                 name="intolerancia_especifica"
@@ -156,7 +147,6 @@ const EditStudentModal = ({ open, onClose, onSave, studentData = {} }) => {
                                 variant="outlined"
                                 multiline
                             />
-
                         </Grid>
                     )}
                 </Grid>
@@ -172,4 +162,3 @@ const EditStudentModal = ({ open, onClose, onSave, studentData = {} }) => {
 };
 
 export default EditStudentModal;
-

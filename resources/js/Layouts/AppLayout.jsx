@@ -38,10 +38,10 @@ export default function AppLayout({ children }) {
                 className={`transition-all duration-300 w-full ${isSidebarOpen ? 'sm:ml-64 md:ml-20 ml-0' : 'sm:ml-20 ml-0'
                     }`}
             >
-                <header className=" bg-white shadow-md">
-                    {/* <h1 className="text-xl font-bold">Bienvenido, {userData.user.name}</h1> */}
-                </header>
-                <main>{children}</main>
+                {/* <header className=" bg-white shadow-md"> */}
+                {/* <h1 className="text-xl font-bold">Bienvenido, {userData.user.name}</h1> */}
+                {/* </header> */}
+                <main >{children}</main>
             </div>
         </div>
     );

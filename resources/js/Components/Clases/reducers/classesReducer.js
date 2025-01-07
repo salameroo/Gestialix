@@ -7,17 +7,19 @@
 const classesReducer = (state, action) => {
     switch (action.type) {
         case 'SET_CLASSES':
-            // Establece las clases iniciales al cargar desde el backend.
-            return action.payload;
+            return action.payload.map((clase) => ({
+                ...clase,
+                estudiantes: clase.estudiantes || [], // Siempre asegura un array
+            }));
 
         case 'ADD_CLASS':
-            // Añade una nueva clase al estado.
-            return [...state, action.payload];
+            return [...state, { ...action.payload, estudiantes: action.payload.estudiantes || [] }];
 
         case 'UPDATE_CLASS':
-            // Actualiza una clase existente en el estado.
             return state.map((cls) =>
-                cls.id === action.payload.id ? action.payload : cls
+                cls.id === action.payload.id
+                    ? { ...action.payload, estudiantes: action.payload.estudiantes || [] }
+                    : cls
             );
 
         case 'DELETE_CLASS':
@@ -55,7 +57,7 @@ const classesReducer = (state, action) => {
                             estudiante.id === action.payload.studentId
                                 ? {
                                     ...estudiante,
-                                    asignado_comedor: !estudiante.asignado_comedor,
+                                    assigned_lunch: !estudiante.assigned_lunch,
                                     loading: false,
                                 }
                                 : estudiante
@@ -94,7 +96,10 @@ const classesReducer = (state, action) => {
             const { classId, student } = action.payload;
             return state.map((clase) =>
                 clase.id === classId
-                    ? { ...clase, estudiantes: [...clase.estudiantes, student] }
+                    ? {
+                        ...clase,
+                        estudiantes: [...(clase.estudiantes || []), student], // Agrega el estudiante al array
+                    }
                     : clase
             );
 
@@ -126,7 +131,7 @@ const classesReducer = (state, action) => {
                 ...clase,
                 estudiantes: clase.estudiantes.map((estudiante) =>
                     studentIdsToAssign.includes(estudiante.id)
-                        ? { ...estudiante, asignado_comedor: true }
+                        ? { ...estudiante, assigned_lunch: true }
                         : estudiante
                 ),
             }));
@@ -136,7 +141,7 @@ const classesReducer = (state, action) => {
                 ...clase,
                 estudiantes: clase.estudiantes.map((estudiante) =>
                     studentIdsToUnassign.includes(estudiante.id)
-                        ? { ...estudiante, asignado_comedor: false }
+                        ? { ...estudiante, assigned_lunch: false }
                         : estudiante
                 ),
             }));

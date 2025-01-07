@@ -167,8 +167,8 @@ export default function Asistencia() {
 
     const filteredStudents = attendanceData.filter(
         (record) =>
-            record.estudiante.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            record.estudiante.apellidos.toLowerCase().includes(searchTerm.toLowerCase())
+            record.estudiante.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            record.estudiante.surname.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const formatDate = (dateString) => {
@@ -337,18 +337,25 @@ export default function Asistencia() {
 
 
     return (
-        <Container maxWidth="xl" className="h-full mb-8 mt-0">
+        <Container maxWidth="xl" sx={{ backgroundColor: 'background.default' }} className="h-full mb-8 mt-0">
             {/* <div className="min-h-screen bg-gray-100 dark:bg-gray-800 p-2"> */}
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-6xl mx-auto ">
                 <div className='flex justify-center'>
                     {/* <h1 className="text-4xl font-bold mb-8 text-gray-800 dark:text-gray-200">
                         Asistencia al Comedor
                     </h1> */}
-                    <TituloPagina titulo={'Asistencia al Comedor'}></TituloPagina>
+                    <TituloPagina
+                        titulo="Control de asistencias"
+                        borderColor="transparent"
+                        darkBorderColor="neutral-700"
+                        className="mt-8"
+                    />
+
+                    {/* <TituloPagina titulo={'Asistencia al Comedor'}></TituloPagina> */}
                 </div>
 
                 {/* Controles */}
-                <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6 mb-8">
+                <div className="bg-white dark:bg-neutral-700 rounded-lg shadow-md p-6 mb-8">
                     <div className="flex flex-col md:flex-row items-center justify-between mb-6 space-y-4 md:space-y-0">
                         {/* Selección de Clase */}
                         <div className="flex items-center space-x-4">
@@ -360,7 +367,7 @@ export default function Asistencia() {
                             >
                                 <option value="" disabled>Selecciona una clase</option>
                                 {classes.map((cls) => (
-                                    <option key={cls.id} value={cls.id}>{cls.nombre}</option>
+                                    <option key={cls.id} value={cls.id}>{cls.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -386,42 +393,42 @@ export default function Asistencia() {
 
                     {/* Tabla de Asistencia */}
                     <div className="overflow-x-auto">
-                        <table className="w-full border border-gray-200 rounded-lg shadow dark:border-gray-700 ">
+                        <table className="w-full border border-neutral-200 rounded-lg shadow dark:border-neutral-700">
                             <thead>
-                                <tr className="bg-gray-50 dark:bg-gray-700">
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                <tr className="bg-neutral-100 dark:bg-neutral-800">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
                                         Alumno
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
                                         Intolerancia / Alergia
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
                                         Asistencia
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white dark:bg-gray-700  divide-y divide-gray-200 dark:divide-gray-700">
+                            <tbody className="bg-white dark:bg-neutral-800 divide-y divide-neutral-200 dark:divide-neutral-700">
                                 {filteredStudents.map((record) => (
                                     <tr key={record.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">
+                                        <td className="px-6 py-4 whitespace-nowrap text-neutral-800 dark:text-neutral-200">
                                             <span className="block sm:hidden">
-                                                {truncateText(`${record.estudiante.nombre} ${record.estudiante.apellidos}`, 16)}
+                                                {truncateText(`${record.estudiante.name} ${record.estudiante.surname}`, 16)}
                                             </span>
                                             <span className="hidden sm:block">
-                                                {truncateText(`${record.estudiante.nombre} ${record.estudiante.apellidos}`, 40)}
+                                                {truncateText(`${record.estudiante.name} ${record.estudiante.surname}`, 40)}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">
+                                        <td className="px-6 py-4 whitespace-nowrap text-neutral-800 dark:text-neutral-200">
                                             <button
-                                                onClick={() => handleOpenModal(record.estudiante)} // Pasa el estudiante completo al modal
-                                                className={`p-2 rounded-full transition-colors ${record.estudiante.intolerancia_religion &&
-                                                    JSON.parse(record.estudiante.intolerancia_religion).length > 0
+                                                onClick={() => handleOpenModal(record.estudiante)}
+                                                className={`p-2 rounded-full transition-colors ${record.estudiante.intolerance_religion &&
+                                                    JSON.parse(record.estudiante.intolerance_religion).length > 0
                                                     ? 'bg-red-500 hover:bg-red-600 text-white'
-                                                    : 'bg-gray-200 dark:bg-gray-700'
+                                                    : 'bg-neutral-200 dark:bg-neutral-700'
                                                     }`}
                                                 disabled={
-                                                    !record.estudiante.intolerancia_religion ||
-                                                    JSON.parse(record.estudiante.intolerancia_religion).length === 0
+                                                    !record.estudiante.intolerance_religion ||
+                                                    JSON.parse(record.estudiante.intolerance_religion).length === 0
                                                 }
                                             >
                                                 <Eye className="w-5 h-5" />
@@ -431,18 +438,18 @@ export default function Asistencia() {
                                             <div className="flex items-center space-x-2">
                                                 <button
                                                     onClick={() => handleAttendanceChange(record.id, 1)}
-                                                    className={`p-2 rounded-full transition-colors ${record.asiste === 1
+                                                    className={`p-2 rounded-full transition-colors ${record.attends === 1
                                                         ? 'bg-green-500 text-white'
-                                                        : 'bg-gray-200 hover:bg-green-100 dark:bg-gray-700 dark:hover:bg-green-600'
+                                                        : 'bg-neutral-200 hover:bg-green-100 dark:bg-neutral-700 dark:hover:bg-green-600'
                                                         }`}
                                                 >
                                                     <Check className="w-5 h-5" />
                                                 </button>
                                                 <button
                                                     onClick={() => handleAttendanceChange(record.id, 0)}
-                                                    className={`p-2 rounded-full transition-colors ${record.asiste === 0
+                                                    className={`p-2 rounded-full transition-colors ${record.attends === 0
                                                         ? 'bg-red-500 text-white'
-                                                        : 'bg-gray-200 hover:bg-red-100 dark:bg-gray-700 dark:hover:bg-red-600'
+                                                        : 'bg-neutral-200 hover:bg-red-100 dark:bg-neutral-700 dark:hover:bg-red-600'
                                                         }`}
                                                 >
                                                     <X className="w-5 h-5" />
@@ -455,19 +462,17 @@ export default function Asistencia() {
                         </table>
                         <br />
                         <div className="flex items-center space-x-4">
-                            {/* Botón para abrir el modal */}
                             <button
                                 onClick={openOccasionalModal}
-                                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                                className="px-4 py-2 bg-blue-500 dark:bg-gray-700 dark:border dark:border-gray-600 text-white rounded-lg hover:bg-blue-600 transition"
                             >
                                 Seleccionar Alumno Ocasional
                             </button>
                         </div>
-                        {/* Tabla para mostrar ocasionales */}
                         {occasionalStudentsFromDB.length > 0 && (
                             <div className="w-full overflow-x-auto shadow-md sm:rounded-lg mt-4">
-                                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <table className="w-full text-sm text-left text-neutral-500 dark:text-neutral-400">
+                                    <thead className="text-xs text-neutral-700 uppercase bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-400">
                                         <tr>
                                             <th scope="col" className="px-6 py-3">
                                                 Alumno
@@ -481,22 +486,22 @@ export default function Asistencia() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {occasionalStudentsFromDB && occasionalStudentsFromDB.map((student) => (
+                                        {occasionalStudentsFromDB.map((student) => (
                                             <tr
                                                 key={student.estudiante_id}
-                                                className="bg-white border-b dark:bg-gray-700 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                className="bg-white border-b dark:bg-neutral-800 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-700"
                                             >
-                                                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <td className="px-6 py-4 font-medium text-neutral-900 whitespace-nowrap dark:text-white">
                                                     <div className="flex items-center space-x-3">
-                                                        <User className="h-5 w-5 text-gray-500 dark:text-gray-300" />
-                                                        <span className="text-gray-800 dark:text-gray-200">
-                                                            {student.nombre} {student.apellidos}
+                                                        <User className="h-5 w-5 text-neutral-500 dark:text-neutral-400" />
+                                                        <span className="text-neutral-800 dark:text-neutral-200">
+                                                            {student.name} {student.surname}
                                                         </span>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center space-x-2">
-                                                        <Star className="h-5 w-5 text-yellow-500 dark:text-yellow-300" />
+                                                        <Star className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />
                                                         <span className="font-semibold text-yellow-600 dark:text-yellow-400">
                                                             Ocasional
                                                         </span>
@@ -511,19 +516,17 @@ export default function Asistencia() {
                                                         Desasignar
                                                     </button>
                                                 </td>
-
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
                         )}
-
                     </div>
                 </div>
 
                 {/* Resumen de Asistencia */}
-                <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-neutral-700 rounded-lg shadow-md p-6">
                     <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
                         Resumen de Asistencia
                     </h2>

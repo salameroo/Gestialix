@@ -146,31 +146,31 @@ class OcasionalesController extends Controller
 
     public function getByDate(Request $request)
     {
+        // dd($request->all());
         // Validar los parámetros requeridos
         $validatedData = $request->validate([
             'fecha' => 'required|date', // Fecha requerida
-            'clase_id' => 'required|exists:clases,id', // ID de clase requerido
+            'clase_id' => 'required|exists:app_classes,id', // ID de clase requerido
         ]);
 
         // Consultar los estudiantes ocasionales para la fecha y clase específicas
-        $ocasionales = DB::table('ocasionals as o')
-            ->join('estudiantes as e', 'e.id', '=', 'o.estudiante_id') // Join con tabla estudiantes
-            ->where('o.fecha', $validatedData['fecha']) // Filtrar por fecha
-            ->where('o.clase_id', $validatedData['clase_id']) // Filtrar por clase
+        $ocasionales = DB::table('app_occasionals as o')
+            ->join('app_students as e', 'e.id', '=', 'o.student_id') // Join con tabla estudiantes
+            ->where('o.date', $validatedData['fecha']) // Filtrar por fecha
+            ->where('o.class_id', $validatedData['clase_id']) // Filtrar por clase
             ->select(
                 'o.id as ocasional_id',         // ID único del registro ocasional
                 'e.id as estudiante_id',        // ID del estudiante
-                'e.nombre',                     // Nombre del estudiante
-                'e.apellidos',                  // Apellidos del estudiante
-                'o.fecha',                      // Fecha de asignación
+                'e.name',                     // Nombre del estudiante
+                'e.surname',                  // Apellidos del estudiante
+                'o.date',                      // Fecha de asignación
                 'o.created_at as asignado_en'   // Fecha de creación del registro
             )
             ->get();
 
         // Retornar los datos en formato JSON
 
+
         return response()->json($ocasionales);
     }
-
-    
 }

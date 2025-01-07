@@ -26,8 +26,8 @@ const AddEditClassModal = ({ open, onClose, onSave, editingClass = null }) => {
             // Configurar los datos de la clase seleccionada al abrir el modal
             setFormData({
                 id: editingClass.id || null,
-                nombre: editingClass.nombre || '', // Establece el nombre si existe
-                curso_academico: editingClass.curso_academico || '', // Establece el curso académico si existe
+                nombre: editingClass.name || '', // Establece el nombre si existe
+                curso_academico: editingClass.academic_year || '', // Establece el curso académico si existe
             });
         } else {
             // Reinicia el formulario cuando se abre el modal para añadir una nueva clase
@@ -48,8 +48,8 @@ const AddEditClassModal = ({ open, onClose, onSave, editingClass = null }) => {
         if (formData.nombre && !cursoAcademicoError) {
             onSave({
                 id: formData.id, // Incluimos el id (será null si es una nueva clase)
-                nombre: formData.nombre,
-                curso_academico: formData.curso_academico,
+                name: formData.nombre,
+                academic_year: formData.curso_academico,
             });
             setFormData({ id: null, nombre: '', curso_academico: '' });
             setErrors({ nombre: '', curso_academico: '' });

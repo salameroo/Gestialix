@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asistencia;
-use App\Models\Estudiante;
+use App\Models\Asistencia as Attendance;
+use App\Models\Estudiante as Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class StatsController extends Controller
 {
+    public function index()
+    {
+        $asistencias = Attendance::all();
+        return json_encode($asistencias);
+    }
     public function getAttendanceSummary()
     {
         // Obtenemos las estadísticas de los últimos 7 días
-        $summary = DB::table('asistencias')
+        $summary = DB::table('app_attendances')
             ->select(
                 DB::raw('DATE(fecha) as fecha'),
                 DB::raw('SUM(asiste = 1) as presentes'),
@@ -35,19 +40,19 @@ class StatsController extends Controller
         $endDate = $request->input('end_date');
         $classId = $request->input('clase_id');
 
-        $query = DB::table('asistencias')
+        $query = DB::table('app_attendances')
             ->selectRaw("
-            DATE_FORMAT(fecha, '%Y-%m-%d') as period,
-            SUM(CASE WHEN asiste = 1 THEN 1 ELSE 0 END) as presentes,
-            SUM(CASE WHEN asiste = 0 THEN 1 ELSE 0 END) as ausentes,
-            SUM(CASE WHEN asiste IS NULL THEN 1 ELSE 0 END) as desconocidos
+            DATE_FORMAT(date, '%Y-%m-%d') as period,
+            SUM(CASE WHEN attends = 1 THEN 1 ELSE 0 END) as presentes,
+            SUM(CASE WHEN attends = 0 THEN 1 ELSE 0 END) as ausentes,
+            SUM(CASE WHEN attends IS NULL THEN 1 ELSE 0 END) as desconocidos
         ")
             ->groupBy('period')
             ->orderBy('period');
 
         // Aplica filtros si están presentes
         if ($startDate && $endDate) {
-            $query->whereBetween('fecha', [$startDate, $endDate]);
+            $query->whereBetween('date', [$startDate, $endDate]);
         }
 
         if ($classId) {
@@ -59,7 +64,7 @@ class StatsController extends Controller
 
     public function getStudentsSummary()
     {
-        $registrations = Estudiante::selectRaw('DATE(created_at) as date, COUNT(*) as total')
+        $registrations = Student::selectRaw('DATE(created_at) as date, COUNT(*) as total')
             ->groupBy('date')
             ->orderBy('date', 'asc')
             ->get();
@@ -69,7 +74,7 @@ class StatsController extends Controller
 
     public function filtrar(Request $request)
     {
-        $query = Estudiante::query();
+        $query = Student::query();
 
         if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
             $query->whereBetween('created_at', [$request->fecha_inicio, $request->fecha_fin]);
@@ -86,7 +91,7 @@ class StatsController extends Controller
 
     public function asistencias(Request $request)
     {
-        $query = Asistencia::query();
+        $query = Attendance::query();
 
         // Verifica si hay filtros de fechas
         if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
@@ -111,7 +116,7 @@ class StatsController extends Controller
 
     public function altasEstudiantes(Request $request)
     {
-        $query = Estudiante::query();
+        $query = Student::query();
 
         // Verifica si hay filtros de fechas
         if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {

@@ -13,6 +13,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
     use HasRoles;
+    protected $table = 'laravel_users';
 
     /**
      * The attributes that are mass assignable.
@@ -51,5 +52,10 @@ class User extends Authenticatable
     public function colegio()
     {
         return $this->belongsTo(Colegio::class);
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(Colegio::class, 'school_id', 'id');
     }
 }

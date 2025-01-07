@@ -9,29 +9,13 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'adminSupremo') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Panel de Administración</title>
-    <link rel="stylesheet" href="css/admin.css">
-</head>
+<?php
+$title = 'Index';
+include 'partials/head.php';
+?>
 
 <body>
-    <h1>Bienvenido, <?= htmlspecialchars($_SESSION['user']['username']); ?> 👋</h1>
-
-    <nav>
-        <ul>
-            <li><a href="/admin/roles/index.php">Registrar Usuario</a></li>
-            <li><a href="assign_role.php">Asignar Roles</a></li>
-            <li><a href="list_users.php">Listar Usuarios y Roles</a></li>
-            <li><a href="manage_roles_permissions.php">Gestionar Roles y Permisos</a></li>
-            <li><a href="logout.php">Cerrar Sesión</a></li>
-        </ul>
-    </nav>
-
-    <p>Usa las opciones de arriba para gestionar tu plataforma. 😊</p>
+    <?php include 'partials/navbar.php'; ?>
 </body>
 
 </html>

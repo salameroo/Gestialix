@@ -18,11 +18,40 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $user = $request->user()->load('school');
+
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => session('status'),
+            'school' => $user->school ? [
+                'name' => $user->school->name,
+                'CIF' => $user->school->CIF,
+                'address' => $user->school->address,
+                'city' => $user->school->city,
+            ] : null,
         ]);
     }
+
+
+
+    public function colegio(Request $request)
+    {
+        $user = $request->user()->load('school'); // Carga la relación 'school'
+
+        if (!$user->school) {
+            return response()->json([
+                'message' => 'No school assigned to this user.',
+            ], 404);
+        }
+
+        return response()->json([
+            'name' => $user->school->name ?? 'No asignado',
+            'CIF' => $user->school->CIF ?? 'No asignado',
+            'address' => $user->school->address ?? 'No asignado',
+            'city' => $user->school->city ?? 'No asignado',
+        ]);
+    }
+
 
     /**
      * Update the user's profile information.

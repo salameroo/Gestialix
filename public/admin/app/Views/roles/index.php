@@ -1,22 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="container mx-auto p-6 w-full">
+    <h2 class="text-2xl font-bold mb-4">Gestión de Roles</h2>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Roles</title>
-</head>
+    <a href="/?entity=roles&action=create" class="bg-indigo-600 text-white px-4 py-2 rounded-md">Crear Rol</a>
 
-<body>
-    <h1>Gestión de Roles</h1>
-    <a href="create.php">Crear Nuevo Rol</a><br>
-    <a href="../index.php">Volver al inicio</a>
-    <table border="1" cellpadding="10">
-        <thead>
+    <table class="min-w-full border mt-6">
+        <thead class="bg-gray-100">
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Guard</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -25,15 +16,12 @@
                 <tr>
                     <td><?= htmlspecialchars($role['id']); ?></td>
                     <td><?= htmlspecialchars($role['name']); ?></td>
-                    <td><?= htmlspecialchars($role['guard_name']); ?></td>
                     <td>
-                        <a href="edit.php?id=<?= $role['id']; ?>">Editar</a>
-                        <a href="delete.php?id=<?= $role['id']; ?>" onclick="return confirm('¿Estás seguro de eliminar este rol?');">Eliminar</a>
+                        <a href="/?entity=roles&action=edit&id=<?= $role['id']; ?>" class="text-blue-500">Editar</a>
+                        <a href="/?entity=roles&action=delete&id=<?= $role['id']; ?>" class="text-red-500" onclick="return confirm('¿Seguro que deseas eliminar este rol?');">Eliminar</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-</body>
-
-</html>
+</div>

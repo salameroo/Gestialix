@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Colegio extends Model
 {
-    protected $fillable = ['nombre', 'direccion'];
+    protected $table = 'app_schools';
+    protected $fillable = ['name', 'CIF', 'address', 'city', 'state', 'country', 'zip'];
 
     public function users()
     {

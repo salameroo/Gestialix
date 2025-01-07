@@ -36,6 +36,7 @@ export default function ClaseManagement() {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
     const [selectedClassId, setSelectedClassId] = useState(null);
+    const [selectedStudent, setSelectedStudent] = useState(null);
     const [open, setOpen] = useState(false);
     const [warningMessage, setWarningMessage] = useState('');
     const [pendingAssignment, setPendingAssignment] = useState(null);
@@ -70,6 +71,7 @@ export default function ClaseManagement() {
     }, []);
 
     const handleDeleteStudent = async (classId, studentId) => {
+        console.log('Estudiante a eliminar:', studentId);
         try {
             await csrfFetch(`/api/classes/${classId}/students/${studentId}`, {
                 method: 'DELETE',
@@ -88,34 +90,13 @@ export default function ClaseManagement() {
         setIsStudentModalOpen(true);
     };
 
-    const handleAddStudent = async (studentData) => {
-        try {
-            const response = await csrfFetch('/api/students', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...studentData, clase_id: selectedClassId }),
-            });
-            const newStudent = await response.json();
-
-            // Actualiza el estado global con el nuevo estudiante
-            dispatch({
-                type: 'ADD_STUDENT',
-                payload: { classId: selectedClassId, student: newStudent },
-            });
-        } catch (error) {
-            console.error('Error al añadir estudiante:', error);
-        } finally {
-            setIsStudentModalOpen(false); // Cierra el modal después de añadir
-        }
-    };
-
     // Manejar la creación/edición de clases
     const handleSaveClass = async (clase) => {
         try {
             // console.log("clase", clase)
             const method = editingClass ? 'PUT' : 'POST';
             const endpoint = editingClass ? `/api/classes/${clase.id}` : '/api/classes/new';
-
+            console.log('endpoint', endpoint, "clase", clase, "method", method);
             const response = await csrfFetch(endpoint, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
@@ -148,32 +129,45 @@ export default function ClaseManagement() {
     // Manejar el guardado de estudiantes
     const handleSaveStudent = async (studentData) => {
         try {
-            // console.log("Entrando en el save...");
-            const response = await csrfFetch(`/api/students`, {
+            console.log('Datos enviados al servidor:', studentData);
+            const response = await csrfFetch('/api/students', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(studentData),
             });
 
-            // Extrae el estudiante correctamente
-            const { estudiante } = await response.json();
-            // console.log('Estudiante recibido:', estudiante);
+            const data = await response.json();
+            console.log('Respuesta del servidor:', data);
 
-            // Actualizar el estado de la clase correspondiente
+            // Extraer el estudiante de la respuesta
+            const student = data.student;
+
+            if (!student) {
+                console.error('No se encontró el estudiante en la respuesta del servidor.');
+                return;
+            }
+
+            console.log('Estudiante recibido:', student);
+
+            // Disparar la acción para añadir el estudiante al estado
             dispatch({
                 type: 'ADD_STUDENT',
                 payload: {
                     classId: studentData.clase_id,
-                    student: estudiante, // Usa el estudiante extraído
+                    student: student,
                 },
             });
 
-            // console.log('Estudiante añadido correctamente:', estudiante);
+            console.log('Dispatch ADD_STUDENT ejecutado:', {
+                classId: studentData.clase_id,
+                student: student,
+            });
         } catch (error) {
             console.error('Error al guardar el estudiante:', error);
             alert('No se pudo guardar el estudiante.');
         }
     };
+
 
 
 
@@ -250,17 +244,17 @@ export default function ClaseManagement() {
     const processedClasses = classes
         .filter((cls) => {
             // Filtrar por el término de búsqueda en el nombre de la clase
-            return cls.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+            return cls.name.toLowerCase().includes(searchTerm.toLowerCase());
         })
         .map((cls) => {
             // Ordenar los estudiantes dentro de cada clase
             const sortedEstudiantes = [...(cls.estudiantes || [])].sort((a, b) => {
-                if (orderBy === 'nombre') {
-                    return (a.nombre || '').localeCompare(b.nombre || '');
+                if (orderBy === 'name') {
+                    return (a.name || '').localeCompare(b.name || '');
                 } else if (orderBy === 'apellidos') {
-                    return (a.apellidos || '').localeCompare(b.apellidos || '');
+                    return (a.surname || '').localeCompare(b.surname || '');
                 } else if (orderBy === 'asignado') {
-                    return (a.asignado_comedor ? 1 : 0) - (b.asignado_comedor ? 1 : 0);
+                    return (a.assigned_lunch ? 1 : 0) - (b.assigned_lunch ? 1 : 0);
                 }
                 return 0;
             });
@@ -325,7 +319,10 @@ export default function ClaseManagement() {
                                 variant="contained"
                                 color="primary"
                                 startIcon={<AddIcon />}
-                                onClick={() => setIsModalOpen(true)}
+                                onClick={() => {
+                                    setEditingClass(null);
+                                    setIsModalOpen(true);
+                                }}
                                 sx={{
                                     height: '100%',
                                     textTransform: 'none',
@@ -353,12 +350,13 @@ export default function ClaseManagement() {
                                     setIsModalOpen(true);
                                 }}
                                 onDeleteClass={(clase) => {
-                                    // Lógica para eliminar clase
+                                    handleDeleteClass(clase.id);
                                 }}
-                                onDeleteStudent={(studentId) => {
-                                    // Lógica para eliminar estudiante
+                                onDeleteStudent={(claseId, studentId) => {
+                                    handleDeleteStudent(clase.id, studentId);
                                 }}
                                 dispatch={dispatch}
+                                onOpenStudentModal={handleOpenStudentModal}
                             />
 
                         </Grid>
@@ -369,13 +367,18 @@ export default function ClaseManagement() {
                 open={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSaveClass}
-                editingClass={editingClass || {}} // Pasar los datos completos de la clase
+                editingClass={editingClass || false} // Pasar los datos completos de la clase
             />
             <AddStudentModal
                 open={isStudentModalOpen}
                 onClose={() => setIsStudentModalOpen(false)}
                 onSave={handleSaveStudent}
                 classId={selectedClassId}
+                studentData={selectedStudent} // Proporciona este prop si estás editando
+            // open={isStudentModalOpen}
+            // onClose={() => setIsStudentModalOpen(false)}
+            // onSave={handleSaveStudent}
+            // classId={selectedClassId}
             />
 
         </Container>

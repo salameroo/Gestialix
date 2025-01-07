@@ -4,25 +4,60 @@ namespace App\Http\Controllers;
 
 use App\Models\Clase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class ClaseController extends Controller
 {
+
+    private function getClassesBySchool()
+    {
+        $user = auth()->user();
+
+        // Verificar que el usuario tenga un `school_id` asociado
+        if (!$user || !$user->school_id) {
+            abort(403, 'No tienes un colegio asignado. Por favor, contacta al administrador.');
+        }
+
+        // Retornar solo las clases del colegio del usuario
+        return Clase::where('school_id', $user->school_id);
+    }
+
+
     public function index()
     {
-        return Clase::with('estudiantes')->get();
+        $clases = $this->getClassesBySchool()->with('estudiantes')->get();
+
+        return response()->json($clases);
     }
+
 
     public function obtenerClases()
     {
         $start = microtime(true);
 
-        $clases = DB::table('clases')->select('id', 'nombre')->get();
+        // Recuperar de la caché o regenerarla solo para las clases del colegio del usuario
+        $user = auth()->user();
+        if (!$user || !$user->school_id) {
+            Log::warning('ClaseController.obtenerClases: No school_id found for user');
+            return response()->json([
+                'message' => 'No tienes un colegio asignado. Por favor, contacta al administrador.'
+            ], 403);
+        }
+
+        $cacheKey = "class_list_school_{$user->school_id}";
+
+        $clases = Cache::remember($cacheKey, 3600, function () use ($user) {
+            return DB::table('app_classes')
+                ->where('school_id', $user->school_id)
+                ->select('id', 'name')
+                ->get();
+        });
 
         $time = microtime(true) - $start;
-        Log::info("Tiempo total del controlador: {$time} segundos");
+        Log::info("Total controller time: {$time} seconds");
 
         return response()->json($clases);
     }
@@ -30,72 +65,107 @@ class ClaseController extends Controller
 
     public function obtenerAlumnos(Request $request)
     {
-        $claseId = $request->query('clase_id');
-        $mes = $request->query('mes');
-        $anio = date('Y'); // Año actual
+        $classId = $request->query('class_id');
+        $month = $request->query('month');
+        $year = $request->query('year') ?? date('Y'); // Año actual por defecto si no se proporciona
+
+        Log::info('ClaseController.obtenerAlumnos: Request data', [
+            'class_id' => $classId,
+            'month' => $month,
+            'year' => $year,
+        ]);
 
         // Validar parámetros
-        if (!$claseId || !$mes) {
-            return response()->json(['error' => 'Parámetros inválidos'], 400);
+        if (!$classId || !$month) {
+            Log::warning('ClaseController.obtenerAlumnos: Invalid parameters');
+            return response()->json(['error' => 'Invalid parameters'], 400);
         }
 
-        // Obtener estudiantes de la clase
-        $alumnos = DB::table('estudiantes')
-            ->where('clase_id', $claseId)
-            ->select('id', 'nombre', 'apellidos')
-            ->get();
+        // Generar una clave de caché única
+        $cacheKey = "students_class_{$classId}_{$year}_{$month}";
 
-        $diasEnMes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
+        Log::info("ClaseController.obtenerAlumnos: Using cache key {$cacheKey}");
 
-        if ($alumnos->isEmpty()) {
-            return response()->json(['message' => 'No hay estudiantes para esta clase'], 200);
+        try {
+            // Verificar si la caché está habilitada y si existe la clave
+            if (!Cache::has($cacheKey)) {
+                Log::info('ClaseController.obtenerAlumnos: Cache not found, generating data');
+            }
+
+            $students = Cache::remember($cacheKey, 3600, function () use ($classId, $month, $year) {
+                return $this->generateStudentData($classId, $month, $year);
+            });
+        } catch (\Exception $e) {
+            Log::error('ClaseController.obtenerAlumnos: Cache error, falling back to direct query', [
+                'error' => $e->getMessage(),
+            ]);
+
+            // Si la caché no está disponible, se realiza la consulta directamente
+            $students = $this->generateStudentData($classId, $month, $year);
         }
 
-        // Obtener asistencias
-        $asistencias = DB::table('asistencias')
-            ->whereIn('estudiante_id', $alumnos->pluck('id'))
-            ->whereYear('fecha', $anio)
-            ->whereMonth('fecha', $mes)
+        Log::info('ClaseController.obtenerAlumnos: Ending');
+        return response()->json($students);
+    }
+
+    private function generateStudentData($classId, $month, $year)
+    {
+        Log::info('ClaseController.generateStudentData: Generating data for class', [
+            'class_id' => $classId,
+            'month' => $month,
+            'year' => $year,
+        ]);
+
+        $students = DB::table('app_students')
+            ->where('class_id', $classId)
+            ->select('id', 'name', 'surname')
             ->get();
 
-        // Obtener ocasionales
-        $ocasionales = DB::table('ocasionals')
-            ->where('clase_id', $claseId)
-            ->whereYear('fecha', $anio)
-            ->whereMonth('fecha', $mes)
-            ->select('id', 'fecha', 'estudiante_id')
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+        if ($students->isEmpty()) {
+            Log::warning('ClaseController.generateStudentData: No students found');
+            return [];
+        }
+
+        $attendances = DB::table('app_attendances')
+            ->whereIn('student_id', $students->pluck('id'))
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
             ->get();
 
-        // Mapear estudiantes con asistencias y ocasionales
-        $alumnos = $alumnos->map(function ($alumno) use ($asistencias, $ocasionales, $diasEnMes, $anio, $mes) {
-            $alumno->diasComedor = [];
-            for ($dia = 1; $dia <= $diasEnMes; $dia++) {
-                $fecha = sprintf('%04d-%02d-%02d', $anio, $mes, $dia);
+        $occasionals = DB::table('app_occasionals')
+            ->where('class_id', $classId)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->select('id', 'date', 'student_id')
+            ->get();
 
-                // Verificar asistencia
-                $asistencia = $asistencias->first(function ($a) use ($alumno, $fecha) {
-                    return $a->estudiante_id == $alumno->id && $a->fecha == $fecha;
+        return $students->map(function ($student) use ($attendances, $occasionals, $daysInMonth, $year, $month) {
+            $student->mealDays = [];
+            for ($day = 1; $day <= $daysInMonth; $day++) {
+                $date = sprintf('%04d-%02d-%02d', $year, $month, $day);
+
+                $attendance = $attendances->first(function ($a) use ($student, $date) {
+                    return $a->student_id == $student->id && $a->date == $date;
                 });
 
-                // Verificar ocasional
-                $ocasional = $ocasionales->first(function ($o) use ($alumno, $fecha) {
-                    return $o->estudiante_id == $alumno->id && $o->fecha == $fecha;
+                $occasional = $occasionals->first(function ($o) use ($student, $date) {
+                    return $o->student_id == $student->id && $o->date == $date;
                 });
 
-                // Prioridad: Ocasionales > Asistencias
-                if ($ocasional) {
-                    $alumno->diasComedor[] = 'O'; // Indicar día ocasional
-                } elseif ($asistencia) {
-                    $alumno->diasComedor[] = (bool)$asistencia->asiste ? '✓' : '✗'; // Asistencia
+                if ($occasional) {
+                    $student->mealDays[] = 'O';
+                } elseif ($attendance) {
+                    $student->mealDays[] = (bool)$attendance->attends ? '✓' : '✗';
                 } else {
-                    $alumno->diasComedor[] = '-'; // Sin datos
+                    $student->mealDays[] = '-';
                 }
             }
-            return $alumno;
+            return $student;
         });
-
-        return response()->json($alumnos);
     }
+
 
 
     /**
@@ -106,66 +176,195 @@ class ClaseController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'curso_academico' => 'required|regex:/^\d{4}\/\d{4}$/',
+        // dd($request->all());
+        // $request->merge([
+        //     'name' => $request->input('nombre'),
+        //     'academic_year' => $request->input('curso_academico'),
+        // ]);
+
+        Log::info('ClaseController.store: Request data', $request->all());
+
+        Log::info('ClaseController.store: Starting');
+
+        // Obtener el usuario autenticado
+        $user = auth()->user();
+
+        Log::info('ClaseController.store: User', [
+            'user_id' => $user ? $user->id : null,
+            'school_id' => $user ? $user->school_id : null,
         ]);
 
-        $class = Clase::create($validatedData);
+        // Verificar si el usuario tiene un `school_id` asociado
+        if (!$user || !$user->school_id) {
+            Log::warning('ClaseController.store: No school_id found for user');
+            return response()->json([
+                'message' => 'No tienes un colegio asignado. Por favor, ponte en contacto con el administrador.'
+            ], 403);
+        }
 
-        // Asegurar que 'estudiantes' esté inicializado como un array vacío
-        $class->estudiantes = [];
+        // Validar los datos de la solicitud
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'academic_year' => 'required|string|max:255',
+        ]);
+
+        Log::info('ClaseController.store: Validated data', $validatedData);
+
+        // Asignar automáticamente el `school_id` del usuario autenticado
+        $validatedData['school_id'] = $user->school_id;
+
+        try {
+            $class = Clase::create($validatedData);
+            Log::info('ClaseController.store: Class created', [
+                'class_id' => $class->id,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('ClaseController.store: Error creating class', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return response()->json([
+                'message' => 'Ocurrió un error al crear la clase. Por favor, inténtalo de nuevo más tarde.'
+            ], 500);
+        }
+
+        Log::info('ClaseController.store: Class created', [
+            'class_id' => $class->id,
+        ]);
+
+        // Invalidar la caché de clases (si es necesario)
+        Cache::forget('class_list');
+
+        Log::info('ClaseController.store: Cache cleared');
+
+        // Retornar respuesta exitosa
         return response()->json($class, 201);
     }
 
+
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'curso_academico' => 'required|regex:/^\d{4}\/\d{4}$/',
+        // Log para depuración
+        Log::info('ClaseController.update: Request data', $request->all());
+
+        // Obtener el usuario autenticado
+        $user = auth()->user();
+
+        Log::info('ClaseController.update: User', [
+            'user_id' => $user ? $user->id : null,
+            'school_id' => $user ? $user->school_id : null,
         ]);
 
-        $class = Clase::findOrFail($id);
-        $class->update($validatedData);
+        // Verificar si el usuario tiene un `school_id` asociado
+        if (!$user || !$user->school_id) {
+            Log::warning('ClaseController.update: No school_id found for user');
+            return response()->json([
+                'message' => 'No tienes un colegio asignado. Por favor, ponte en contacto con el administrador.'
+            ], 403);
+        }
 
-        // Cargar estudiantes y devolver en la respuesta
-        $class->load('estudiantes');
-        return response()->json($class);
+        // Validar los datos de la solicitud
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'academic_year' => 'required|string|max:255',
+        ]);
+
+        // Asignar automáticamente el `school_id` del usuario autenticado
+        $validatedData['school_id'] = $user->school_id;
+
+        try {
+            // Buscar y actualizar la clase
+            $class = Clase::findOrFail($id);
+
+            // Validar que el `school_id` coincide con el del usuario
+            if ($class->school_id !== $user->school_id) {
+                Log::warning('ClaseController.update: Mismatched school_id', [
+                    'class_school_id' => $class->school_id,
+                    'user_school_id' => $user->school_id,
+                ]);
+                return response()->json([
+                    'message' => 'No tienes permisos para editar esta clase.'
+                ], 403);
+            }
+
+            $class->update($validatedData);
+
+            Log::info('ClaseController.update: Class updated', [
+                'class_id' => $class->id,
+            ]);
+
+            // Invalidar la caché de clases
+            Cache::forget('class_list');
+
+            // También invalidar cualquier caché relacionada con los alumnos
+            Cache::tags("alumnos_clase_{$id}")->flush();
+
+            return response()->json($class);
+        } catch (\Exception $e) {
+            Log::error('ClaseController.update: Error updating class', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return response()->json([
+                'message' => 'Ocurrió un error al actualizar la clase. Por favor, inténtalo de nuevo más tarde.'
+            ], 500);
+        }
     }
+
+    // public function update(Request $request, $id)
+    // {
+    //     $validatedData = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'academic_year' => 'required|string|max:255',
+    //         'school_id' => 'required|exists:app_schools,id',
+    //     ]);
+
+    //     $class = Clase::findOrFail($id);
+    //     $class->update($validatedData);
+
+    //     // Invalidar la caché de clases
+    //     Cache::forget('class_list');
+
+    //     // También invalidar cualquier caché relacionada con los alumnos
+    //     Cache::tags("alumnos_clase_{$id}")->flush();
+
+    //     return response()->json($class);
+    // }
 
 
 
 
     public function edit($id)
     {
-        // Find the class by ID
-        $clase = Clase::findOrFail($id);
+        // Buscar la clase dentro del colegio del usuario
+        $clase = $this->getClassesBySchool()->findOrFail($id);
 
-        // Render the edit form
-        return Inertia::render('Clases/Edit', [
-            'clase' => $clase
+        // Renderizar el formulario de edición
+        return Inertia::render('Classes/Edit', [
+            'class' => $clase,
         ]);
     }
-
 
 
     // Eliminar una clase específica
     public function destroy($id)
     {
-        // Buscar la clase por ID o lanzar un error 404 si no existe
-        $clase = Clase::findOrFail($id);
+        // Buscar la clase dentro del colegio del usuario
+        $clase = $this->getClassesBySchool()->findOrFail($id);
 
-        // Borrar manualmente los estudiantes asociados antes de borrar la clase
+        // Eliminar los estudiantes asociados y la clase
         $clase->estudiantes()->delete();
-
-        // Borrar la clase
         $clase->delete();
 
-        // Redireccionar a la página de índice de clases con un mensaje de éxito
-        return Inertia::render(
-            'ClasesManagement/Index',
-        );
+        // Invalidar la caché de clases
+        Cache::forget('class_list');
+
+        // También invalidar cualquier caché relacionada con los alumnos
+        Cache::tags("alumnos_clase_{$id}")->flush();
+
+        return response()->json(['message' => 'Clase eliminada con éxito'], 200);
     }
+
 
     /**
      * Show the form for creating a new resource.

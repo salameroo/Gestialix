@@ -36,4 +36,9 @@ class ViewController extends Controller
     {
         return Inertia::render('Info/Info');
     }
+
+    public function monitoras()
+    {
+        return Inertia::render('Monitoras/Inicio');
+    }
 }

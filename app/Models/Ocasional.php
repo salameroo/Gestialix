@@ -9,15 +9,16 @@ class Ocasional extends Model
 {
     use HasFactory;
 
+    protected $table = 'app_occasionals';
     protected $fillable = [
-        'estudiante_id',
-        'clase_id',
-        'fecha',
+        'student_id',
+        'class_id',
+        'date',
     ];
 
     public function estudiante()
     {
-        return $this->belongsTo(Estudiante::class, 'estudiante_id');
+        return $this->belongsTo(Estudiante::class, 'student_id');
     }
 
     public function clase()

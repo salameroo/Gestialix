@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 class Clase extends Model
 {
     use HasFactory;
+    protected $table = 'app_classes';
 
-    protected $fillable = ['nombre', 'curso_academico'];
+    protected $fillable = ['name', 'academic_year', 'school_id', 'created_at', 'updated_at'];
 
     public function estudiantes()
     {
-        return $this->hasMany(Estudiante::class, 'clase_id');
+        return $this->hasMany(Estudiante::class, 'class_id');
     }
 }

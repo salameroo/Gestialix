@@ -8,21 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Asistencia extends Model
 {
+    protected $table = 'app_attendances';
     protected $fillable = [
-        'estudiante_id',
-        'ocasional_id',
-        'fecha',
-        'asiste',
-        'es_dia_suelto',
+        'student_id',
+        'occasional_id',
+        'date',
+        'attends',
+        'lonely_day',
     ];
 
     public function estudiante()
     {
-        return $this->belongsTo(Estudiante::class, 'estudiante_id');
+        return $this->belongsTo(Estudiante::class, 'student_id');
     }
 
     public function ocasional()
     {
-        return $this->belongsTo(Ocasional::class, 'ocasional_id');
+        return $this->belongsTo(Ocasional::class, 'occasional_id');
+    }
+    public function app_occasionals()
+    {
+        return $this->belongsTo(Ocasional::class, 'occasional_id');
     }
 }

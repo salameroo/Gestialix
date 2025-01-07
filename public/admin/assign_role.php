@@ -1,11 +1,12 @@
 <?php
+session_start();
 require_once './app/Config/db.php';
 
 $error = null;
 $success = null;
 
 // Obtener usuarios y roles
-$users = $pdo->query("SELECT id, name FROM users")->fetchAll();
+$users = $pdo->query("SELECT id, name FROM laravel_users")->fetchAll();
 $roles = $pdo->query("SELECT id, name FROM roles")->fetchAll();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -23,45 +24,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Asignar Rol</title>
-    <link rel="stylesheet" href="css/admin.css">
-</head>
+<?php
+// Importar el head y el header
+if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'adminSupremo') {
+    header('Location: login.php');
+    exit();
+}
+$title = 'Registrar Usuario';
+include 'partials/head.php';
+?>
 
 <body>
+    <?php
+    // Importar el navbar
+    include 'partials/navbar.php';
+    ?>
     <h1>Asignar Rol</h1>
 
-    <?php if ($error): ?>
-        <p style="color: red;"><?= htmlspecialchars($error) ?></p>
-    <?php endif; ?>
-    <?php if ($success): ?>
-        <p style="color: green;"><?= htmlspecialchars($success) ?></p>
-    <?php endif; ?>
+    <div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+        <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Asignar Rol</h1>
 
-    <form action="assign_role.php" method="POST">
-        <label for="user_id">Usuario:</label>
-        <select id="user_id" name="user_id" required>
-            <option value="">Seleccione un usuario</option>
-            <?php foreach ($users as $user): ?>
-                <option value="<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?></option>
-            <?php endforeach; ?>
-        </select>
+        <?php if ($error): ?>
+            <p class="text-red-600 font-medium mb-4"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+        <?php if ($success): ?>
+            <p class="text-green-600 font-medium mb-4"><?= htmlspecialchars($success) ?></p>
+        <?php endif; ?>
 
-        <label for="role_id">Rol:</label>
-        <select id="role_id" name="role_id" required>
-            <option value="">Seleccione un rol</option>
-            <?php foreach ($roles as $role): ?>
-                <option value="<?= $role['id'] ?>"><?= htmlspecialchars($role['name']) ?></option>
-            <?php endforeach; ?>
-        </select>
+        <form action="assign_role.php" method="POST" class="space-y-4">
+            <div>
+                <label for="user_id" class="block text-gray-700 font-medium mb-2">Usuario:</label>
+                <select
+                    id="user_id"
+                    name="user_id"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Seleccione un usuario</option>
+                    <?php foreach ($users as $user): ?>
+                        <option value="<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-        <button type="submit">Asignar Rol</button>
-    </form>
-    <a href="index.php">Volver al inisio</a>
+            <div>
+                <label for="role_id" class="block text-gray-700 font-medium mb-2">Rol:</label>
+                <select
+                    id="role_id"
+                    name="role_id"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Seleccione un rol</option>
+                    <?php foreach ($roles as $role): ?>
+                        <option value="<?= $role['id'] ?>"><?= htmlspecialchars($role['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <button
+                type="submit"
+                class="w-full py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                Asignar Rol
+            </button>
+        </form>
+
+        <div class="mt-4 text-center">
+            <a
+                href="index.php"
+                class="text-blue-500 hover:underline">
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+
 </body>
 
 </html>
